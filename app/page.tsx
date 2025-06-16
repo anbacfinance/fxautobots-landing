@@ -280,7 +280,7 @@ export default function LandingPage() {
                 <DollarSign className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-bold">Resultados Reales</h3>
-              <p className="text-muted-foreground">Utilizado en cuentas reales por traders en LATAM y Europa.</p>
+              <p className="text-muted-foreground">Utilizados en cuentas reales por traders en LATAM y Europa.</p>
             </div>
           </div>
         </div>
