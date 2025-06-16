@@ -310,12 +310,13 @@ export default function LandingPage() {
             <Card className="relative overflow-hidden">
               <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 text-xs font-bold">AGRESIVO</div>
               <CardHeader className="pb-4">
-                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-white">
                   <Image
                     src="/images/BOTAKIRA.png"
                     alt="Bot AKIRA - Trading Algorítmico"
-                    fill
-                    className="object-cover"
+                    width={300}
+                    height={200}
+                    className="object-contain"
                   />
                   <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
                     <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
