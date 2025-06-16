@@ -365,13 +365,15 @@ export default function LandingPage() {
                 RECOMENDADO
               </div>
               <CardHeader className="pb-4">
-                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                {/* Contenedor con altura fija y centrado de imagen */}
+                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-white">
                   <Image
                     src="/images/BOTDEUS.png"
                     alt="Bot DEUS - Trading Algorítmico"
                     fill
-                    className="object-cover"
+                    className="object-contain"
                   />
+                  {/* Logo flotante */}
                   <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
                     <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
                   </div>
