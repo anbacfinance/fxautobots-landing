@@ -315,7 +315,7 @@ export default function LandingPage() {
                     src="/images/BOTAKIRA.png"
                     alt="Bot AKIRA - Trading Algorítmico"
                     width={300}
-                    height={200}
+                    height={400}
                     className="object-contain"
                   />
                   <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
