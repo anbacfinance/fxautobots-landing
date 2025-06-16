@@ -310,7 +310,7 @@ export default function LandingPage() {
             <Card className="relative overflow-hidden">
               <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 text-xs font-bold">AGRESIVO</div>
               <CardHeader className="pb-4">
-                <div className="relative h-full w-full mb-4 rounded-lg overflow-hidden">
+                <div className="relative h-300 w-400 mb-4 rounded-lg overflow-hidden">
                   <Image
                     src="/images/BOTAKIRA.png"
                     alt="Bot AKIRA - Trading Algorítmico"
