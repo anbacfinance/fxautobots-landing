@@ -359,110 +359,105 @@ export default function LandingPage() {
 </Card>
 
 
-            {/* Bot DEUS */}
-<Card className="relative overflow-hidden border-primary">
-  <div className="absolute top-0 right-0 bg-primary text-white px-3 py-1 text-xs font-bold">
-    RECOMENDADO
-  </div>
-  <CardHeader className="pb-4">
-   {/* Contenedor con altura fija y centrado de imagen */}
-    <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-white">
-      <Image
-        src="/images/BOTDEUS.png"
-        alt="Bot DEUS - Trading Algorítmico"
-        fill
-        className="object-contain"
-      />
-      <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
-        <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
-      </div>
-    </div>
-    <div className="flex items-center gap-2">
-      <TrendingUp className="h-6 w-6 text-primary" />
-      <CardTitle className="text-2xl">Bot DEUS</CardTitle>
-    </div>
-    <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
-  </CardHeader>
-
-  <CardContent className="space-y-4">
-    <div className="space-y-2">
-      <div className="flex items-center gap-2">
-        <Clock className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium">Temporalidad: H1</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Target className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium">
-          Pares: AUDCAD, AUDCHF, EURJPY, EURUSD, GBPJPY, GBPUSD, USDJPY, XAUUSD
-        </span>
-      </div>
-    </div>
-    <p className="text-sm text-muted-foreground">
-      Bot versátil y seguro para operar en múltiples pares. Ideal para cuentas desde $100 USD en cuenta
-      CENT. Perfecto para generar ingresos pasivos con riesgo controlado. Recomendado para combinar con
-      nuestro protector de equidad incluido.
-    </p>
-  </CardContent>
-
-  <CardFooter>
-    <Button className="w-full" asChild>
-      <a href="https://shoppy.gg/product/aSkVuev" target="_blank" rel="noopener noreferrer">
-        Comprar Bot DEUS
-      </a>
-    </Button>
-  </CardFooter>
-</Card>
+           {/* Bot DEUS */}
+            <Card className="relative overflow-hidden border-primary">
+              <div className="absolute top-0 right-0 bg-primary text-white px-3 py-1 text-xs font-bold">
+                RECOMENDADO
+              </div>
+              <CardHeader className="pb-4">
+                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                  <Image
+                    src="/images/BOTDEUS.png"
+                    alt="Bot DEUS - Trading Algorítmico"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
+                    <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-6 w-6 text-primary" />
+                  <CardTitle className="text-2xl">Bot DEUS</CardTitle>
+                </div>
+                <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Temporalidad: H1</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">
+                      Pares: AUDCAD, AUDCHF, EURJPY, EURUSD, GBPJPY, GBPUSD, USDJPY, XAUUSD
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Bot versátil y seguro para operar en múltiples pares. Ideal para cuentas desde $100 USD en cuenta
+                  CENT. Perfecto para generar ingresos pasivos con riesgo controlado. Recomendado para combinar con
+                  nuestro protector de equidad incluido.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full" asChild>
+                  <a href="https://shoppy.gg/product/aSkVuev" target="_blank" rel="noopener noreferrer">
+                    Comprar Bot DEUS
+                  </a>
+                </Button>
+              </CardFooter>
+            </Card>
 
 
-            {/* Bot SCALPER */}
-<Card className="relative overflow-hidden">
-  <div className="absolute top-0 right-0 bg-green-500 text-white px-3 py-1 text-xs font-bold">TÉCNICO</div>
-  <CardHeader className="pb-4">
-    {/* Contenedor de imagen corregido */}
-    <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-white">
-      <Image
-        src="/images/BOTSCALPER.png"
-        alt="Bot SCALPER - Trading Algorítmico"
-        fill
-        className="object-contain"
-      />
-      <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
-        <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
-      </div>
-    </div>
-    <div className="flex items-center gap-2">
-      <Settings className="h-6 w-6 text-green-500" />
-      <CardTitle className="text-2xl">Bot SCALPER</CardTitle>
-    </div>
-    <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
-  </CardHeader>
-
-  <CardContent className="space-y-4">
-    <div className="space-y-2">
-      <div className="flex items-center gap-2">
-        <Clock className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium">Temporalidad: H1</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Target className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium">Pares: AUDCAD, NZDCAD, AUDNZD</span>
-      </div>
-    </div>
-    <p className="text-sm text-muted-foreground">
-      Bot técnico, preciso y con gestión interna de stop loss y equity risk. Excelente complemento del Bot
-      DEUS. Recomendado operar con $100 USD en cuenta CENT. Ideal para diversificar riesgos y lograr
-      constancia en resultados.
-    </p>
-  </CardContent>
-
-  <CardFooter>
-    <Button className="w-full" asChild>
-      <a href="https://shoppy.gg/product/DcWNzdU" target="_blank" rel="noopener noreferrer">
-        Comprar Bot SCALPER
-      </a>
-    </Button>
-  </CardFooter>
-</Card>
+           {/* Bot SCALPER */}
+            <Card className="relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-green-500 text-white px-3 py-1 text-xs font-bold">TÉCNICO</div>
+              <CardHeader className="pb-4">
+                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                  <Image
+                    src="/images/BOTSCALPER.png"
+                    alt="Bot SCALPER - Trading Algorítmico"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
+                    <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Settings className="h-6 w-6 text-green-500" />
+                  <CardTitle className="text-2xl">Bot SCALPER</CardTitle>
+                </div>
+                <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Temporalidad: H1</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Pares: AUDCAD, NZDCAD, AUDNZD</span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Bot técnico, preciso y con gestión interna de stop loss y equity risk. Excelente complemento del Bot
+                  DEUS. Recomendado operar con $100 USD en cuenta CENT. Ideal para diversificar riesgos y lograr
+                  constancia en resultados.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full" asChild>
+                  <a href="https://shoppy.gg/product/DcWNzdU" target="_blank" rel="noopener noreferrer">
+                    Comprar Bot SCALPER
+                  </a>
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
 
 
           {/* Comparativa de Bots */}
