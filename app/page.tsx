@@ -306,53 +306,58 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="mx-auto grid max-w-6xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-8">
-            {/* Bot AKIRA */}
-            <Card className="relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 text-xs font-bold">AGRESIVO</div>
-              <CardHeader className="pb-4">
-                <div className="w-full mb-4 rounded-lg overflow-hidden">
-                  <Image
-                    src="/images/BOTAKIRA.png"
-                    alt="Bot AKIRA - Trading Algorítmico"
-                    width={400}
-                    height={300}
-                    className="object-contain w-full h-auto"
-                  />
-                  <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
-                    <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <BarChart3 className="h-6 w-6 text-red-500" />
-                  <CardTitle className="text-2xl">Bot AKIRA</CardTitle>
-                </div>
-                <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Temporalidad: M5</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Target className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Pares: EURGBP, EURJPY, EURUSD, GBPUSD, USDJPY</span>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Bot de alta frecuencia y rendimiento agresivo. Requiere buena gestión de riesgo y saldo mínimo de $400
-                  USD en cuenta CENT. No incluye protector de equidad, por lo que se recomienda utilizar nuestro EA
-                  adicional para protección. Para traders que buscan mayor rotación operativa.
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full" asChild>
-                  <a href="https://shoppy.gg/product/2FEcJKa" target="_blank" rel="noopener noreferrer">
-                    Comprar Bot AKIRA
-                  </a>
-                </Button>
-              </CardFooter>
-            </Card>
+           {/* Bot AKIRA */}
+<Card className="relative overflow-hidden">
+  <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 text-xs font-bold">AGRESIVO</div>
+  <CardHeader className="pb-4">
+    {/* Contenedor con altura fija y centrado de imagen */}
+    <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-white">
+      <Image
+        src="/images/BOTAKIRA.png"
+        alt="Bot AKIRA - Trading Algorítmico"
+        fill
+        className="object-contain"
+      />
+      {/* Logo flotante */}
+      <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
+        <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
+      </div>
+    </div>
+
+    <div className="flex items-center gap-2">
+      <BarChart3 className="h-6 w-6 text-red-500" />
+      <CardTitle className="text-2xl">Bot AKIRA</CardTitle>
+    </div>
+    <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
+  </CardHeader>
+
+  <CardContent className="space-y-4">
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <Clock className="h-4 w-4 text-muted-foreground" />
+        <span className="text-sm font-medium">Temporalidad: M5</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <Target className="h-4 w-4 text-muted-foreground" />
+        <span className="text-sm font-medium">Pares: EURGBP, EURJPY, EURUSD, GBPUSD, USDJPY</span>
+      </div>
+    </div>
+    <p className="text-sm text-muted-foreground">
+      Bot de alta frecuencia y rendimiento agresivo. Requiere buena gestión de riesgo y saldo mínimo de $400
+      USD en cuenta CENT. No incluye protector de equidad, por lo que se recomienda utilizar nuestro EA
+      adicional para protección. Para traders que buscan mayor rotación operativa.
+    </p>
+  </CardContent>
+
+  <CardFooter>
+    <Button className="w-full" asChild>
+      <a href="https://shoppy.gg/product/2FEcJKa" target="_blank" rel="noopener noreferrer">
+        Comprar Bot AKIRA
+      </a>
+    </Button>
+  </CardFooter>
+</Card>
+
 
             {/* Bot DEUS */}
             <Card className="relative overflow-hidden border-primary">
