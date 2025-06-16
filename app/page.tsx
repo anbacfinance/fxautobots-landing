@@ -365,7 +365,7 @@ export default function LandingPage() {
     RECOMENDADO
   </div>
   <CardHeader className="pb-4">
-    {/* Contenedor de imagen ajustado */}
+   {/* Contenedor con altura fija y centrado de imagen */}
     <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-white">
       <Image
         src="/images/BOTDEUS.png"
