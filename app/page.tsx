@@ -312,7 +312,7 @@ export default function LandingPage() {
               <CardHeader className="pb-4">
                 <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
                   <Image
-                    src="/images/trading-chart-1.png"
+                    src="/images/BOTAKIRA.png"
                     alt="Bot AKIRA - Trading Algorítmico"
                     fill
                     className="object-cover"
@@ -361,7 +361,7 @@ export default function LandingPage() {
               <CardHeader className="pb-4">
                 <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
                   <Image
-                    src="/images/trading-chart-2.jpeg"
+                    src="/images/BOTDEUS.png"
                     alt="Bot DEUS - Trading Algorítmico"
                     fill
                     className="object-cover"
@@ -410,7 +410,7 @@ export default function LandingPage() {
               <CardHeader className="pb-4">
                 <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=400&h=200&fit=crop"
+                    src="/images/BOTSCALPER.png"
                     alt="Bot SCALPER - Trading Algorítmico"
                     fill
                     className="object-cover"
