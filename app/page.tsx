@@ -254,7 +254,7 @@ export default function LandingPage() {
                 Características Principales
               </h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Nuestro bot de trading está diseñado para maximizar tus ganancias con mínimo esfuerzo
+                Nuestros bots de trading están diseñados para maximizar tus ganancias con mínimo esfuerzo
               </p>
             </div>
           </div>
@@ -264,15 +264,15 @@ export default function LandingPage() {
                 <Settings className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-bold">Plug & Play</h3>
-              <p className="text-muted-foreground">Solo carga el archivo .preset y empieza a operar de inmediato.</p>
+              <p className="text-muted-foreground">Solo carga los archivos .preset y empieza a operar de inmediato.</p>
             </div>
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                 <TrendingUp className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-bold">Probado y Optimizado</h3>
+              <h3 className="text-xl font-bold">Probados y Optimizados</h3>
               <p className="text-muted-foreground">
-                Más de 500 horas de backtesting con resultados sólidos y consistentes.
+                Más de 5000 horas de backtesting con resultados sólidos y consistentes.
               </p>
             </div>
             <div className="flex flex-col items-center space-y-4 text-center">
