@@ -231,7 +231,7 @@ export default function LandingPage() {
             </div>
             <div className="relative h-[350px] lg:h-[450px] rounded-lg overflow-hidden">
               <Image
-                src="/images/trading-chart-1.png"
+                src="/images/robotrading.fxautobots.png"
                 alt="Trading Bot Dashboard"
                 fill
                 className="object-cover"
