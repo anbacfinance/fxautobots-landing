@@ -212,12 +212,12 @@ const BacktestCarousel = ({ botId, pairName }) => {
                       <CardContent>
                         <div className="relative h-[250px] w-full bg-muted flex items-center justify-center">
                           <Image
-  src={`/images/backtests/${botId}_${pair.name}.png`}
-  alt={`Backtest de ${pair.name}`}
-  width={400}
-  height={250}
-  className="object-contain rounded"
-/>
+                            src={`/images/backtests/${botId}_${pair.name}.png`}
+                            alt={`Backtest de ${pair.name}`}
+                            width={400}
+                            height={250}
+                            className="object-contain rounded"
+                          />
                         </div>
                         <div className="mt-4 space-y-2">
                           <div className="flex justify-between text-sm">
