@@ -1,21 +1,27 @@
 "use client"
 
-import Link from "next/link"
-import Image from "next/image"
-import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Instagram, MessageCircle, ArrowLeft } from "lucide-react"
-import { ThemeToggle } from "../../components/theme-toggle"
+import { Instagram, MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { BacktestCarousel } from "@/components/BacktestCarousel";
 
-export default function BacktestPage() {
-  // Estado para controlar qué bot está seleccionado
-  const [selectedBot, setSelectedBot] = useState("akira")
-
-  // Definición de los bots y sus pares
-  const bots = {
+const bots = {
   akira: {
     name: "AKIRA",
     description: "Bot de alta frecuencia y rendimiento agresivo",
@@ -53,64 +59,24 @@ export default function BacktestPage() {
       },
     ],
   },
-    deus: {
-      name: "DEUS",
-      description: "Bot versátil y seguro para múltiples pares",
-      color: "text-primary",
-      pairs: ["AUDCAD", "AUDCHF", "EURJPY", "EURUSD", "GBPJPY", "GBPUSD", "USDJPY", "XAUUSD"],
-    },
-    scalper: {
-      name: "SCALPER",
-      description: "Bot técnico, preciso y con gestión interna de stop loss",
-      color: "text-green-500",
-      pairs: ["AUDCAD", "NZDCAD", "AUDNZD"],
-    },
-  }
-  import { useState } from "react"
-import Image from "next/image"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+};
 
-  const handlePrev = () => {
-    setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))
-  }
-
-  const handleNext = () => {
-    setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))
-  }
-
-  return (
-    <div className="relative h-[250px] w-full bg-muted flex items-center justify-center rounded overflow-hidden">
-      <Image
-        src={images[currentImage]}
-        alt={`Backtest ${pairName}`}
-        width={400}
-        height={250}
-        className="object-contain rounded"
-      />
-      <button
-        onClick={handlePrev}
-        className="absolute left-2 bg-background/80 rounded-full p-1"
-      >
-        <ChevronLeft className="h-6 w-6" />
-      </button>
-      <button
-        onClick={handleNext}
-        className="absolute right-2 bg-background/80 rounded-full p-1"
-      >
-        <ChevronRight className="h-6 w-6" />
-      </button>
-    </div>
-  )
-}
+export default function Page() {
+  const [selectedBot, setSelectedBot] = useState("akira");
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Header */}
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center">
-              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="mr-2" />
+              <Image
+                src="/images/fxautobots-logo.png"
+                alt="FXAutoBots Logo"
+                width={40}
+                height={40}
+                className="mr-2"
+              />
               <span className="font-bold text-xl">FXAutoBots</span>
             </Link>
           </div>
@@ -138,7 +104,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
             <ThemeToggle />
             <Button variant="outline" size="sm" asChild>
               <Link href="/" className="flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" />
+                <ChevronLeft className="h-4 w-4" />
                 Volver al inicio
               </Link>
             </Button>
@@ -146,32 +112,23 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1 container py-12">
         <div className="space-y-6">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Backtests de Nuestros Bots</h1>
+            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+              Backtests de Nuestros Bots
+            </h1>
             <p className="text-muted-foreground max-w-[800px]">
               Resultados históricos detallados de nuestros bots en diferentes pares de divisas. Estos backtests
               demuestran el rendimiento y la consistencia de nuestras estrategias algorítmicas.
             </p>
           </div>
 
-          {/* Tabs para seleccionar el bot */}
           <Tabs defaultValue="akira" onValueChange={setSelectedBot} className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="akira" className="text-base">
-                Bot AKIRA
-              </TabsTrigger>
-              <TabsTrigger value="deus" className="text-base">
-                Bot DEUS
-              </TabsTrigger>
-              <TabsTrigger value="scalper" className="text-base">
-                Bot SCALPER
-              </TabsTrigger>
+              <TabsTrigger value="akira" className="text-base">Bot AKIRA</TabsTrigger>
             </TabsList>
 
-            {/* Contenido para cada bot */}
             {Object.entries(bots).map(([botId, bot]) => (
               <TabsContent key={botId} value={botId} className="space-y-8">
                 <div className="space-y-4">
@@ -180,7 +137,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
                 </div>
 
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {/* Tarjetas para cada par de divisas */}
                   {bot.pairs.map((pair) => (
                     <Card key={pair.name} className="overflow-hidden">
                       <CardHeader className="pb-3">
@@ -189,6 +145,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
                       </CardHeader>
                       <CardContent>
                         <BacktestCarousel botId={botId} pairName={pair.name} />
+
                         <div className="mt-4 space-y-2">
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Período:</span>
@@ -221,7 +178,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="w-full border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex items-center gap-2">
@@ -261,5 +217,5 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
         </div>
       </footer>
     </div>
-  )
+  );
 }
