@@ -26,7 +26,7 @@ const bots = {
     name: "AKIRA",
     description: "Bot de alta frecuencia y rendimiento agresivo (En este test fue rendido al minigo riesgo con el saldo minimo recomendado; $400 USD en CENT que equivalen a $40.000 USC)",
     color: "text-red-500",
-    pairs: [
+    pairs: ["EURGBP", "EURJPY", "EURUSD", "GBPUSD", "USDJPY"],
       {
         name: "EURGBP",
         periodo: "2023.01/2025.06",
@@ -62,7 +62,7 @@ const bots = {
     name: "DEUS",
     description: "Bot versátil y seguro para múltiples pares",
     color: "text-primary",
-    pairs: [
+    pairs: ["AUDCAD", "AUDCHF", "EURJPY", "EURUSD", "GBPJPY", "GBPUSD", "USDJPY", "XAUUSD"],
       {
         name: "AUDCAD",
         periodo: "2021-2024",
@@ -76,7 +76,7 @@ const bots = {
     name: "SCALPER",
     description: "Bot técnico, preciso y con gestión interna de stop loss",
     color: "text-green-500",
-    pairs: [
+    pairs: ["AUDCAD", "NZDCAD", "AUDNZD"],
       {
         name: "AUDCAD",
         periodo: "2021-2024",
@@ -151,9 +151,18 @@ export default function Page() {
             </p>
           </div>
 
+          {/* Tabs para seleccionar el bot */}
           <Tabs defaultValue="akira" onValueChange={setSelectedBot} className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="akira" className="text-base">Bot AKIRA</TabsTrigger>
+              <TabsTrigger value="akira" className="text-base">
+                Bot AKIRA
+              </TabsTrigger>
+              <TabsTrigger value="deus" className="text-base">
+                Bot DEUS
+              </TabsTrigger>
+              <TabsTrigger value="scalper" className="text-base">
+                Bot SCALPER
+              </TabsTrigger>
             </TabsList>
 
             {Object.entries(bots).map(([botId, bot]) => (
