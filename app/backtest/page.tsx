@@ -24,36 +24,36 @@ import { BacktestCarousel } from "@/components/BacktestCarousel";
 const bots = {
   akira: {
     name: "AKIRA",
-    description: "Bot de alta frecuencia y rendimiento agresivo",
+    description: "Bot de alta frecuencia y rendimiento agresivo (En este test fue rendido al minigo riesgo)",
     color: "text-red-500",
     pairs: [
       {
         name: "EURGBP",
-        periodo: "2024.01-2025.06",
+        periodo: "2024.01/2025.06",
         rentabilidad: "1.52%",
         drawdown: "0.84%",
       },
       {
         name: "EURJPY",
-        periodo: "2024.01-2025.06",
+        periodo: "2024.01/2025.06",
         rentabilidad: "2.94%",
-        drawdown: "20.34%",
+        drawdown: "2.34%",
       },
       {
         name: "EURUSD",
-        periodo: "2024.01-2025.06",
+        periodo: "2024.01/2025.06",
         rentabilidad: "2.05%",
         drawdown: "2.57%",
       },
       {
         name: "GBPUSD",
-        periodo: "2024.01-2025.06",
+        periodo: "2024.01/2025.06",
         rentabilidad: "2.75%",
         drawdown: "3.91%",
       },
       {
         name: "USDJPY",
-        periodo: "2024.01-2025.06",
+        periodo: "2024.01/2025.06",
         rentabilidad: "1.25%",
         drawdown: "0.81%",
       },
