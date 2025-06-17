@@ -3,9 +3,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import Zoom from "react-medium-image-zoom";
-import { useSwipeable } from "react-swipeable";
-import 'react-medium-image-zoom/dist/styles.css';
 
 interface BacktestCarouselProps {
   botId: string;
@@ -21,15 +18,13 @@ export const BacktestCarousel = ({ botId, pairName }: BacktestCarouselProps) => 
     `/images/backtests/${botId}_${pairName}1.png`,
   ];
 
-  const prev = () => setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  const next = () => setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  const prev = () => {
+    setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
 
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: next,
-    onSwipedRight: prev,
-    trackTouch: true,
-    trackMouse: false,
-  });
+  const next = () => {
+    setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -38,6 +33,7 @@ export const BacktestCarousel = ({ botId, pairName }: BacktestCarouselProps) => 
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
     };
+
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [isOpen]);
@@ -76,12 +72,9 @@ export const BacktestCarousel = ({ botId, pairName }: BacktestCarouselProps) => 
         </button>
       </div>
 
-      {/* Modal con swipe y zoom */}
+      {/* Modal de imagen grande */}
       {isOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 animate-fadeIn"
-          {...swipeHandlers}
-        >
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 animate-fadeIn">
           <button
             onClick={() => setIsOpen(false)}
             className="absolute top-4 right-4 text-white bg-black/60 p-2 rounded-full hover:bg-black"
@@ -96,15 +89,13 @@ export const BacktestCarousel = ({ botId, pairName }: BacktestCarouselProps) => 
             <ChevronLeft className="h-6 w-6" />
           </button>
 
-          <Zoom>
-            <Image
-              src={images[currentImage]}
-              alt={`Backtest ampliado ${pairName}`}
-              width={1000}
-              height={600}
-              className="max-w-full max-h-full object-contain rounded shadow-xl"
-            />
-          </Zoom>
+          <Image
+            src={images[currentImage]}
+            alt={`Backtest ampliado ${pairName}`}
+            width={1000}
+            height={600}
+            className="max-w-full max-h-full object-contain rounded shadow-xl transition-all duration-300"
+          />
 
           <button
             onClick={next}
