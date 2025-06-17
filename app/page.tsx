@@ -308,7 +308,7 @@ export default function LandingPage() {
           <div className="mx-auto grid max-w-6xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-8">
            {/* Bot AKIRA */}
 <Card className="relative overflow-hidden">
-  <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 text-xs font-bold">AGRESIVO</div>
+  <div className="absolute top-0 right-0 bg-red-500 text-background/95 px-3 py-1 text-xs font-bold">AGRESIVO</div>
   <CardHeader className="pb-4">
     {/* Contenedor con altura fija y centrado de imagen */}
     <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
@@ -415,7 +415,7 @@ export default function LandingPage() {
 
            {/* Bot SCALPER */}
             <Card className="relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-green-500 text-white px-3 py-1 text-xs font-bold">TÉCNICO</div>
+              <div className="absolute top-0 right-0 bg-green-500 text-background/95 px-3 py-1 text-xs font-bold">TÉCNICO</div>
               <CardHeader className="pb-4">
                 {/* Contenedor con altura fija y centrado de imagen */}
                 <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
@@ -491,7 +491,7 @@ export default function LandingPage() {
             <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
               {/* Oferta 2 Bots */}
               <Card className="relative overflow-hidden border-2 border-primary/50">
-                <div className="absolute top-0 right-0 bg-primary text-white px-3 py-1 text-xs font-bold">
+                <div className="absolute top-0 right-0 bg-primary text-background/95 px-3 py-1 text-xs font-bold">
                   AHORRA $10
                 </div>
                 <CardHeader className="pb-4">
@@ -570,10 +570,10 @@ export default function LandingPage() {
 
               {/* Oferta 3 Bots */}
               <Card className="relative overflow-hidden border-2 border-primary">
-                <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 text-xs font-bold">
+                <div className="absolute top-0 right-0 bg-red-500 text-background/95 px-3 py-1 text-xs font-bold">
                   AHORRA $40
                 </div>
-                <div className="absolute -top-1 -left-1 bg-primary text-white px-3 py-1 text-xs font-bold rounded-br-lg">
+                <div className="absolute -top-1 -left-1 bg-primary text-background/95 px-3 py-1 text-xs font-bold rounded-br-lg">
                   MEJOR OFERTA
                 </div>
                 <CardHeader className="pb-4">
