@@ -167,10 +167,13 @@ export default function BacktestPage() {
                       </CardHeader>
                       <CardContent>
                         <div className="relative h-[250px] w-full bg-muted flex items-center justify-center">
-                          {/* Aquí se mostrarán las imágenes de backtest cuando estén disponibles */}
-                          <p className="text-muted-foreground text-center px-4">
-                            Las imágenes de backtest para {pair} estarán disponibles próximamente
-                          </p>
+                          <Image
+  src={`/images/backtests/${botId}_${pair.name}.png`}
+  alt={`Backtest de ${pair.name}`}
+  width={400}
+  height={250}
+  className="object-contain rounded"
+/>
                         </div>
                         <div className="mt-4 space-y-2">
                           <div className="flex justify-between text-sm">
