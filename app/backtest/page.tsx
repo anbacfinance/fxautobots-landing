@@ -15,26 +15,72 @@ export default function BacktestPage() {
 
   // Definición de los bots y sus pares
   const bots = {
-    akira: {
-      name: "AKIRA",
-      description: "Bot de alta frecuencia y rendimiento agresivo",
-      color: "text-red-500",
-      pairs: ["EURGBP", "EURJPY", "EURUSD", "GBPUSD", "USDJPY"],
-    },
-    deus: {
-      name: "DEUS",
-      description: "Bot versátil y seguro para múltiples pares",
-      color: "text-primary",
-      pairs: ["AUDCAD", "AUDCHF", "EURJPY", "EURUSD", "GBPJPY", "GBPUSD", "USDJPY", "XAUUSD"],
-    },
-    scalper: {
-      name: "SCALPER",
-      description: "Bot técnico, preciso y con gestión interna de stop loss",
-      color: "text-green-500",
-      pairs: ["AUDCAD", "NZDCAD", "AUDNZD"],
-    },
-  }
-
+  akira: {
+    name: "AKIRA",
+    description: "Bot de alta frecuencia y rendimiento agresivo",
+    color: "text-red-500",
+    pairs: [
+      {
+        name: "EURGBP",
+        periodo: "2024.01-2025.06",
+        rentabilidad: "1.52%",
+        drawdown: "0.84%",
+      },
+      {
+        name: "EURJPY",
+        periodo: "2024.01-2025.06",
+        rentabilidad: "2.94%",
+        drawdown: "20.34%",
+      },
+      {
+        name: "EURUSD",
+        periodo: "2024.01-2025.06",
+        rentabilidad: "2.05%",
+        drawdown: "2.57%",
+      },
+      {
+        name: "GBPUSD",
+        periodo: "2024.01-2025.06",
+        rentabilidad: "2.75%",
+        drawdown: "3.91%",
+      },
+      {
+        name: "USDJPY",
+        periodo: "2024.01-2025.06",
+        rentabilidad: "1.25%",
+        drawdown: "0.81%",
+      },
+    ],
+  },
+  deus: {
+    name: "DEUS",
+    description: "Bot versátil y seguro para múltiples pares",
+    color: "text-primary",
+    pairs: [
+      {
+        name: "AUDCAD",
+        periodo: "2021-2024",
+        rentabilidad: "190%",
+        drawdown: "8.5%",
+      },
+      // Agregá los demás pares de Deus
+    ],
+  },
+  scalper: {
+    name: "SCALPER",
+    description: "Bot técnico, preciso y con gestión interna de stop loss",
+    color: "text-green-500",
+    pairs: [
+      {
+        name: "AUDCAD",
+        periodo: "2021-2024",
+        rentabilidad: "120%",
+        drawdown: "4.3%",
+      },
+      // Agregá los demás pares de Scalper
+    ],
+  },
+}
   return (
     <div className="flex min-h-screen flex-col">
       {/* Header */}
