@@ -361,7 +361,7 @@ export default function LandingPage() {
 
            {/* Bot DEUS */}
             <Card className="relative overflow-hidden border-primary">
-              <div className="absolute top-0 right-0 bg-primary text-white px-3 py-1 text-xs font-bold">
+              <div className="absolute top-0 right-0 bg-background/95 text-white px-3 py-1 text-xs font-bold">
                 RECOMENDADO
               </div>
               <CardHeader className="pb-4">
