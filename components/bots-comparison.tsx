@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 export function BotsComparison() {
   const features = [
-    { name: "Temporalidad", akira: "M5", deus: "H1", scalper: "H1" },
+    { name: "Temporalidad", akira: "H1", deus: "H1", scalper: "H1" },
     {
       name: "Pares de divisas",
       akira: "EURGBP, EURJPY, EURUSD, GBPUSD, USDJPY",
@@ -22,7 +22,7 @@ export function BotsComparison() {
     { name: "Protector de equidad incluido", akira: false, deus: true, scalper: true },
     { name: "Gestión interna de stop loss", akira: false, deus: false, scalper: true },
     { name: "Nivel de riesgo", akira: "Alto", deus: "Medio", scalper: "Bajo" },
-    { name: "Operaciones promedio por semana", akira: "15-20", deus: "5-10", scalper: "3-7" },
+    { name: "Operaciones promedio por dia", akira: "5-20", deus: "2-10", scalper: "0-10" },
     { name: "Ideal para", akira: "Traders agresivos", deus: "Ingresos pasivos", scalper: "Diversificación" },
     { name: "Precio", akira: "$80 USD", deus: "$80 USD", scalper: "$80 USD" },
   ]
