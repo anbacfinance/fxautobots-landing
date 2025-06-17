@@ -311,7 +311,7 @@ export default function LandingPage() {
   <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 text-xs font-bold">AGRESIVO</div>
   <CardHeader className="pb-4">
     {/* Contenedor con altura fija y centrado de imagen */}
-    <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-white">
+    <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
       <Image
         src="/images/BOTAKIRA.png"
         alt="Bot AKIRA - Trading Algorítmico"
@@ -366,7 +366,7 @@ export default function LandingPage() {
               </div>
               <CardHeader className="pb-4">
                 {/* Contenedor con altura fija y centrado de imagen */}
-                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-white">
+                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
                   <Image
                     src="/images/BOTDEUS.png"
                     alt="Bot DEUS - Trading Algorítmico"
@@ -418,7 +418,7 @@ export default function LandingPage() {
               <div className="absolute top-0 right-0 bg-green-500 text-white px-3 py-1 text-xs font-bold">TÉCNICO</div>
               <CardHeader className="pb-4">
                 {/* Contenedor con altura fija y centrado de imagen */}
-                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-white">
+                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
                   <Image
                     src="/images/BOTSCALPER.png"
                     alt="Bot SCALPER - Trading Algorítmico"
