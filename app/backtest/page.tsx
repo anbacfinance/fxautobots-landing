@@ -58,8 +58,35 @@ const bots = {
         drawdown: "15.33%",
       },
     ],
+  deus: {
+    name: "DEUS",
+    description: "Bot versátil y seguro para múltiples pares",
+    color: "text-primary",
+    pairs: [
+      {
+        name: "AUDCAD",
+        periodo: "2021-2024",
+        rentabilidad: "190%",
+        drawdown: "8.5%",
+      },
+      // Agregá los demás pares de Deus
+    ],
   },
-};
+  scalper: {
+    name: "SCALPER",
+    description: "Bot técnico, preciso y con gestión interna de stop loss",
+    color: "text-green-500",
+    pairs: [
+      {
+        name: "AUDCAD",
+        periodo: "2021-2024",
+        rentabilidad: "120%",
+        drawdown: "4.3%",
+      },
+      // Agregá los demás pares de Scalper
+    ],
+  },
+}
 
 export default function Page() {
   const [selectedBot, setSelectedBot] = useState("akira");
