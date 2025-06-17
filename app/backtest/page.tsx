@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Instagram, MessageCircle, ArrowLeft } from "lucide-react"
 import { ThemeToggle } from "../../components/theme-toggle"
+import { BacktestCarousel } from "@/components/BacktestCarousel";
 
 export default function BacktestPage() {
   // Estado para controlar qué bot está seleccionado
@@ -68,14 +69,6 @@ export default function BacktestPage() {
   import { useState } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
-const BacktestCarousel = ({ botId, pairName }) => {
-  const [currentImage, setCurrentImage] = useState(0)
-
-  const images = [
-    `/images/backtests/${botId}_${pairName}.png`,
-    `/images/backtests/${botId}_${pairName}1.png`,
-  ]
 
   const handlePrev = () => {
     setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))
