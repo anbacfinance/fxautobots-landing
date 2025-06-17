@@ -189,25 +189,25 @@ const BacktestCarousel = ({ botId, pairName }) => {
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {/* Tarjetas para cada par de divisas */}
                   {bot.pairs.map((pair) => (
-                    <Card key={pair} className="overflow-hidden">
+                    <Card key={pair.name} className="overflow-hidden">
                       <CardHeader className="pb-3">
-                        <CardTitle>{pair}</CardTitle>
+                        <CardTitle>{pair.name}</CardTitle>
                         <CardDescription>Backtest histórico</CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <BacktestCarousel botId={botId} pairName={pair} />
+                        <BacktestCarousel botId={botId} pairName={pair.name} />
                         <div className="mt-4 space-y-2">
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Período:</span>
-                            <span>Por definir</span>
+                            <span>{pair.periodo}</span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Rentabilidad:</span>
-                            <span>Por definir</span>
+                            <span>{pair.rentabilidad}</span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Drawdown máx:</span>
-                            <span>Por definir</span>
+                            <span>{pair.drawdown}</span>
                           </div>
                         </div>
                       </CardContent>
