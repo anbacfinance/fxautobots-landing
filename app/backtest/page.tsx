@@ -75,6 +75,7 @@ const bots = {
         periodo: "2023.01 - 2025.06",
         rentabilidad: "45.29%",
         drawdown: "27.13%",
+     },
     ],
   },
   scalper: {
