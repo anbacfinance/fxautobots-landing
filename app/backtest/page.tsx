@@ -24,7 +24,7 @@ import { BacktestCarousel } from "@/components/BacktestCarousel";
 const bots = {
   akira: {
     name: "AKIRA",
-    description: "Bot de alta frecuencia y rendimiento agresivo (En este test fue rendido al minigo riesgo con el saldo minimo recomendado; $400 USD en CENT que equivalen a $40.000 USC)",
+    description: "Bot de alta frecuencia y rendimiento agresivo (En este test fue rendido al minimo riesgo con el saldo minimo recomendado; $400 USD en CENT que equivalen a $40.000 USC)",
     color: "text-red-500",
     pairs: [
       {
@@ -66,15 +66,15 @@ const bots = {
     pairs: [
       {
         name: "AUDCAD",
-        periodo: "2021-2024",
-        rentabilidad: "190%",
-        drawdown: "8.5%",
+        periodo: "2023.01/2025.06",
+        rentabilidad: "45.29%",
+        drawdown: "27.13%",
       },
     ],
   },
   scalper: {
     name: "SCALPER",
-    description: "Bot técnico, preciso y con gestión interna de stop loss",
+    description: "Bot técnico, preciso y con gestión interna de stop loss (En este test fue rendido al minimo riesgo con el saldo minimo recomendado; $100 USD en CENT que equivalen a $10.000 USC)",
     color: "text-green-500",
     pairs: [
       {
