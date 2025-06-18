@@ -61,7 +61,7 @@ const bots = {
   },
   deus: {
     name: "DEUS",
-    description: "Bot versátil y seguro para múltiples pares",
+    description: "Bot versátil y seguro para múltiples pares (En este test fue rendido al minimo riesgo con el saldo minimo recomendado; $400 USD en CENT que equivalen a $40.000 USC en XAUUSD y $100 en CENT que equivalen a $10.000 USC en divisas)",
     color: "text-primary",
     pairs: [
       {
