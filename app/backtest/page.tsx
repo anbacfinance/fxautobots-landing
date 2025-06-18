@@ -29,31 +29,31 @@ const bots = {
     pairs: [
       {
         name: "EURGBP",
-        periodo: "2023.01/2025.06",
+        periodo: "2023.01 - 2025.06",
         rentabilidad: "10.5%",
         drawdown: "5.73%",
       },
       {
         name: "EURJPY",
-        periodo: "2023.01/2025.06",
+        periodo: "2023.01 - 2025.06",
         rentabilidad: "9.86%",
         drawdown: "13.13%",
       },
       {
         name: "EURUSD",
-        periodo: "2023.01/2025.06",
+        periodo: "2023.01 - 2025.06",
         rentabilidad: "13.18%",
         drawdown: "23.99%",
       },
       {
         name: "GBPUSD",
-        periodo: "2023.01/2025.06",
+        periodo: "2023.01 - 2025.06",
         rentabilidad: "13.85%",
         drawdown: "8.37%",
       },
       {
         name: "USDJPY",
-        periodo: "2023.01/2025.06",
+        periodo: "2023.01 - 2025.06",
         rentabilidad: "7.63%",
         drawdown: "15.33%",
       },
@@ -66,10 +66,15 @@ const bots = {
     pairs: [
       {
         name: "AUDCAD",
-        periodo: "2023.01/2025.06",
+        periodo: "2023.01 - 2025.06",
         rentabilidad: "45.29%",
         drawdown: "27.13%",
       },
+      {
+        name: "XAUUSD",
+        periodo: "2023.01 - 2025.06",
+        rentabilidad: "45.29%",
+        drawdown: "27.13%",
     ],
   },
   scalper: {
