@@ -160,7 +160,7 @@ export default function Page() {
             {Object.entries(bots).map(([botId, bot]) => (
               <TabsContent key={botId} value={botId} className="space-y-8">
                 <div className="space-y-4">
-                  <h2 className={\`text-2xl font-bold \${bot.color}\`}>Bot {bot.name}</h2>
+                  <h2 className={"text-2xl font-bold " + bot.color}>Bot {bot.name}</h2>
                   <p className="text-muted-foreground">{bot.description}</p>
                 </div>
 
