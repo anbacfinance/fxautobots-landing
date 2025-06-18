@@ -125,6 +125,18 @@ const bots = {
         rentabilidad: "120%",
         drawdown: "4.3%",
       },
+      {
+        name: "NZDCAD",
+        periodo: "2021-2024",
+        rentabilidad: "120%",
+        drawdown: "4.3%",
+      },
+      {
+        name: "AUDNZD",
+        periodo: "2021-2024",
+        rentabilidad: "120%",
+        drawdown: "4.3%",
+      },
     ],
   },
 };
