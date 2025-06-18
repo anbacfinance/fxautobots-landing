@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import Zoom from "react-medium-image-zoom";
+import { useSwipeable } from "react-swipeable";
+import 'react-medium-image-zoom/dist/styles.css';
 
 interface BacktestCarouselProps {
   botId: string;
