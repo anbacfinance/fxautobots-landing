@@ -79,8 +79,8 @@ const bots = {
      {
         name: "GBPUSD",
         periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
+        rentabilidad: "31.47%",
+        drawdown: "27.28%",
      },
      {
         name: "EURUSD",
