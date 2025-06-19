@@ -128,8 +128,8 @@ const bots = {
       {
         name: "NZDCAD",
         periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
+        rentabilidad: "28.06%",
+        drawdown: "8.63%",
       },
       {
         name: "AUDNZD",
