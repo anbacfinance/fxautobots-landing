@@ -91,8 +91,8 @@ const bots = {
      {
         name: "AUDCHF",
         periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
+        rentabilidad: "2.44%",
+        drawdown: "28.65%",
      },
      {
         name: "EURJPY",
