@@ -70,12 +70,6 @@ const bots = {
         rentabilidad: "45.29%",
         drawdown: "27.13%",
       },
-      {
-        name: "XAUUSD",
-        periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
-     },
      {
         name: "GBPUSD",
         periodo: "2023.01 - 2025.06",
@@ -83,16 +77,22 @@ const bots = {
         drawdown: "27.28%",
      },
      {
-        name: "EURUSD",
-        periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
-     },
-     {
         name: "AUDCHF",
         periodo: "2023.01 - 2025.06",
         rentabilidad: "2.44%",
         drawdown: "28.65%",
+     },
+     {
+        name: "USDCHF",
+        periodo: "2023.01 - 2025.06",
+        rentabilidad: "18.20%",
+        drawdown: "13.67%",
+     },
+     {
+        name: "EURUSD",
+        periodo: "2023.01 - 2025.06",
+        rentabilidad: "..%",
+        drawdown: "..%",
      },
      {
         name: "EURJPY",
@@ -108,6 +108,12 @@ const bots = {
      },
      {
         name: "USDJPY",
+        periodo: "2023.01 - 2025.06",
+        rentabilidad: "..%",
+        drawdown: "..%",
+     },
+     {
+        name: "XAUUSD",
         periodo: "2023.01 - 2025.06",
         rentabilidad: "..%",
         drawdown: "..%",
