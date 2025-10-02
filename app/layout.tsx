@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "Bots de trading automatizado con resultados probados. Maximiza tus ganancias en Forex con nuestros bots para MetaTrader 4.",
   generator: ":)",
   icons: {
-    icon: "/favicon.ico", // 👉 este es el favicon
+    icon: "/favicon.ico.png", // 👉 este es el favicon
   },
 };
 
