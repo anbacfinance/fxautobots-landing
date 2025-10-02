@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "FXAutoBots - Bots de Trading Algorítmico para MT4",
   description:
     "Bots de trading automatizado con resultados probados. Maximiza tus ganancias en Forex con nuestros bots para MetaTrader 4.",
-  generator: "v0.dev",
+  generator: ":)",
   icons: {
     icon: "/favicon.ico", // 👉 este es el favicon
   },
