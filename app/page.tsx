@@ -27,7 +27,7 @@ function TestimonialCarousel() {
   const testimonials = [
     {
       name: "Carlos G.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&h=200&fit=crop",
+      image: "",
       review: "Con este bot hice en 3 semanas lo que antes hacía en 3 meses. Fácil de usar y rentable.",
       location: "México",
     },
@@ -40,14 +40,14 @@ function TestimonialCarousel() {
     },
     {
       name: "Roberto L.",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&h=200&fit=crop",
+      image: "",
       review:
         "Al principio era escéptico, pero después de ver los backtests y probarlo, no puedo estar más satisfecho. Recomendado 100%.",
       location: "Colombia",
     },
     {
       name: "Ana P.",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&h=200&fit=crop",
+      image: "",
       review:
         "La configuración es súper sencilla y el soporte es excelente. Mi cuenta ha crecido un 40% en solo 6 semanas.",
       location: "Argentina",
