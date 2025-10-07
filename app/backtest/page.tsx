@@ -88,36 +88,6 @@ const bots = {
         rentabilidad: "18.20%",
         drawdown: "13.67%",
      },
-     {
-        name: "EURUSD",
-        periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
-     },
-     {
-        name: "EURJPY",
-        periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
-     },
-     {
-        name: "GBPJPY",
-        periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
-     },
-     {
-        name: "USDJPY",
-        periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
-     },
-     {
-        name: "XAUUSD",
-        periodo: "2023.01 - 2025.06",
-        rentabilidad: "..%",
-        drawdown: "..%",
-     },
     ],
   },
   scalper: {
