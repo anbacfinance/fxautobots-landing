@@ -725,7 +725,7 @@ export default function LandingPage() {
                 className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
               >
                 <MessageCircle className="h-5 w-5" />
-                <span>@anbacfinance</span>
+                <span>@fxautobots</span>
               </a>
             </div>
           </div>
