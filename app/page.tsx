@@ -166,7 +166,7 @@ export default function LandingPage() {
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="https://t.me/anbacfinance"
+                href="https://t.me/fxautobots"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
@@ -221,7 +221,7 @@ export default function LandingPage() {
                   <span>@fxautobots</span>
                 </a>
                 <a
-                  href="https://t.me/anbacfinance"
+                  href="https://t.me/fxautobots"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -719,7 +719,7 @@ export default function LandingPage() {
                 <span>@fxautobots</span>
               </a>
               <a
-                href="https://t.me/anbacfinance"
+                href="https://t.me/fxautobots"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
@@ -759,7 +759,7 @@ export default function LandingPage() {
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="https://t.me/anbacfinance"
+                href="https://t.me/fxautobots"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
