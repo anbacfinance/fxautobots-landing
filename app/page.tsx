@@ -227,7 +227,7 @@ export default function LandingPage() {
                   className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  <span>@anbacfinance</span>
+                  <span>@fxautobots</span>
                 </a>
               </div>
             </div>
