@@ -35,7 +35,7 @@ export default function PoliticaPrivacidad() {
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="https://t.me/anbacfinance"
+                href="https://t.me/fxautobots"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
@@ -72,7 +72,7 @@ export default function PoliticaPrivacidad() {
               <div className="flex items-center gap-2 font-medium">
                 <MessageCircle className="h-5 w-5 text-primary" />
                 <a
-                  href="https://t.me/anbacfinance"
+                  href="https://t.me/fxautobots"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"
@@ -150,7 +150,7 @@ export default function PoliticaPrivacidad() {
               <div className="flex items-center gap-2 font-medium">
                 <MessageCircle className="h-5 w-5 text-primary" />
                 <a
-                  href="https://t.me/anbacfinance"
+                  href="https://t.me/fxautobots"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"
@@ -195,7 +195,7 @@ export default function PoliticaPrivacidad() {
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="https://t.me/anbacfinance"
+                href="https://t.me/fxautobots"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
