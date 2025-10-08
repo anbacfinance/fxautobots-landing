@@ -196,9 +196,9 @@ export default function LandingPage() {
                 Gana en piloto automático con nuestros Bots de Trading para MT4
               </h2>
               <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                Operá sin emociones, sin errores y con disciplina 24/7.
+                Operá sin emociones, sin errores y con disciplina constante.
                 Nuestros bots para MT4 siguen estrategias probadas, con resultados consistentes y 100% automatizados.
-                Unite a la nueva forma de hacer trading: automática, rentable y transparente.
+                Unite a la nueva forma de hacer trading: automática, rentable, transparente y precisa.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="font-medium" asChild>
