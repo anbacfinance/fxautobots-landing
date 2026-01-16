@@ -2,11 +2,13 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, Play, Clock, Eye, Youtube, BookOpen, Download, Settings, Zap } from "lucide-react"
+import { Play, Clock, Youtube, BookOpen, Download, Settings, Zap, Eye, Instagram, MessageCircle } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 // Estructura de tutoriales - Edita aquí para agregar tus videos
 const tutoriales = {
@@ -15,7 +17,7 @@ const tutoriales = {
       id: "intro-mt5",
       title: "Introducción a MetaTrader 5",
       description: "Aprende los conceptos básicos de MT5 antes de instalar cualquier bot",
-      youtubeId: "", // Agregar ID del video de YouTube (ej: "dQw4w9WgXcQ")
+      youtubeId: "",
       duracion: "10:00",
       categoria: "Básico",
     },
@@ -113,33 +115,33 @@ const tutoriales = {
 const botColors: Record<string, { bg: string; text: string; border: string; badge: string }> = {
   general: {
     bg: "from-gray-500/20 to-gray-600/10",
-    text: "text-gray-400",
+    text: "text-gray-500 dark:text-gray-400",
     border: "border-gray-500/30",
-    badge: "bg-gray-500/20 text-gray-300",
+    badge: "bg-gray-500/20 text-gray-600 dark:text-gray-300",
   },
   akira: {
     bg: "from-red-500/20 to-red-600/10",
-    text: "text-red-400",
+    text: "text-red-500 dark:text-red-400",
     border: "border-red-500/30",
-    badge: "bg-red-500/20 text-red-300",
+    badge: "bg-red-500/20 text-red-600 dark:text-red-300",
   },
   deus: {
     bg: "from-cyan-500/20 to-cyan-600/10",
-    text: "text-cyan-400",
+    text: "text-cyan-500 dark:text-cyan-400",
     border: "border-cyan-500/30",
-    badge: "bg-cyan-500/20 text-cyan-300",
+    badge: "bg-cyan-500/20 text-cyan-600 dark:text-cyan-300",
   },
   scalper: {
     bg: "from-green-500/20 to-green-600/10",
-    text: "text-green-400",
+    text: "text-green-500 dark:text-green-400",
     border: "border-green-500/30",
-    badge: "bg-green-500/20 text-green-300",
+    badge: "bg-green-500/20 text-green-600 dark:text-green-300",
   },
   atlas: {
     bg: "from-amber-500/20 to-amber-600/10",
-    text: "text-amber-400",
+    text: "text-amber-500 dark:text-amber-400",
     border: "border-amber-500/30",
-    badge: "bg-amber-500/20 text-amber-300",
+    badge: "bg-amber-500/20 text-amber-600 dark:text-amber-300",
   },
 }
 
@@ -159,7 +161,7 @@ function VideoCard({
     >
       <CardContent className="p-0">
         {/* Thumbnail / Video */}
-        <div className="relative aspect-video bg-black/50">
+        <div className="relative aspect-video bg-black/50 dark:bg-black/50">
           {hasVideo ? (
             <iframe
               src={`https://www.youtube.com/embed/${tutorial.youtubeId}`}
@@ -169,11 +171,13 @@ function VideoCard({
               className="w-full h-full"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center gap-3">
-              <div className={`w-16 h-16 rounded-full bg-white/10 flex items-center justify-center ${colors.text}`}>
+            <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-muted/50">
+              <div
+                className={`w-16 h-16 rounded-full bg-background/50 flex items-center justify-center ${colors.text}`}
+              >
                 <Play className="w-8 h-8 ml-1" />
               </div>
-              <span className="text-white/50 text-sm">Video próximamente</span>
+              <span className="text-muted-foreground text-sm">Video próximamente</span>
             </div>
           )}
 
@@ -187,10 +191,10 @@ function VideoCard({
         {/* Info */}
         <div className="p-4 space-y-3">
           <div className="flex items-start justify-between gap-2">
-            <h3 className="font-semibold text-white leading-tight">{tutorial.title}</h3>
+            <h3 className="font-semibold text-foreground leading-tight">{tutorial.title}</h3>
             <Badge className={`${colors.badge} shrink-0 text-xs`}>{tutorial.categoria}</Badge>
           </div>
-          <p className="text-sm text-white/60 line-clamp-2">{tutorial.description}</p>
+          <p className="text-sm text-muted-foreground line-clamp-2">{tutorial.description}</p>
         </div>
       </CardContent>
     </Card>
@@ -201,34 +205,75 @@ export default function TutorialesPage() {
   const [activeTab, setActiveTab] = useState("general")
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
-      {/* Header */}
-      <header className="border-b border-white/10 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-white/70 hover:text-white transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            <span>Volver al inicio</span>
-          </Link>
-          <Link href="https://www.youtube.com/@FxautoBots" target="_blank">
-            <Button variant="outline" className="border-red-500/50 text-red-400 hover:bg-red-500/10 bg-transparent">
-              <Youtube className="w-4 h-4 mr-2" />
-              Canal de YouTube
+    <div className="flex min-h-screen flex-col bg-background">
+      <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
+        <div className="container flex h-16 items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center">
+              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="mr-2" />
+              <span className="font-bold text-xl">FXAutoBots</span>
+            </Link>
+          </div>
+          <nav className="hidden md:flex gap-6">
+            <Link href="/#features" className="text-sm font-medium hover:text-primary">
+              Características
+            </Link>
+            <Link href="/#testimonials" className="text-sm font-medium hover:text-primary">
+              Testimonios
+            </Link>
+            <Link href="/#pricing" className="text-sm font-medium hover:text-primary">
+              Precios
+            </Link>
+            <Link href="/#brokers" className="text-sm font-medium hover:text-primary">
+              Brokers
+            </Link>
+            <Link href="/backtest" className="text-sm font-medium hover:text-primary">
+              Backtesting
+            </Link>
+            <Link href="/tutoriales" className="text-sm font-medium text-primary">
+              Tutoriales
+            </Link>
+          </nav>
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-3">
+              <a
+                href="https://instagram.com/fxautobots"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a
+                href="https://t.me/fxautobots"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="Telegram"
+              >
+                <MessageCircle className="h-5 w-5" />
+              </a>
+            </div>
+            <ThemeToggle />
+            <Button asChild>
+              <Link href="/#pricing">Comprar Bot</Link>
             </Button>
-          </Link>
+          </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="py-16 border-b border-white/10">
+      <section className="py-16 border-b bg-muted/30">
         <div className="container mx-auto px-4 text-center">
-          <Badge className="bg-red-500/20 text-red-400 mb-4">
+          <Badge className="bg-red-500/20 text-red-500 dark:text-red-400 mb-4">
             <BookOpen className="w-3 h-3 mr-1" />
             Centro de Aprendizaje
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Tutoriales de <span className="text-red-500">Instalación</span>
           </h1>
-          <p className="text-white/60 max-w-2xl mx-auto text-lg">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Guías paso a paso para instalar y configurar cada uno de nuestros bots de trading. Aprende a sacar el máximo
             provecho de tu inversión.
           </p>
@@ -236,51 +281,51 @@ export default function TutorialesPage() {
           {/* Stats */}
           <div className="flex justify-center gap-8 mt-8">
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">{Object.values(tutoriales).flat().length}</div>
-              <div className="text-sm text-white/50">Tutoriales</div>
+              <div className="text-2xl font-bold text-foreground">{Object.values(tutoriales).flat().length}</div>
+              <div className="text-sm text-muted-foreground">Tutoriales</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">4</div>
-              <div className="text-sm text-white/50">Bots cubiertos</div>
+              <div className="text-2xl font-bold text-foreground">4</div>
+              <div className="text-sm text-muted-foreground">Bots cubiertos</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">24/7</div>
-              <div className="text-sm text-white/50">Disponible</div>
+              <div className="text-2xl font-bold text-foreground">24/7</div>
+              <div className="text-sm text-muted-foreground">Disponible</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Quick Links */}
-      <section className="py-8 border-b border-white/10 bg-white/[0.02]">
+      <section className="py-8 border-b bg-muted/10">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10">
-              <Download className="w-5 h-5 text-cyan-400" />
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-card border">
+              <Download className="w-5 h-5 text-cyan-500" />
               <div>
-                <div className="text-sm font-medium text-white">Instalación</div>
-                <div className="text-xs text-white/50">Guías de setup</div>
+                <div className="text-sm font-medium text-foreground">Instalación</div>
+                <div className="text-xs text-muted-foreground">Guías de setup</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10">
-              <Settings className="w-5 h-5 text-green-400" />
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-card border">
+              <Settings className="w-5 h-5 text-green-500" />
               <div>
-                <div className="text-sm font-medium text-white">Configuración</div>
-                <div className="text-xs text-white/50">Optimiza tus bots</div>
+                <div className="text-sm font-medium text-foreground">Configuración</div>
+                <div className="text-xs text-muted-foreground">Optimiza tus bots</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10">
-              <Zap className="w-5 h-5 text-amber-400" />
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-card border">
+              <Zap className="w-5 h-5 text-amber-500" />
               <div>
-                <div className="text-sm font-medium text-white">Avanzado</div>
-                <div className="text-xs text-white/50">Tips de expertos</div>
+                <div className="text-sm font-medium text-foreground">Avanzado</div>
+                <div className="text-xs text-muted-foreground">Tips de expertos</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10">
-              <Eye className="w-5 h-5 text-red-400" />
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-card border">
+              <Eye className="w-5 h-5 text-red-500" />
               <div>
-                <div className="text-sm font-medium text-white">Resultados</div>
-                <div className="text-xs text-white/50">Backtests reales</div>
+                <div className="text-sm font-medium text-foreground">Resultados</div>
+                <div className="text-xs text-muted-foreground">Backtests reales</div>
               </div>
             </div>
           </div>
@@ -288,34 +333,37 @@ export default function TutorialesPage() {
       </section>
 
       {/* Tutoriales */}
-      <section className="py-16">
+      <section className="py-16 flex-1">
         <div className="container mx-auto px-4">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-            <TabsList className="bg-white/5 border border-white/10 p-1 flex flex-wrap justify-center gap-1">
+            <TabsList className="bg-muted/50 border p-1 flex flex-wrap justify-center gap-1">
               <TabsTrigger
                 value="general"
-                className="data-[state=active]:bg-gray-500/30 data-[state=active]:text-white"
+                className="data-[state=active]:bg-gray-500/30 data-[state=active]:text-foreground"
               >
                 General
               </TabsTrigger>
-              <TabsTrigger value="akira" className="data-[state=active]:bg-red-500/30 data-[state=active]:text-red-400">
+              <TabsTrigger
+                value="akira"
+                className="data-[state=active]:bg-red-500/30 data-[state=active]:text-red-500 dark:data-[state=active]:text-red-400"
+              >
                 AKIRA
               </TabsTrigger>
               <TabsTrigger
                 value="deus"
-                className="data-[state=active]:bg-cyan-500/30 data-[state=active]:text-cyan-400"
+                className="data-[state=active]:bg-cyan-500/30 data-[state=active]:text-cyan-500 dark:data-[state=active]:text-cyan-400"
               >
                 DEUS
               </TabsTrigger>
               <TabsTrigger
                 value="scalper"
-                className="data-[state=active]:bg-green-500/30 data-[state=active]:text-green-400"
+                className="data-[state=active]:bg-green-500/30 data-[state=active]:text-green-500 dark:data-[state=active]:text-green-400"
               >
                 SCALPER
               </TabsTrigger>
               <TabsTrigger
                 value="atlas"
-                className="data-[state=active]:bg-amber-500/30 data-[state=active]:text-amber-400"
+                className="data-[state=active]:bg-amber-500/30 data-[state=active]:text-amber-500 dark:data-[state=active]:text-amber-400"
               >
                 ATLAS
               </TabsTrigger>
@@ -327,7 +375,7 @@ export default function TutorialesPage() {
                   <h2 className={`text-2xl font-bold ${botColors[key].text}`}>
                     {key === "general" ? "Tutoriales Generales" : `Tutoriales ${key.toUpperCase()}`}
                   </h2>
-                  <Badge variant="outline" className="text-white/50 border-white/20">
+                  <Badge variant="outline" className="text-muted-foreground">
                     {videos.length} videos
                   </Badge>
                 </div>
@@ -339,7 +387,7 @@ export default function TutorialesPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12 text-white/50">
+                  <div className="text-center py-12 text-muted-foreground">
                     <Play className="w-12 h-12 mx-auto mb-4 opacity-50" />
                     <p>Próximamente se agregarán tutoriales para este bot</p>
                   </div>
@@ -351,10 +399,10 @@ export default function TutorialesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 border-t border-white/10 bg-gradient-to-b from-transparent to-red-500/5">
+      <section className="py-16 border-t bg-gradient-to-b from-transparent to-red-500/5">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">¿Necesitas ayuda adicional?</h2>
-          <p className="text-white/60 mb-8 max-w-xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">¿Necesitas ayuda adicional?</h2>
+          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
             Si tienes dudas que no se resuelven en los tutoriales, contáctanos directamente y te ayudaremos con la
             instalación.
           </p>
@@ -366,17 +414,15 @@ export default function TutorialesPage() {
               </Button>
             </Link>
             <Link href="/#contacto">
-              <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 bg-transparent">
-                Contactar soporte
-              </Button>
+              <Button variant="outline">Contactar soporte</Button>
             </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-white/10">
-        <div className="container mx-auto px-4 text-center text-white/40 text-sm">
+      <footer className="py-8 border-t">
+        <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
           © 2025 FxautoBots. Todos los derechos reservados.
         </div>
       </footer>
