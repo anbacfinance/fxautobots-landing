@@ -110,7 +110,7 @@ const bots = {
   atlas: {
     name: "ATLAS FUNDING",
     description:
-      "Bot diseñado específicamente para pruebas de fondeo. Opera con Order Blocks, incluye órdenes stop, stop loss y take profit. Rendimiento constante y riesgo controlado para pasar y mantener cuentas fondeadas.",
+      "Bot diseñado específicamente para pruebas de fondeo. Opera con Order Blocks, incluye órdenes stop, stop loss y take profit. Rendimiento constante y riesgo controlado para pasar y mantener cuentas fondeadas o personales con capitales altos. (Prueba de backtest realizada con saldo de $10.000)",
     color: "text-amber-500",
     pairs: [
       {
@@ -127,6 +127,12 @@ const bots = {
       },
       {
         name: "GBPUSD",
+        periodo: "2024.01 - 2025.06",
+        rentabilidad: "9.2%",
+        drawdown: "3.8%",
+      },
+      {
+        name: "USDJPY",
         periodo: "2024.01 - 2025.06",
         rentabilidad: "9.2%",
         drawdown: "3.8%",
