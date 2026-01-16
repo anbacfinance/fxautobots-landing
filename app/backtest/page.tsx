@@ -122,14 +122,14 @@ const bots = {
       {
         name: "EURUSD",
         periodo: "2024.01 - 2026.01",
-        rentabilidad: "11.6%",
-        drawdown: "1.44%",
+        rentabilidad: "11.2%",
+        drawdown: "3.14%",
       },
       {
         name: "GBPUSD",
-        periodo: "2024.01 - 2025.06",
-        rentabilidad: "9.2%",
-        drawdown: "3.8%",
+        periodo: "2024.01 - 2026.01",
+        rentabilidad: "11.7%",
+        drawdown: "1.44%",
       },
       {
         name: "USDJPY",
