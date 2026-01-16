@@ -142,6 +142,9 @@ export default function LandingPage() {
             </Link>
           </div>
           <nav className="hidden md:flex gap-6">
+            <Link href="/backtest" className="text-sm font-medium hover:text-primary">
+              Backtest
+            </Link>
             <Link href="#features" className="text-sm font-medium hover:text-primary">
               Características
             </Link>
