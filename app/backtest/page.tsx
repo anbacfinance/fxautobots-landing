@@ -208,7 +208,7 @@ export default function Page() {
                 Bot SCALPER
               </TabsTrigger>
               <TabsTrigger value="atlas" className="text-base text-amber-500">
-                Atlas Funding
+                Bot ATLAS
               </TabsTrigger>
             </TabsList>
 
