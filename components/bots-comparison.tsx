@@ -6,25 +6,25 @@ import { Button } from "@/components/ui/button"
 
 export function BotsComparison() {
   const features = [
-    { name: "Temporalidad", akira: "H1", deus: "H1", scalper: "H1", atlas: "Order Blocks" },
+    { name: "Temporalidad", akira: "H1", deus: "H1", scalper: "H1", atlas: "M30" },
     {
       name: "Pares de divisas",
       akira: "EURGBP, EURJPY, EURUSD, GBPUSD, USDJPY",
       deus: "AUDCAD, AUDCHF, EURJPY, EURUSD, GBPJPY, GBPUSD, USDJPY, XAUUSD",
       scalper: "AUDCAD, NZDCAD, AUDNZD",
-      atlas: "Múltiples (optimizado para fondeo)",
+      atlas: "XAUUSD, GBPUSD, EURUSD, USDJPY",
     },
     {
       name: "Saldo mínimo recomendado",
       akira: "$400 USD en CENT",
       deus: "$100 USD en CENT",
       scalper: "$100 USD en CENT",
-      atlas: "Según reglas de fondeo",
+      atlas: "$100 USD en STANDARD",
     },
     { name: "Protector de equidad incluido", akira: false, deus: true, scalper: true, atlas: true },
     { name: "Gestión interna de stop loss", akira: false, deus: false, scalper: true, atlas: true },
     { name: "Stop Loss y Take Profit", akira: false, deus: false, scalper: false, atlas: true },
-    { name: "Nivel de riesgo", akira: "Alto", deus: "Medio", scalper: "Bajo", atlas: "Controlado" },
+    { name: "Nivel de riesgo", akira: "Alto", deus: "Medio", scalper: "Bajo", atlas: "Bajo-Controlado" },
     { name: "Operaciones promedio por dia", akira: "5-20", deus: "2-10", scalper: "0-10", atlas: "1-5" },
     {
       name: "Ideal para",
