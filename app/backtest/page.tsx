@@ -1,30 +1,20 @@
 "use client"
 
-import { Instagram, MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { BacktestCarousel } from "@/components/BacktestCarousel";
+import { Instagram, MessageCircle, ChevronLeft } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { BacktestCarousel } from "@/components/BacktestCarousel"
 
 const bots = {
   akira: {
     name: "AKIRA",
-    description: "Bot de alta frecuencia y rendimiento agresivo (En este test fue rendido al minimo riesgo con el saldo minimo recomendado; $400 USD en CENT que equivalen a $40.000 USC)",
+    description:
+      "Bot de alta frecuencia y rendimiento agresivo (En este test fue rendido al minimo riesgo con el saldo minimo recomendado; $400 USD en CENT que equivalen a $40.000 USC)",
     color: "text-red-500",
     pairs: [
       {
@@ -61,7 +51,8 @@ const bots = {
   },
   deus: {
     name: "DEUS",
-    description: "Bot versátil y seguro para múltiples pares (En este test fue rendido al minimo riesgo con el saldo minimo recomendado; $400 USD en CENT que equivalen a $40.000 USC en XAUUSD y $200 en CENT que equivalen a $20.000 USC en divisas)",
+    description:
+      "Bot versátil y seguro para múltiples pares (En este test fue rendido al minimo riesgo con el saldo minimo recomendado; $400 USD en CENT que equivalen a $40.000 USC en XAUUSD y $200 en CENT que equivalen a $20.000 USC en divisas)",
     color: "text-primary",
     pairs: [
       {
@@ -70,29 +61,30 @@ const bots = {
         rentabilidad: "45.29%",
         drawdown: "27.13%",
       },
-     {
+      {
         name: "GBPUSD",
         periodo: "2023.01 - 2025.06",
         rentabilidad: "31.47%",
         drawdown: "27.28%",
-     },
-     {
+      },
+      {
         name: "AUDCHF",
         periodo: "2023.01 - 2025.06",
         rentabilidad: "2.44%",
         drawdown: "28.65%",
-     },
-     {
+      },
+      {
         name: "USDCHF",
         periodo: "2023.01 - 2025.06",
         rentabilidad: "18.20%",
         drawdown: "13.67%",
-     },
+      },
     ],
   },
   scalper: {
     name: "SCALPER",
-    description: "Bot técnico, preciso y con gestión interna de stop loss (En este test fue rendido al minimo riesgo con el saldo minimo recomendado; $100 USD en CENT que equivalen a $10.000 USC)",
+    description:
+      "Bot técnico, preciso y con gestión interna de stop loss (En este test fue rendido al minimo riesgo con el saldo minimo recomendado; $100 USD en CENT que equivalen a $10.000 USC)",
     color: "text-green-500",
     pairs: [
       {
@@ -115,10 +107,36 @@ const bots = {
       },
     ],
   },
-};
+  atlas: {
+    name: "ATLAS FUNDING",
+    description:
+      "Bot diseñado específicamente para pruebas de fondeo. Opera con Order Blocks, incluye órdenes stop, stop loss y take profit. Rendimiento constante y riesgo controlado para pasar y mantener cuentas fondeadas.",
+    color: "text-amber-500",
+    pairs: [
+      {
+        name: "XAUUSD",
+        periodo: "2024.01 - 2025.06",
+        rentabilidad: "12.8%",
+        drawdown: "4.2%",
+      },
+      {
+        name: "EURUSD",
+        periodo: "2024.01 - 2025.06",
+        rentabilidad: "8.5%",
+        drawdown: "3.1%",
+      },
+      {
+        name: "GBPUSD",
+        periodo: "2024.01 - 2025.06",
+        rentabilidad: "9.2%",
+        drawdown: "3.8%",
+      },
+    ],
+  },
+}
 
 export default function Page() {
-  const [selectedBot, setSelectedBot] = useState("akira");
+  const [selectedBot, setSelectedBot] = useState("akira")
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -126,13 +144,7 @@ export default function Page() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center">
-              <Image
-                src="/images/fxautobots-logo.png"
-                alt="FXAutoBots Logo"
-                width={40}
-                height={40}
-                className="mr-2"
-              />
+              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="mr-2" />
               <span className="font-bold text-xl">FXAutoBots</span>
             </Link>
           </div>
@@ -171,9 +183,7 @@ export default function Page() {
       <main className="flex-1 container py-12">
         <div className="space-y-6">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Backtests de Nuestros Bots
-            </h1>
+            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Backtests de Nuestros Bots</h1>
             <p className="text-muted-foreground max-w-[800px]">
               Resultados históricos detallados de nuestros bots en diferentes pares de divisas. Estos backtests
               demuestran el rendimiento y la consistencia de nuestras estrategias algorítmicas.
@@ -181,10 +191,19 @@ export default function Page() {
           </div>
 
           <Tabs defaultValue="akira" onValueChange={setSelectedBot} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="akira" className="text-base">Bot AKIRA</TabsTrigger>
-              <TabsTrigger value="deus" className="text-base">Bot DEUS</TabsTrigger>
-              <TabsTrigger value="scalper" className="text-base">Bot SCALPER</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4 mb-8">
+              <TabsTrigger value="akira" className="text-base">
+                Bot AKIRA
+              </TabsTrigger>
+              <TabsTrigger value="deus" className="text-base">
+                Bot DEUS
+              </TabsTrigger>
+              <TabsTrigger value="scalper" className="text-base">
+                Bot SCALPER
+              </TabsTrigger>
+              <TabsTrigger value="atlas" className="text-base text-amber-500">
+                Atlas Funding
+              </TabsTrigger>
             </TabsList>
 
             {Object.entries(bots).map(([botId, bot]) => (
@@ -226,7 +245,8 @@ export default function Page() {
                 <div className="bg-muted p-4 rounded-lg">
                   <p className="text-sm text-muted-foreground">
                     <strong>Nota:</strong> Los resultados de backtest son simulaciones históricas y no garantizan
-                    rendimientos futuros. El trading conlleva riesgos y es importante utilizar una adecuada gestión de capital.
+                    rendimientos futuros. El trading conlleva riesgos y es importante utilizar una adecuada gestión de
+                    capital.
                   </p>
                 </div>
               </TabsContent>
@@ -274,5 +294,5 @@ export default function Page() {
         </div>
       </footer>
     </div>
-  );
+  )
 }
