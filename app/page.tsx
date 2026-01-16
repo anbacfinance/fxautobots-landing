@@ -16,6 +16,7 @@ import {
   Percent,
   Instagram,
   MessageCircle,
+  Shield,
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import { BotsComparison } from "../components/bots-comparison"
@@ -196,9 +197,9 @@ export default function LandingPage() {
                 Gana en piloto automático con nuestros Bots de Trading para MT4
               </h2>
               <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                Operá sin emociones, sin errores y con disciplina constante.
-                Nuestros bots para MT4 siguen estrategias probadas, con resultados consistentes y 100% automatizados.
-                Unite a la nueva forma de hacer trading: automática, rentable, transparente y precisa.
+                Operá sin emociones, sin errores y con disciplina constante. Nuestros bots para MT4 siguen estrategias
+                probadas, con resultados consistentes y 100% automatizados. Unite a la nueva forma de hacer trading:
+                automática, rentable, transparente y precisa.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="font-medium" asChild>
@@ -206,7 +207,7 @@ export default function LandingPage() {
                     Compra Ahora
                   </a>
                 </Button>
-                <Button size="lg" variant="outline" className="font-medium" asChild>
+                <Button size="lg" variant="outline" className="font-medium bg-transparent" asChild>
                   <Link href="/backtest">Ver Backtest</Link>
                 </Button>
               </div>
@@ -307,67 +308,66 @@ export default function LandingPage() {
               </p>
             </div>
           </div>
-          <div className="mx-auto grid max-w-6xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-8">
-           {/* Bot AKIRA */}
-<Card className="relative overflow-hidden">
-  <div className="absolute top-0 right-0 bg-red-500 text-background/95 px-3 py-1 text-xs font-bold">AGRESIVO</div>
-  <CardHeader className="pb-4">
-    {/* Contenedor con altura fija y centrado de imagen */}
-    <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
-      <Image
-        src="/images/BOTAKIRA.png"
-        alt="Bot AKIRA - Trading Algorítmico"
-        fill
-        className="object-contain"
-      />
-      {/* Logo flotante */}
-      <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
-        <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
-      </div>
-    </div>
 
-    <div className="flex items-center gap-2">
-      <BarChart3 className="h-6 w-6 text-red-500" />
-      <CardTitle className="text-2xl">Bot AKIRA</CardTitle>
-    </div>
-    <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
-  </CardHeader>
+          <div className="mx-auto grid max-w-7xl items-start gap-6 py-12 lg:grid-cols-4 lg:gap-6">
+            {/* Bot AKIRA */}
+            <Card className="relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-red-500 text-background/95 px-3 py-1 text-xs font-bold">
+                AGRESIVO
+              </div>
+              <CardHeader className="pb-4">
+                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
+                  <Image
+                    src="/images/BOTAKIRA.png"
+                    alt="Bot AKIRA - Trading Algorítmico"
+                    fill
+                    className="object-contain"
+                  />
+                  <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
+                    <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
+                  </div>
+                </div>
 
-  <CardContent className="space-y-4">
-    <div className="space-y-2">
-      <div className="flex items-center gap-2">
-        <Clock className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium">Temporalidad: H1</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Target className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium">Pares: EURGBP, EURJPY, EURUSD, GBPUSD, USDJPY</span>
-      </div>
-    </div>
-    <p className="text-sm text-muted-foreground">
-      Bot de alta frecuencia y rendimiento agresivo. Requiere buena gestión de riesgo y saldo mínimo de $400
-      USD en cuenta CENT. No incluye protector de equidad, por lo que se recomienda utilizar nuestro EA
-      adicional para protección. Para traders que buscan mayor rotación operativa.
-    </p>
-  </CardContent>
+                <div className="flex items-center gap-2">
+                  <BarChart3 className="h-6 w-6 text-red-500" />
+                  <CardTitle className="text-2xl">Bot AKIRA</CardTitle>
+                </div>
+                <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
+              </CardHeader>
 
-  <CardFooter>
-    <Button className="w-full" asChild>
-      <a href="https://shoppy.gg/product/2FEcJKa" target="_blank" rel="noopener noreferrer">
-        Comprar Bot AKIRA
-      </a>
-    </Button>
-  </CardFooter>
-</Card>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Temporalidad: H1</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Pares: EURGBP, EURJPY, EURUSD, GBPUSD, USDJPY</span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Bot de alta frecuencia y rendimiento agresivo. Requiere buena gestión de riesgo y saldo mínimo de $400
+                  USD en cuenta CENT. No incluye protector de equidad, por lo que se recomienda utilizar nuestro EA
+                  adicional para protección. Para traders que buscan mayor rotación operativa.
+                </p>
+              </CardContent>
 
+              <CardFooter>
+                <Button className="w-full" asChild>
+                  <a href="https://shoppy.gg/product/2FEcJKa" target="_blank" rel="noopener noreferrer">
+                    Comprar Bot AKIRA
+                  </a>
+                </Button>
+              </CardFooter>
+            </Card>
 
-           {/* Bot DEUS */}
+            {/* Bot DEUS */}
             <Card className="relative overflow-hidden border-primary">
               <div className="absolute top-0 right-0 bg-primary text-background/95 px-3 py-1 text-xs font-bold">
                 RECOMENDADO
               </div>
               <CardHeader className="pb-4">
-                {/* Contenedor con altura fija y centrado de imagen */}
                 <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
                   <Image
                     src="/images/BOTDEUS.png"
@@ -375,7 +375,6 @@ export default function LandingPage() {
                     fill
                     className="object-contain"
                   />
-                  {/* Logo flotante */}
                   <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
                     <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
                   </div>
@@ -414,12 +413,12 @@ export default function LandingPage() {
               </CardFooter>
             </Card>
 
-
-           {/* Bot SCALPER */}
+            {/* Bot SCALPER */}
             <Card className="relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-green-500 text-background/95 px-3 py-1 text-xs font-bold">TÉCNICO</div>
+              <div className="absolute top-0 right-0 bg-green-500 text-background/95 px-3 py-1 text-xs font-bold">
+                TÉCNICO
+              </div>
               <CardHeader className="pb-4">
-                {/* Contenedor con altura fija y centrado de imagen */}
                 <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
                   <Image
                     src="/images/BOTSCALPER.png"
@@ -462,8 +461,53 @@ export default function LandingPage() {
                 </Button>
               </CardFooter>
             </Card>
-          </div>
 
+            <Card className="relative overflow-hidden border-2 border-amber-500">
+              <div className="absolute top-0 right-0 bg-amber-500 text-background/95 px-3 py-1 text-xs font-bold">
+                FUNDING
+              </div>
+              <div className="absolute -top-1 -left-1 bg-amber-500 text-background/95 px-3 py-1 text-xs font-bold rounded-br-lg">
+                PREMIUM
+              </div>
+              <CardHeader className="pb-4">
+                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-gradient-to-br from-amber-500/10 to-amber-600/20">
+                  <Image src="/images/BOTATLAS.png" alt="Bot ATLAS - Funding Bot" fill className="object-contain" />
+                  <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
+                    <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="h-6 w-6 text-amber-500" />
+                  <CardTitle className="text-2xl">Atlas Funding Bot</CardTitle>
+                </div>
+                <CardDescription className="text-lg font-semibold text-amber-500">$600 USD</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Estrategia: Order Blocks</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Incluye: Stop, SL y TP</span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  La frutillita del postre. Bot diseñado específicamente para pruebas de fondeo con rendimiento
+                  constante y riesgo controlado. Opera con Order Blocks, incluye órdenes stop, stop loss y take profit.
+                  Ideal para pasar y mantener cuentas fondeadas.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full bg-amber-500 hover:bg-amber-600 text-background" asChild>
+                  <a href="https://shoppy.gg/product/ATLAS" target="_blank" rel="noopener noreferrer">
+                    Comprar Atlas Funding
+                  </a>
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
 
           {/* Comparativa de Bots */}
           <div className="mt-16 mb-8">
@@ -473,7 +517,7 @@ export default function LandingPage() {
                 Compara las características de nuestros bots para elegir el que mejor se adapte a tus necesidades
               </p>
             </div>
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-7xl mx-auto">
               <BotsComparison />
             </div>
           </div>
@@ -490,7 +534,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+            <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
               {/* Oferta 2 Bots */}
               <Card className="relative overflow-hidden border-2 border-primary/50">
                 <div className="absolute top-0 right-0 bg-primary text-background/95 px-3 py-1 text-xs font-bold">
@@ -662,6 +706,102 @@ export default function LandingPage() {
                   <Button className="w-full" size="lg" variant="default" asChild>
                     <a href="https://shoppy.gg/@anbacfinance/groups/HZ77dbA" target="_blank" rel="noopener noreferrer">
                       Comprar Pack Completo
+                    </a>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="relative overflow-hidden border-2 border-amber-500">
+                <div className="absolute top-0 right-0 bg-amber-500 text-background/95 px-3 py-1 text-xs font-bold">
+                  AHORRA $140
+                </div>
+                <div className="absolute -top-1 -left-1 bg-amber-500 text-background/95 px-3 py-1 text-xs font-bold rounded-br-lg">
+                  PACK ULTIMATE
+                </div>
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-2">
+                    <Package className="h-6 w-6 text-amber-500" />
+                    <CardTitle className="text-2xl">Pack Ultimate</CardTitle>
+                  </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <CardDescription className="text-2xl font-bold text-amber-500">$700 USD</CardDescription>
+                    <span className="text-sm line-through text-muted-foreground">$840 USD</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm">
+                    El paquete definitivo. Incluye todos nuestros bots más el exclusivo Atlas Funding Bot para dominar
+                    cualquier mercado.
+                  </p>
+                  <div className="bg-muted p-3 rounded-lg">
+                    <ul className="space-y-2">
+                      <li className="flex items-center gap-2">
+                        <svg
+                          className="h-5 w-5 text-amber-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        <span>AKIRA + DEUS + SCALPER + ATLAS</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg
+                          className="h-5 w-5 text-amber-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        <span>Soporte técnico VIP de por vida</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg
+                          className="h-5 w-5 text-amber-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        <span>Acceso anticipado a nuevos bots</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg
+                          className="h-5 w-5 text-amber-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        <span>Configuración personalizada incluida</span>
+                      </li>
+                    </ul>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button className="w-full bg-amber-500 hover:bg-amber-600 text-background" size="lg" asChild>
+                    <a href="https://shoppy.gg/@anbacfinance/groups/ULTIMATE" target="_blank" rel="noopener noreferrer">
+                      Comprar Pack Ultimate
                     </a>
                   </Button>
                 </CardFooter>
