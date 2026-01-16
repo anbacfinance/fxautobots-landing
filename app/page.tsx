@@ -154,6 +154,9 @@ export default function LandingPage() {
             <Link href="#brokers" className="text-sm font-medium hover:text-primary">
               Brokers
             </Link>
+            <Link href="/tutoriales" className="text-sm font-medium hover:text-primary">
+              Tutoriales
+            </Link>
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
