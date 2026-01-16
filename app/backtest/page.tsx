@@ -110,20 +110,20 @@ const bots = {
   atlas: {
     name: "ATLAS FUNDING",
     description:
-      "Bot diseñado específicamente para pruebas de fondeo. Opera con Order Blocks, incluye órdenes stop, stop loss y take profit. Rendimiento constante y riesgo controlado para pasar y mantener cuentas fondeadas o personales con capitales altos. (Prueba de backtest realizada con saldo de $10.000)",
+      "Bot diseñado específicamente para pruebas de fondeo. Opera con Order Blocks, incluye órdenes stop, stop loss y take profit. Rendimiento constante y riesgo controlado para pasar y mantener cuentas fondeadas o personales con capitales altos.",
     color: "text-amber-500",
     pairs: [
       {
         name: "XAUUSD",
-        periodo: "2024.01 - 2025.06",
-        rentabilidad: "12.8%",
-        drawdown: "4.2%",
+        periodo: "2024.01 - 2026.01",
+        rentabilidad: "71.00%",
+        drawdown: "2.34%",
       },
       {
         name: "EURUSD",
-        periodo: "2024.01 - 2025.06",
-        rentabilidad: "8.5%",
-        drawdown: "3.1%",
+        periodo: "2024.01 - 2026.01",
+        rentabilidad: "11.6%",
+        drawdown: "1.44%",
       },
       {
         name: "GBPUSD",
