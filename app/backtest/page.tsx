@@ -133,9 +133,9 @@ const bots = {
       },
       {
         name: "USDJPY",
-        periodo: "2024.01 - 2025.06",
-        rentabilidad: "9.2%",
-        drawdown: "3.8%",
+        periodo: "2024.01 - 2026.01",
+        rentabilidad: "24.12%",
+        drawdown: "2.22%",
       },
     ],
   },
