@@ -806,7 +806,7 @@ export default function LandingPage() {
                 </CardContent>
                 <CardFooter>
                   <Button className="w-full bg-amber-500 hover:bg-amber-600 text-background" size="lg" asChild>
-                    <a href="https://shoppy.gg/@anbacfinance/groups/ULTIMATE" target="_blank" rel="noopener noreferrer">
+                    <a href="https://shoppy.gg/@anbacfinance/groups/UGn9IOk" target="_blank" rel="noopener noreferrer">
                       Comprar Pack Ultimate
                     </a>
                   </Button>
