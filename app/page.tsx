@@ -484,7 +484,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Shield className="h-6 w-6 text-amber-500" />
-                  <CardTitle className="text-2xl">Atlas Funding Bot</CardTitle>
+                  <CardTitle className="text-2xl">Bot Atlas Funding</CardTitle>
                 </div>
                 <CardDescription className="text-lg font-semibold text-amber-500">$600 USD</CardDescription>
               </CardHeader>
