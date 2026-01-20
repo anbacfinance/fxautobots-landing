@@ -21,6 +21,7 @@ export function ProfitCalculator() {
     akira: 0.4, // 40% mensual en escenario de máximo riesgo
     deus: 0.3, // 30% mensual en escenario de máximo riesgo
     scalper: 0.15, // 15% mensual en escenario de máximo riesgo
+    atlas: 0.7, // 70% mensual en escenario de máximo riesgo
   }
 
   // Mostrar advertencia de alto riesgo cuando se selecciona AKIRA con nivel de riesgo alto
@@ -60,12 +61,14 @@ export function ProfitCalculator() {
     akira: "AKIRA (Agresivo)",
     deus: "DEUS (Recomendado)",
     scalper: "SCALPER (Técnico)",
+    atlas: "ATLAS (Funding)",
   }
 
   const botMaxReturns = {
     akira: "hasta 40% mensual",
     deus: "hasta 30% mensual",
     scalper: "hasta 15% mensual",
+    atlas: "hasta 70% mensual",
   }
 
   return (
@@ -100,6 +103,7 @@ export function ProfitCalculator() {
                 <SelectItem value="akira">AKIRA (Agresivo - {botMaxReturns.akira})</SelectItem>
                 <SelectItem value="deus">DEUS (Recomendado - {botMaxReturns.deus})</SelectItem>
                 <SelectItem value="scalper">SCALPER (Técnico - {botMaxReturns.scalper})</SelectItem>
+                <SelectItem value="atlas">ATLAS (Funding - {botMaxReturns.atlas})</SelectItem>
               </SelectContent>
             </Select>
           </div>
