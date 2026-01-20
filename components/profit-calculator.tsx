@@ -65,10 +65,10 @@ export function ProfitCalculator() {
   }
 
   const botMaxReturns = {
-    akira: "hasta 40% mensual",
-    deus: "hasta 30% mensual",
+    akira: "hasta 20% mensual",
+    deus: "hasta 20% mensual",
     scalper: "hasta 15% mensual",
-    atlas: "hasta 70% mensual",
+    atlas: "hasta 40% mensual",
   }
 
   return (
