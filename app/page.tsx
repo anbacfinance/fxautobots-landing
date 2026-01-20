@@ -496,7 +496,7 @@ export default function LandingPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Target className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Opera con: Orders Stop, Stop Loss y Take Profit</span>
+                    <span className="text-sm font-medium">Opera con: Ordenes Stop, Stop Loss y Take Profit</span>
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground">
