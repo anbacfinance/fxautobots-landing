@@ -507,7 +507,7 @@ export default function LandingPage() {
               </CardContent>
               <CardFooter>
                 <Button className="w-full bg-amber-500 hover:bg-amber-600 text-background" asChild>
-                  <a href="https://shoppy.gg/product/ATLAS" target="_blank" rel="noopener noreferrer">
+                  <a href="https://shoppy.gg/product/r3tlmoZ" target="_blank" rel="noopener noreferrer">
                     Comprar ATLAS
                   </a>
                 </Button>
