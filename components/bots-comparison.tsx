@@ -62,7 +62,7 @@ export function BotsComparison() {
             </TableHead>
             <TableHead className="text-center font-bold">
               <div className="flex flex-col items-center">
-                <span className="text-amber-500 font-bold">Atlas Funding</span>
+                <span className="text-amber-500 font-bold">Bot ATLAS</span>
                 <span className="text-xs text-muted-foreground">(Premium)</span>
               </div>
             </TableHead>
