@@ -108,7 +108,7 @@ const bots = {
     ],
   },
   atlas: {
-    name: "ATLAS FUNDING",
+    name: "ATLAS",
     description:
       "Bot diseñado específicamente para pruebas de fondeo. Opera con Order Blocks, incluye órdenes stop, stop loss y take profit. Rendimiento constante y riesgo controlado para pasar y mantener cuentas fondeadas o personales con capitales altos.",
     color: "text-amber-500",
