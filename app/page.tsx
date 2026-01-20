@@ -484,7 +484,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Shield className="h-6 w-6 text-amber-500" />
-                  <CardTitle className="text-2xl">Bot ATLAS Funding</CardTitle>
+                  <CardTitle className="text-2xl">Bot ATLAS</CardTitle>
                 </div>
                 <CardDescription className="text-lg font-semibold text-amber-500">$600 USD</CardDescription>
               </CardHeader>
@@ -508,7 +508,7 @@ export default function LandingPage() {
               <CardFooter>
                 <Button className="w-full bg-amber-500 hover:bg-amber-600 text-background" asChild>
                   <a href="https://shoppy.gg/product/ATLAS" target="_blank" rel="noopener noreferrer">
-                    Comprar ATLAS Funding
+                    Comprar ATLAS
                   </a>
                 </Button>
               </CardFooter>
@@ -736,7 +736,7 @@ export default function LandingPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-sm">
-                    El paquete definitivo. Incluye todos nuestros bots más el exclusivo Atlas Funding Bot para dominar
+                    El paquete definitivo. Incluye todos nuestros bots más el exclusivo Bot ATLAS para dominar
                     cualquier mercado.
                   </p>
                   <div className="bg-muted p-3 rounded-lg">
