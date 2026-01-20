@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 export function BotsComparison() {
   const features = [
-    { name: "Temporalidad", akira: "H1", deus: "H1", scalper: "H1", atlas: "M30" },
+    { name: "Temporalidad", akira: "M5", deus: "H1", scalper: "H1", atlas: "M30" },
     {
       name: "Pares de divisas",
       akira: "EURGBP, EURJPY, EURUSD, GBPUSD, USDJPY",
