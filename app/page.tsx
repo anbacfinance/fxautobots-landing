@@ -476,7 +476,7 @@ export default function LandingPage() {
                 PREMIUM
               </div>
               <CardHeader className="pb-4">
-                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-gradient-to-br from-amber-500/10 to-amber-600/20">
+                <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-background/95">
                   <Image src="/images/BOTATLAS.png" alt="Bot ATLAS - Funding Bot" fill className="object-contain" />
                   <div className="absolute bottom-2 right-2 bg-background/80 p-1 rounded-lg backdrop-blur-sm">
                     <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
