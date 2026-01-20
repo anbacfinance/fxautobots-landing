@@ -496,7 +496,7 @@ export default function LandingPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Target className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Incluye: Stop, SL y TP</span>
+                    <span className="text-sm font-medium">Opera con: Orders Stop, Stop Loss y Take Profit</span>
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -508,7 +508,7 @@ export default function LandingPage() {
               <CardFooter>
                 <Button className="w-full bg-amber-500 hover:bg-amber-600 text-background" asChild>
                   <a href="https://shoppy.gg/product/ATLAS" target="_blank" rel="noopener noreferrer">
-                    Comprar Atlas Funding
+                    Comprar ATLAS Funding
                   </a>
                 </Button>
               </CardFooter>
