@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 export function RecommendedBrokers() {
   const brokers = [
     {
-      name: "FBS",
+      name: "Exness",
       logo: "/images/brokers/exness-logo.png",
       logoWidth: 100,
       logoHeight: 60,
