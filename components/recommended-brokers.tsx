@@ -10,7 +10,7 @@ export function RecommendedBrokers() {
       name: "Exness",
       logo: "/images/brokers/exness-logo.png",
       logoWidth: 200,
-      logoHeight: 60,
+      logoHeight: 40,
       features: [
         "VPS GRATIS con 3 lotes/mes y $500 de depósito",
         "Cuenta Cent desde $10",
