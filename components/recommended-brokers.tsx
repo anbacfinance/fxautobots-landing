@@ -8,15 +8,15 @@ export function RecommendedBrokers() {
   const brokers = [
     {
       name: "FBS",
-      logo: "/images/brokers/fbs-logo.png",
+      logo: "/images/brokers/exness-logo.png",
       logoWidth: 60,
       logoHeight: 60,
       features: [
-        "VPS GRATIS con 3 lotes/mes y $450 de depósito",
-        "Cuenta Cent desde $1",
+        "VPS GRATIS con 3 lotes/mes y $500 de depósito",
+        "Cuenta Cent desde $10",
         "Apalancamiento hasta 1:3000",
       ],
-      link: "https://fbs.partners?ibl=690066&ibp=24567078",
+      link: "https://one.exnessonelink.com/a/551pw645r9",
       badge: "Popular",
     },
     {
