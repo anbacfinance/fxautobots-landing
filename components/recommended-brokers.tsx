@@ -20,19 +20,6 @@ export function RecommendedBrokers() {
       badge: "Popular",
     },
     {
-      name: "RoboForex",
-      logo: "/images/brokers/roboforex-logo.png",
-      logoWidth: 100,
-      logoHeight: 40,
-      features: [
-        "VPS GRATIS con 3 lotes/mes y $300 de depósito",
-        "Cuenta Cent desde $10",
-        "Más variedad de plataformas (MT4, cTrader, etc.)",
-      ],
-      link: "https://my.roboforex.com/es/?a=sejr",
-      badge: "Recomendado",
-    },
-    {
       name: "HFM (HotForex)",
       logo: "/images/brokers/hfm-logo.jpeg",
       logoWidth: 60,
@@ -46,6 +33,19 @@ export function RecommendedBrokers() {
       warning:
         "HFM no ofrece VPS gratuito, por lo que deberás contratar uno externo si querés mantener tus bots funcionando 24/7.",
       link: "https://www.hfm.com/int/es/?refid=364904",
+      badge: "Recomendado",
+    },
+     {
+      name: "RoboForex",
+      logo: "/images/brokers/roboforex-logo.png",
+      logoWidth: 100,
+      logoHeight: 40,
+      features: [
+        "VPS GRATIS con 3 lotes/mes y $300 de depósito",
+        "Cuenta Cent desde $10",
+        "Más variedad de plataformas (MT4, cTrader, etc.)",
+      ],
+      link: "https://my.roboforex.com/es/?a=sejr",
     },
   ]
 
