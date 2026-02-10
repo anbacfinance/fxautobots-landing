@@ -9,7 +9,7 @@ export function RecommendedBrokers() {
     {
       name: "FBS",
       logo: "/images/brokers/exness-logo.png",
-      logoWidth: 60,
+      logoWidth: 100,
       logoHeight: 60,
       features: [
         "VPS GRATIS con 3 lotes/mes y $500 de depósito",
