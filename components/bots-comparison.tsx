@@ -16,8 +16,8 @@ export function BotsComparison() {
     },
     {
       name: "Saldo mínimo recomendado",
-      akira: "$400 USD en CENT",
-      deus: "$100 USD en CENT",
+      akira: "$300 USD en CENT",
+      deus: "$30 USD en CENT",
       scalper: "$100 USD en CENT",
       atlas: "$100 USD en STANDARD",
     },
