@@ -342,7 +342,7 @@ export default function LandingPage() {
                   <BarChart3 className="h-6 w-6 text-red-500" />
                   <CardTitle className="text-2xl">Bot AKIRA</CardTitle>
                 </div>
-                <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
+                <CardDescription className="text-lg font-semibold text-primary">$120 USD</CardDescription>
               </CardHeader>
 
               <CardContent className="space-y-4">
@@ -393,7 +393,7 @@ export default function LandingPage() {
                   <TrendingUp className="h-6 w-6 text-primary" />
                   <CardTitle className="text-2xl">Bot DEUS</CardTitle>
                 </div>
-                <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
+                <CardDescription className="text-lg font-semibold text-primary">$120 USD</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -444,7 +444,7 @@ export default function LandingPage() {
                   <Settings className="h-6 w-6 text-green-500" />
                   <CardTitle className="text-2xl">Bot SCALPER</CardTitle>
                 </div>
-                <CardDescription className="text-lg font-semibold text-primary">$80 USD</CardDescription>
+                <CardDescription className="text-lg font-semibold text-primary">$120 USD</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -548,7 +548,7 @@ export default function LandingPage() {
               {/* Oferta 2 Bots */}
               <Card className="relative overflow-hidden border-2 border-primary/50">
                 <div className="absolute top-0 right-0 bg-primary text-background/95 px-3 py-1 text-xs font-bold">
-                  AHORRA $10
+                  AHORRA $40
                 </div>
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-2">
@@ -556,8 +556,8 @@ export default function LandingPage() {
                     <CardTitle className="text-2xl">Pack Duo</CardTitle>
                   </div>
                   <div className="flex items-center gap-2 mt-2">
-                    <CardDescription className="text-2xl font-bold text-primary">$150 USD</CardDescription>
-                    <span className="text-sm line-through text-muted-foreground">$160 USD</span>
+                    <CardDescription className="text-2xl font-bold text-primary">$200 USD</CardDescription>
+                    <span className="text-sm line-through text-muted-foreground">$240 USD</span>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -627,7 +627,7 @@ export default function LandingPage() {
               {/* Oferta 3 Bots */}
               <Card className="relative overflow-hidden border-2 border-primary">
                 <div className="absolute top-0 right-0 bg-red-500 text-background/95 px-3 py-1 text-xs font-bold">
-                  AHORRA $40
+                  AHORRA $80
                 </div>
                 <div className="absolute -top-1 -left-1 bg-primary text-background/95 px-3 py-1 text-xs font-bold rounded-br-lg">
                   MEJOR OFERTA
@@ -638,8 +638,8 @@ export default function LandingPage() {
                     <CardTitle className="text-2xl">Pack Completo</CardTitle>
                   </div>
                   <div className="flex items-center gap-2 mt-2">
-                    <CardDescription className="text-2xl font-bold text-primary">$200 USD</CardDescription>
-                    <span className="text-sm line-through text-muted-foreground">$240 USD</span>
+                    <CardDescription className="text-2xl font-bold text-primary">$280 USD</CardDescription>
+                    <span className="text-sm line-through text-muted-foreground">$360 USD</span>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -723,7 +723,7 @@ export default function LandingPage() {
 
               <Card className="relative overflow-hidden border-2 border-amber-500">
                 <div className="absolute top-0 right-0 bg-amber-500 text-background/95 px-3 py-1 text-xs font-bold">
-                  AHORRA $140
+                  AHORRA $210
                 </div>
                 <div className="absolute -top-1 -left-1 bg-amber-500 text-background/95 px-3 py-1 text-xs font-bold rounded-br-lg">
                   PACK ULTIMATE
@@ -734,8 +734,8 @@ export default function LandingPage() {
                     <CardTitle className="text-2xl">Pack Ultimate</CardTitle>
                   </div>
                   <div className="flex items-center gap-2 mt-2">
-                    <CardDescription className="text-2xl font-bold text-amber-500">$700 USD</CardDescription>
-                    <span className="text-sm line-through text-muted-foreground">$840 USD</span>
+                    <CardDescription className="text-2xl font-bold text-amber-500">$850 USD</CardDescription>
+                    <span className="text-sm line-through text-muted-foreground">$1.060 USD</span>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
