@@ -18,7 +18,7 @@ export function BotsComparison() {
       name: "Saldo mínimo recomendado",
       akira: "$300 USD en CENT",
       deus: "$30 USD en CENT",
-      scalper: "$100 USD en CENT",
+      scalper: "$30 USD en CENT",
       atlas: "$100 USD en STANDARD",
     },
     { name: "Protector de equidad incluido", akira: false, deus: true, scalper: true, atlas: true },
