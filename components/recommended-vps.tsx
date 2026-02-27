@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 export function RecommendedVPS() {
   const vpsProviders = [
     {
-      name: "FXVM",
+      name: "FX VPS PRO",
       logo: "/images/fxvm-logo.png",
       logoWidth: 120,
       logoHeight: 40,
@@ -18,7 +18,7 @@ export function RecommendedVPS() {
         "99.99% de uptime garantizado",
         "Instalacion facil y rapida",
       ],
-      link: "https://fxvm.net/?aff=45477",
+      link: "https://secure.fxvpspro.com/aff.php?aff=12",
       badge: "Recomendado",
     },
   ]
