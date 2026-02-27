@@ -8,7 +8,7 @@ export function RecommendedVPS() {
   const vpsProviders = [
     {
       name: "FX VPS PRO",
-      logo: "/images/fxvm-logo.png",
+      logo: "/images/fxvps-logo.png",
       logoWidth: 120,
       logoHeight: 40,
       features: [
