@@ -407,7 +407,7 @@ export default function TutorialesPage() {
             instalación.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="https://www.youtube.com/@FxautoBots" target="_blank">
+            <Link href="https://www.youtube.com/@FxautoBotts" target="_blank">
               <Button className="bg-red-600 hover:bg-red-700 text-white">
                 <Youtube className="w-4 h-4 mr-2" />
                 Suscribirse al canal
