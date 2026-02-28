@@ -15,10 +15,10 @@ const tutoriales = {
   general: [
     {
       id: "intro-mt5",
-      title: "Introducción a MetaTrader 5",
-      description: "Aprende los conceptos básicos de MT5 antes de instalar cualquier bot",
-      youtubeId: "",
-      duracion: "10:00",
+      title: "Introducción a MetaTrader 4",
+      description: "Aprende los conceptos básicos de MT4 antes de instalar cualquier bot",
+      youtubeId: "https://youtu.be/LlwAST_0cfs",
+      duracion: "08:11",
       categoria: "Básico",
     },
     {
