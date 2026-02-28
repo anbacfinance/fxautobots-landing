@@ -17,7 +17,7 @@ const tutoriales = {
       id: "intro-mt5",
       title: "Introducción a MetaTrader 4",
       description: "Aprende los conceptos básicos de MT4 antes de instalar cualquier bot",
-      youtubeId: "https://youtu.be/LlwAST_0cfs",
+      youtubeId: "LlwAST_0cfs",
       duracion: "08:11",
       categoria: "Básico",
     },
