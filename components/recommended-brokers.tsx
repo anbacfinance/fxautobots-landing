@@ -12,6 +12,7 @@ export function RecommendedBrokers() {
       logoWidth: 200,
       logoHeight: 40,
       features: [
+        "Ejecución rápida y confiable",
         "Cuenta Cent desde $10",
         "Apalancamiento hasta 1:3000",
       ],
@@ -24,10 +25,9 @@ export function RecommendedBrokers() {
       logoWidth: 60,
       logoHeight: 30,
       features: [
-        "Ejecución rápida y confiable",
+        "VPS GRATIS a partir de $400 de deposito y 2 lotes/mes"
         "Cuentas cent ideales para bots",
         "Apalancamiento alto y spreads competitivos",
-        "Plataforma MT4 y MT5 compatibles",
       ],
       warning:
         "HFM ofrece VPS gratuito a partir de $400 USD de depósito. Para mantenerlo activo es necesario cumplir los requisitos de volumen de trading del broker.",
