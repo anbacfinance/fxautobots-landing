@@ -25,7 +25,7 @@ export function RecommendedBrokers() {
       logoWidth: 60,
       logoHeight: 30,
       features: [
-        "VPS GRATIS a partir de $400 de deposito y 2 lotes/mes"
+        "VPS GRATIS a partir de $400 de deposito y 2 lotes/mes",
         "Cuentas cent ideales para bots",
         "Apalancamiento alto y spreads competitivos",
       ],
