@@ -12,7 +12,6 @@ export function RecommendedBrokers() {
       logoWidth: 200,
       logoHeight: 40,
       features: [
-        "VPS GRATIS con 3 lotes/mes y $500 de depósito",
         "Cuenta Cent desde $10",
         "Apalancamiento hasta 1:3000",
       ],
@@ -31,7 +30,7 @@ export function RecommendedBrokers() {
         "Plataforma MT4 y MT5 compatibles",
       ],
       warning:
-        "HFM no ofrece VPS gratuito, por lo que deberás contratar uno externo si querés mantener tus bots funcionando 24/7.",
+        "HFM ofrece VPS gratuito a partir de $400 USD de depósito. Para mantenerlo activo es necesario cumplir los requisitos de volumen de trading del broker.",
       link: "https://register.hfm.com/sv/en/new-live-account/?refid=364904",
       badge: "Recomendado",
     },
