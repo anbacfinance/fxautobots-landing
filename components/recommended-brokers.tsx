@@ -19,7 +19,7 @@ export function RecommendedBrokers() {
       link: "https://one.exnessonelink.com/a/551pw645r9",
       badge: "Popular",
     },
-    {
+     {
       name: "HFM (HotForex)",
       logo: "/images/brokers/hfm-logo.jpeg",
       logoWidth: 60,
