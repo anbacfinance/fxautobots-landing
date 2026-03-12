@@ -32,7 +32,7 @@ export function RecommendedBrokers() {
       ],
       warning:
         "HFM no ofrece VPS gratuito, por lo que deberás contratar uno externo si querés mantener tus bots funcionando 24/7.",
-      link: "https://www.hfm.com/int/es/?refid=364904",
+      link: "https://register.hfm.com/sv/en/new-live-account/?refid=364904",
       badge: "Recomendado",
     },
      {
