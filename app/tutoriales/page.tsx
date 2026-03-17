@@ -19,7 +19,7 @@ const tutoriales = {
       description: "Aprende los conceptos básicos de MT4 antes de instalar cualquier bot",
       youtubeId: "LlwAST_0cfs",
       duracion: "08:11",
-      categoria: "Primeros pasos",
+      categoria: "Básico",
     },
     {
       id: "vps-gratis",
@@ -27,7 +27,7 @@ const tutoriales = {
       description: "Guía completa para mantener tus bots corriendo 24/7",
       youtubeId: "busbmR_aR2k",
       duracion: "3:52",
-      categoria: "Configuración",
+      categoria: "Intermedio",
     },
   ],
   akira: [
