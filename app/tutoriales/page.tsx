@@ -14,20 +14,20 @@ import { ThemeToggle } from "@/components/theme-toggle"
 const tutoriales = {
   general: [
     {
-      id: "intro-mt5",
+      id: "intro-mt4",
       title: "Introducción a MetaTrader 4",
       description: "Aprende los conceptos básicos de MT4 antes de instalar cualquier bot",
       youtubeId: "LlwAST_0cfs",
       duracion: "08:11",
-      categoria: "Básico",
+      categoria: "Primeros pasos",
     },
     {
-      id: "configurar-vps",
-      title: "Cómo configurar un VPS para trading",
+      id: "vps-gratis",
+      title: "VPS GRATIS para MetaTrader 4 con HFM",
       description: "Guía completa para mantener tus bots corriendo 24/7",
-      youtubeId: "",
-      duracion: "15:00",
-      categoria: "Avanzado",
+      youtubeId: "busbmR_aR2k",
+      duracion: "3:52",
+      categoria: "Configuración",
     },
   ],
   akira: [
