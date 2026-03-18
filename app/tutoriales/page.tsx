@@ -431,7 +431,7 @@ export default function TutorialesPage() {
       {/* Footer */}
       <footer className="py-8 border-t">
         <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-          © 2025 FxautoBots. Todos los derechos reservados.
+          © 2026 FxautoBots. Todos los derechos reservados.
         </div>
       </footer>
     </div>
