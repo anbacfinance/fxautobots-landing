@@ -195,7 +195,7 @@ export default function TerminosCondiciones() {
           <div className="flex items-center gap-2">
             <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={30} height={30} />
             <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-              FXAutoBots © 2025 | Todos los derechos reservados
+              FXAutoBots © 2026 | Todos los derechos reservados
             </p>
           </div>
           <div className="flex flex-wrap justify-center md:justify-end gap-4 items-center">
