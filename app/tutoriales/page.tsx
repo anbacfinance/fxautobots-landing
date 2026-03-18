@@ -16,7 +16,7 @@ const tutoriales = {
     {
       id: "intro-mt4",
       title: "Introducción a MetaTrader 4",
-      description: "Aprende los conceptos básicos de MT4 antes de instalar cualquier bot",
+      description: "En este video te explico qué es MetaTrader 4 (MT4) y cómo empezar a usarla desde cero.",
       youtubeId: "LlwAST_0cfs",
       duracion: "08:11",
       categoria: "Básico",
@@ -24,10 +24,18 @@ const tutoriales = {
     {
       id: "vps-gratis",
       title: "VPS GRATIS para MetaTrader 4 con HFM",
-      description: "Guía completa para mantener tus bots corriendo 24/7",
+      description: "En este video te muestro cómo obtener un VPS GRATIS con HFM paso a paso.",
       youtubeId: "busbmR_aR2k",
       duracion: "3:52",
       categoria: "Intermedio",
+    },
+    {
+      id: "instalar-mt4",
+      title: "Cómo instalar MetaTrader 4 en un VPS",
+      description: "En este video te muestro cómo instalar MetaTrader 4 (MT4) en un VPS paso a paso.",
+      youtubeId: "FRIQvZOYrLM",
+      duracion: "3:09",
+      categoria: "Básico",
     },
   ],
   akira: [
