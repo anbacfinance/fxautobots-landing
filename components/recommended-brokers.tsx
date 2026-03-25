@@ -16,7 +16,7 @@ export function RecommendedBrokers() {
         "Cuenta Cent desde $10",
         "Apalancamiento hasta 1:3000",
       ],
-      link: "https://one.exnessonelink.com/a/551pw645r9",
+      link: "https://one.exnessonelink.com/boarding/sign-up/a/551pw645r9?lng=es",
       badge: "Popular",
     },
      {
