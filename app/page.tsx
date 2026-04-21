@@ -213,9 +213,9 @@ export default function LandingPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="font-medium" asChild>
-                  <a href="https://shoppy.gg/@anbacfinance" target="_blank" rel="noopener noreferrer">
+                  <Link href="/comprar">
                     Compra Ahora
-                  </a>
+                  </Link>
                 </Button>
                 <Button size="lg" variant="outline" className="font-medium bg-transparent" asChild>
                   <Link href="/backtest">Ver Backtest</Link>
@@ -365,9 +365,9 @@ export default function LandingPage() {
 
               <CardFooter>
                 <Button className="w-full" asChild>
-                  <a href="https://shoppy.gg/product/2FEcJKa" target="_blank" rel="noopener noreferrer">
+                  <Link href="/comprar">
                     Comprar Bot AKIRA
-                  </a>
+                  </Link>
                 </Button>
               </CardFooter>
             </Card>
@@ -416,9 +416,9 @@ export default function LandingPage() {
               </CardContent>
               <CardFooter>
                 <Button className="w-full" asChild>
-                  <a href="https://shoppy.gg/product/aSkVuev" target="_blank" rel="noopener noreferrer">
+                  <Link href="/comprar">
                     Comprar Bot DEUS
-                  </a>
+                  </Link>
                 </Button>
               </CardFooter>
             </Card>
@@ -465,9 +465,9 @@ export default function LandingPage() {
               </CardContent>
               <CardFooter>
                 <Button className="w-full" asChild>
-                  <a href="https://shoppy.gg/product/DcWNzdU" target="_blank" rel="noopener noreferrer">
+                  <Link href="/comprar">
                     Comprar Bot SCALPER
-                  </a>
+                  </Link>
                 </Button>
               </CardFooter>
             </Card>
@@ -511,9 +511,9 @@ export default function LandingPage() {
               </CardContent>
               <CardFooter>
                 <Button className="w-full bg-amber-500 hover:bg-amber-600 text-background" asChild>
-                  <a href="https://shoppy.gg/product/r3tlmoZ" target="_blank" rel="noopener noreferrer">
+                  <Link href="/comprar">
                     Comprar ATLAS
-                  </a>
+                  </Link>
                 </Button>
               </CardFooter>
             </Card>
@@ -617,9 +617,9 @@ export default function LandingPage() {
                 </CardContent>
                 <CardFooter>
                   <Button className="w-full" size="lg" asChild>
-                    <a href="https://shoppy.gg/@anbacfinance/groups/mCReZhH" target="_blank" rel="noopener noreferrer">
-                      Comprar Pack Duo
-                    </a>
+<Link href="/comprar">
+                    Comprar Pack Duo
+                  </Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -714,9 +714,9 @@ export default function LandingPage() {
                 </CardContent>
                 <CardFooter>
                   <Button className="w-full" size="lg" variant="default" asChild>
-                    <a href="https://shoppy.gg/@anbacfinance/groups/HZ77dbA" target="_blank" rel="noopener noreferrer">
-                      Comprar Pack Completo
-                    </a>
+<Link href="/comprar">
+                    Comprar Pack Completo
+                  </Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -810,9 +810,9 @@ export default function LandingPage() {
                 </CardContent>
                 <CardFooter>
                   <Button className="w-full bg-amber-500 hover:bg-amber-600 text-background" size="lg" asChild>
-                    <a href="https://shoppy.gg/@anbacfinance/groups/UGn9IOk" target="_blank" rel="noopener noreferrer">
-                      Comprar Pack Ultimate
-                    </a>
+<Link href="/comprar">
+                    Comprar Pack Ultimate
+                  </Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -856,10 +856,10 @@ export default function LandingPage() {
               </p>
             </div>
             <Button size="lg" className="font-medium text-lg group" asChild>
-              <a href="https://shoppy.gg/@anbacfinance" target="_blank" rel="noopener noreferrer">
+              <Link href="/comprar">
                 Obtener nuestros Bots
                 <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
+              </Link>
             </Button>
             <div className="flex items-center gap-6 mt-4">
               <a
