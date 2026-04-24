@@ -102,16 +102,13 @@ function PricingCarousel() {
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const minSwipeDistance = 50
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null)
-    setTouchStart(e.targetTouches[0].clientX)
-  }
-  const onTouchMove = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX)
-  const onTouchEnd = () => {
+  const onTouchStart = (e: React.TouchEvent) => { setTouchEnd(null); setTouchStart(e.targetTouches[0].clientX) }
+  const onTouchMove  = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX)
+  const onTouchEnd   = () => {
     if (!touchStart || !touchEnd) return
-    const distance = touchStart - touchEnd
-    if (distance > minSwipeDistance && currentSlide < 1) setCurrentSlide(1)
-    if (distance < -minSwipeDistance && currentSlide > 0) setCurrentSlide(0)
+    const d = touchStart - touchEnd
+    if (d >  minSwipeDistance && currentSlide < 1) setCurrentSlide(1)
+    if (d < -minSwipeDistance && currentSlide > 0) setCurrentSlide(0)
   }
 
   return (
@@ -125,6 +122,8 @@ function PricingCarousel() {
 
       <div className="overflow-hidden touch-pan-y" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
         <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+
+          {/* Slide 1 */}
           <div className="w-full flex-shrink-0 px-4">
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
@@ -140,6 +139,7 @@ function PricingCarousel() {
             </div>
           </div>
 
+          {/* Slide 2 */}
           <div className="w-full flex-shrink-0 px-4">
             <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
             <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
@@ -159,7 +159,7 @@ function PricingCarousel() {
                     </div>
                     <div className="text-sm text-muted-foreground">
                       <p className="font-medium mb-1">Incluye:</p>
-                      {pack.bots.map((bot, i) => <p key={i}>{bot}</p>)}
+                      {pack.bots.map((b, i) => <p key={i}>{b}</p>)}
                     </div>
                     <p className="text-green-500 text-sm font-semibold">Ahorras ${pack.savings} USD</p>
                   </CardContent>
@@ -186,143 +186,143 @@ function PricingCarousel() {
   )
 }
 
-// ─── SPLASH SCREEN + BURBUJA ───────────────────────────────────────────────
+// ─── SPLASH + BURBUJA ─────────────────────────────────────────────────────
 //
-// Fases:
-//   "splash"    → pantalla completa azul con pulse  (0 – 3000ms)
-//   "shrinking" → colapsa hacia la esquina          (3000 – 3700ms)
-//   "tooltip"   → tooltip pequeño visible           (3700 – 18700ms)
-//   "idle"      → solo botón, tooltip con hover     (18700ms+)
+//  Fases:
+//  "splash"    0 – 2000ms   pantalla completa azul con pulse
+//  "shrinking" 2000 – 2400ms  se achica hacia la esquina (400ms, velocidad normal)
+//  "tooltip"   2400 – 17400ms tooltip pequeño visible (15s)
+//  "idle"      17400ms+     solo botón, tooltip con hover
 
 type Phase = "splash" | "shrinking" | "tooltip" | "idle"
 
 function TelegramBubble() {
-  const [phase, setPhase] = useState<Phase>("splash")
+  const [phase, setPhase]       = useState<Phase>("splash")
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("shrinking"), 3000)
-    const t2 = setTimeout(() => { setPhase("tooltip"); setTooltipOpen(true) }, 3700)
-    const t3 = setTimeout(() => { setPhase("idle"); setTooltipOpen(false) }, 18700)
+    // Splash dura 2s, luego empieza a achicarse
+    const t1 = setTimeout(() => setPhase("shrinking"), 2000)
+    // Shrink dura 400ms (velocidad normal de una transición CSS)
+    const t2 = setTimeout(() => { setPhase("tooltip"); setTooltipOpen(true) }, 2400)
+    // Tooltip visible 15s
+    const t3 = setTimeout(() => { setPhase("idle"); setTooltipOpen(false) }, 17400)
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
   }, [])
 
-  useEffect(() => {
-    return () => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) }
-  }, [])
+  useEffect(() => () => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) }, [])
 
   const handleMouseEnter = () => {
     if (phase === "splash" || phase === "shrinking") return
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
     setTooltipOpen(true)
   }
-
   const handleMouseLeave = () => {
     if (phase === "splash" || phase === "shrinking") return
     hoverTimerRef.current = setTimeout(() => setTooltipOpen(false), 15000)
   }
 
-  // Estilos del overlay según la fase
-  const splashVisible = phase === "splash"
-  const isShrinking = phase === "shrinking"
-
-  const overlayStyle: React.CSSProperties = {
-    position: "fixed",
-    zIndex: 9999,
-    backgroundColor: "#0088cc",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    // Transición suave entre estados
-    transition: "all 700ms cubic-bezier(0.4, 0, 0.2, 1)",
-    // Estado splash: pantalla completa
-    ...(splashVisible && {
-      inset: 0,
-      borderRadius: "0px",
-      opacity: 1,
-    }),
-    // Estado shrinking: colapsa hacia la esquina inferior derecha
-    ...(isShrinking && {
-      top: "auto",
-      left: "auto",
-      right: "1.5rem",
-      bottom: "1.5rem",
-      width: "56px",
-      height: "56px",
-      borderRadius: "9999px",
-      opacity: 0,
-    }),
-  }
-
   return (
     <>
-      {/* Keyframes para el ping */}
       <style>{`
-        @keyframes tg-ping {
-          0% { transform: scale(1); opacity: 0.6; }
-          75%, 100% { transform: scale(2.2); opacity: 0; }
+        /* Anillos de pulse del splash */
+        @keyframes tg-ring1 {
+          0%   { transform: scale(1);   opacity: 0.55; }
+          100% { transform: scale(2.4); opacity: 0; }
         }
-        @keyframes tg-ping-slow {
-          0% { transform: scale(1); opacity: 0.4; }
-          75%, 100% { transform: scale(2.8); opacity: 0; }
+        @keyframes tg-ring2 {
+          0%   { transform: scale(1);   opacity: 0.35; }
+          100% { transform: scale(3.2); opacity: 0; }
         }
+        /* Fade-in del contenido del splash */
         @keyframes tg-fadein {
-          from { opacity: 0; transform: translateY(8px); }
+          from { opacity: 0; transform: translateY(14px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+        /* El overlay pasa de pantalla completa a una píldora en la esquina */
+        .tg-overlay {
+          position: fixed;
+          z-index: 9999;
+          background-color: #0088cc;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          /* Cuando está en splash: cubre todo */
+          inset: 0;
+          border-radius: 0px;
+          opacity: 1;
+          transition:
+            top    400ms cubic-bezier(0.4, 0, 0.2, 1),
+            left   400ms cubic-bezier(0.4, 0, 0.2, 1),
+            right  400ms cubic-bezier(0.4, 0, 0.2, 1),
+            bottom 400ms cubic-bezier(0.4, 0, 0.2, 1),
+            width  400ms cubic-bezier(0.4, 0, 0.2, 1),
+            height 400ms cubic-bezier(0.4, 0, 0.2, 1),
+            border-radius 400ms cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 300ms ease 100ms;
+        }
+        /* Cuando está encogido: píldora pequeña sobre el botón */
+        .tg-overlay.shrinking {
+          inset: auto;
+          bottom: 1.5rem;
+          right:  1.5rem;
+          left:   auto;
+          top:    auto;
+          width:  130px;
+          height: 44px;
+          border-radius: 9999px;
+          opacity: 0;
         }
       `}</style>
 
-      {/* ── OVERLAY SPLASH / SHRINKING ── */}
+      {/* ── OVERLAY ── */}
       {(phase === "splash" || phase === "shrinking") && (
-        <div style={overlayStyle}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "1.5rem",
-              color: "white",
-              textAlign: "center",
-              padding: "2rem",
-              opacity: splashVisible ? 1 : 0,
-              transition: "opacity 300ms ease",
-              animation: splashVisible ? "tg-fadein 400ms ease forwards" : "none",
-            }}
-          >
-            {/* Ícono con anillos de pulse */}
-            <div style={{ position: "relative", width: "80px", height: "80px" }}>
-              {/* Anillo exterior lento */}
+        <div className={`tg-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "1.75rem",
+            color: "white",
+            textAlign: "center",
+            padding: "2rem",
+            /* El texto desaparece rápido para no verse raro durante el shrink */
+            opacity: phase === "splash" ? 1 : 0,
+            transition: "opacity 200ms ease",
+            animation: phase === "splash" ? "tg-fadein 500ms ease forwards" : "none",
+            pointerEvents: "none",
+          }}>
+            {/* Ícono con anillos */}
+            <div style={{ position: "relative", width: "88px", height: "88px" }}>
               <div style={{
-                position: "absolute", inset: "-16px", borderRadius: "9999px",
+                position: "absolute", inset: 0, borderRadius: "9999px",
+                backgroundColor: "rgba(255,255,255,0.22)",
+                animation: "tg-ring1 1.6s ease-out infinite",
+              }} />
+              <div style={{
+                position: "absolute", inset: 0, borderRadius: "9999px",
                 backgroundColor: "rgba(255,255,255,0.12)",
-                animation: "tg-ping-slow 2s ease-out infinite",
+                animation: "tg-ring2 1.6s ease-out infinite",
+                animationDelay: "0.4s",
               }} />
-              {/* Anillo medio */}
-              <div style={{
-                position: "absolute", inset: "-6px", borderRadius: "9999px",
-                backgroundColor: "rgba(255,255,255,0.2)",
-                animation: "tg-ping 1.5s ease-out infinite",
-                animationDelay: "0.3s",
-              }} />
-              {/* Círculo con ícono */}
               <div style={{
                 position: "relative", zIndex: 1,
-                width: "80px", height: "80px", borderRadius: "9999px",
-                backgroundColor: "rgba(255,255,255,0.25)",
+                width: "88px", height: "88px", borderRadius: "9999px",
+                backgroundColor: "rgba(255,255,255,0.28)",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
-                <MessageCircle style={{ width: "40px", height: "40px", color: "white" }} />
+                <MessageCircle style={{ width: "44px", height: "44px", color: "white" }} />
               </div>
             </div>
 
             {/* Texto */}
             <div>
-              <p style={{ fontSize: "1.75rem", fontWeight: 700, marginBottom: "0.75rem", letterSpacing: "-0.02em" }}>
+              <p style={{ fontSize: "1.8rem", fontWeight: 700, marginBottom: "0.6rem", letterSpacing: "-0.025em" }}>
                 Asesoramiento incluido
               </p>
-              <p style={{ fontSize: "1.05rem", opacity: 0.9, maxWidth: "420px", lineHeight: 1.65 }}>
+              <p style={{ fontSize: "1.05rem", opacity: 0.88, maxWidth: "420px", lineHeight: 1.65 }}>
                 Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
               </p>
             </div>
@@ -341,16 +341,11 @@ function TelegramBubble() {
       >
         <div className="relative">
           {/* Tooltip */}
-          <div
-            className={`
-              absolute bottom-full right-0 mb-3 w-72
-              transition-all duration-500 ease-in-out
-              ${tooltipOpen
-                ? "opacity-100 translate-y-0 pointer-events-auto"
-                : "opacity-0 translate-y-2 pointer-events-none"
-              }
-            `}
-          >
+          <div className={`
+            absolute bottom-full right-0 mb-3 w-72
+            transition-all duration-500 ease-in-out
+            ${tooltipOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}
+          `}>
             <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -381,11 +376,12 @@ function TelegramBubble() {
   )
 }
 
-// ─── PÁGINA PRINCIPAL ──────────────────────────────────────────────────────
+// ─── PÁGINA ───────────────────────────────────────────────────────────────
 
 export default function ComprarPage() {
   return (
     <div className="flex min-h-screen flex-col">
+
       {/* Header */}
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center justify-between">
@@ -422,6 +418,7 @@ export default function ComprarPage() {
       </header>
 
       <main className="flex-1">
+
         {/* Hero */}
         <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted">
           <div className="container px-4 md:px-6">
@@ -549,7 +546,6 @@ export default function ComprarPage() {
         </div>
       </footer>
 
-      {/* Burbuja flotante con splash screen */}
       <TelegramBubble />
     </div>
   )
