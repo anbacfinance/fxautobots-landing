@@ -49,49 +49,21 @@ const packs = [
 
 const wallets = {
   usdt: [
-    {
-      network: "TRC20 (Tron)",
-      address: "TQYdX5MWMaMr4jxb37V25WyvjXQ7DLCoY6",
-      icon: "🔴",
-    },
-    {
-      network: "BEP20 (BSC)",
-      address: "0x4aa985333c25c0911088392dbd886558344fd6d3",
-      icon: "🟡",
-    },
+    { network: "TRC20 (Tron)", address: "TQYdX5MWMaMr4jxb37V25WyvjXQ7DLCoY6", icon: "🔴" },
+    { network: "BEP20 (BSC)", address: "0x4aa985333c25c0911088392dbd886558344fd6d3", icon: "🟡" },
   ],
   usdc: [
-    {
-      network: "BEP20 (BSC)",
-      address: "0x4aa985333c25c0911088392dbd886558344fd6d3",
-      icon: "🟡",
-    },
+    { network: "BEP20 (BSC)", address: "0x4aa985333c25c0911088392dbd886558344fd6d3", icon: "🟡" },
   ],
   btc: [
-    {
-      network: "Bitcoin",
-      address: "12BA8zHb7o1hga3SmX63sjvMrw23e3SFPa",
-      icon: "🟠",
-    },
+    { network: "Bitcoin", address: "12BA8zHb7o1hga3SmX63sjvMrw23e3SFPa", icon: "🟠" },
   ],
   eth: [
-    {
-      network: "Ethereum",
-      address: "0x4aa985333c25c0911088392dbd886558344fd6d3",
-      icon: "🔵",
-    },
+    { network: "Ethereum", address: "0x4aa985333c25c0911088392dbd886558344fd6d3", icon: "🔵" },
   ],
 }
 
-function WalletCard({ 
-  crypto, 
-  network, 
-  address 
-}: { 
-  crypto: string
-  network: string
-  address: string 
-}) {
+function WalletCard({ crypto, network, address }: { crypto: string; network: string; address: string }) {
   const [copied, setCopied] = useState(false)
 
   const copyToClipboard = async () => {
@@ -109,29 +81,13 @@ function WalletCard({
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
         <div className="bg-white p-3 rounded-lg">
-          <QRCodeSVG 
-            value={address} 
-            size={140}
-            level="H"
-            includeMargin={false}
-          />
+          <QRCodeSVG value={address} size={140} level="H" includeMargin={false} />
         </div>
         <div className="w-full">
           <div className="flex items-center gap-2 bg-muted p-2 rounded-lg">
-            <code className="text-xs flex-1 break-all font-mono">
-              {address}
-            </code>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="shrink-0 h-8 w-8"
-              onClick={copyToClipboard}
-            >
-              {copied ? (
-                <Check className="h-4 w-4 text-green-500" />
-              ) : (
-                <Copy className="h-4 w-4" />
-              )}
+            <code className="text-xs flex-1 break-all font-mono">{address}</code>
+            <Button variant="ghost" size="icon" className="shrink-0 h-8 w-8" onClick={copyToClipboard}>
+              {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
             </Button>
           </div>
         </div>
@@ -144,78 +100,37 @@ function PricingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
-
   const minSwipeDistance = 50
 
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null)
     setTouchStart(e.targetTouches[0].clientX)
   }
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX)
-  }
-
+  const onTouchMove = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX)
   const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return
     const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > minSwipeDistance
-    const isRightSwipe = distance < -minSwipeDistance
-    
-    if (isLeftSwipe && currentSlide < 1) {
-      setCurrentSlide(1)
-    }
-    if (isRightSwipe && currentSlide > 0) {
-      setCurrentSlide(0)
-    }
-  }
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % 2)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + 2) % 2)
+    if (distance > minSwipeDistance && currentSlide < 1) setCurrentSlide(1)
+    if (distance < -minSwipeDistance && currentSlide > 0) setCurrentSlide(0)
   }
 
   return (
     <div className="relative">
-      {/* Navigation Arrows - Hidden on mobile */}
-      <button
-        onClick={prevSlide}
-        className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
-        aria-label="Anterior"
-      >
+      <button onClick={() => setCurrentSlide((p) => (p - 1 + 2) % 2)} className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Anterior">
         <ChevronLeft className="h-6 w-6" />
       </button>
-      <button
-        onClick={nextSlide}
-        className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
-        aria-label="Siguiente"
-      >
+      <button onClick={() => setCurrentSlide((p) => (p + 1) % 2)} className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Siguiente">
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      {/* Slides Container with touch support */}
-      <div 
-        className="overflow-hidden touch-pan-y"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-        >
-          {/* Slide 1: Bots Individuales */}
+      <div className="overflow-hidden touch-pan-y" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+        <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
           <div className="w-full flex-shrink-0 px-4">
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {bots.map((bot) => (
                 <Card key={bot.name} className="text-center">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">{bot.name}</CardTitle>
-                  </CardHeader>
+                  <CardHeader className="pb-2"><CardTitle className="text-lg">{bot.name}</CardTitle></CardHeader>
                   <CardContent>
                     <p className="text-3xl font-bold text-primary">${bot.price}</p>
                     <p className="text-sm text-muted-foreground">USD</p>
@@ -225,15 +140,12 @@ function PricingCarousel() {
             </div>
           </div>
 
-          {/* Slide 2: Packs */}
           <div className="w-full flex-shrink-0 px-4">
             <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
             <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
               {packs.map((pack) => (
                 <Card key={pack.name} className="text-center relative overflow-hidden md:flex-1 md:max-w-xs">
-                  <div className={`absolute top-0 right-0 ${pack.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-bl-lg`}>
-                    {pack.badge}
-                  </div>
+                  <div className={`absolute top-0 right-0 ${pack.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-bl-lg`}>{pack.badge}</div>
                   <CardHeader className="pb-2 pt-8">
                     <div className="flex items-center justify-center gap-2">
                       <Package className={`h-5 w-5 ${pack.name === "Pack Ultimate" ? "text-amber-500" : "text-primary"}`} />
@@ -242,20 +154,14 @@ function PricingCarousel() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div>
-                      <p className={`text-3xl font-bold ${pack.name === "Pack Ultimate" ? "text-amber-500" : "text-primary"}`}>
-                        ${pack.price}
-                      </p>
+                      <p className={`text-3xl font-bold ${pack.name === "Pack Ultimate" ? "text-amber-500" : "text-primary"}`}>${pack.price}</p>
                       <p className="text-sm text-muted-foreground line-through">${pack.originalPrice} USD</p>
                     </div>
                     <div className="text-sm text-muted-foreground">
                       <p className="font-medium mb-1">Incluye:</p>
-                      {pack.bots.map((bot, index) => (
-                        <p key={index}>{bot}</p>
-                      ))}
+                      {pack.bots.map((bot, i) => <p key={i}>{bot}</p>)}
                     </div>
-                    <p className="text-green-500 text-sm font-semibold">
-                      Ahorras ${pack.savings} USD
-                    </p>
+                    <p className="text-green-500 text-sm font-semibold">Ahorras ${pack.savings} USD</p>
                   </CardContent>
                 </Card>
               ))}
@@ -264,133 +170,218 @@ function PricingCarousel() {
         </div>
       </div>
 
-      {/* Swipe hint for mobile */}
-      <p className="text-center text-xs text-muted-foreground mt-4 md:hidden">
-        Desliza para ver mas opciones
-      </p>
+      <p className="text-center text-xs text-muted-foreground mt-4 md:hidden">Desliza para ver mas opciones</p>
 
-      {/* Indicators */}
       <div className="flex justify-center gap-2 mt-4">
-        <button
-          onClick={() => setCurrentSlide(0)}
-          className={`w-3 h-3 rounded-full transition-colors ${
-            currentSlide === 0 ? "bg-primary" : "bg-muted-foreground/30"
-          }`}
-          aria-label="Ver bots individuales"
-        />
-        <button
-          onClick={() => setCurrentSlide(1)}
-          className={`w-3 h-3 rounded-full transition-colors ${
-            currentSlide === 1 ? "bg-primary" : "bg-muted-foreground/30"
-          }`}
-          aria-label="Ver packs"
-        />
+        {[0, 1].map((i) => (
+          <button key={i} onClick={() => setCurrentSlide(i)} className={`w-3 h-3 rounded-full transition-colors ${currentSlide === i ? "bg-primary" : "bg-muted-foreground/30"}`} aria-label={i === 0 ? "Ver bots individuales" : "Ver packs"} />
+        ))}
       </div>
 
-      {/* Slide Labels */}
       <div className="flex justify-center gap-8 mt-3 text-sm text-muted-foreground">
-        <button
-          onClick={() => setCurrentSlide(0)}
-          className={`transition-colors ${currentSlide === 0 ? "text-primary font-medium" : ""}`}
-        >
-          Individuales
-        </button>
-        <button
-          onClick={() => setCurrentSlide(1)}
-          className={`transition-colors ${currentSlide === 1 ? "text-primary font-medium" : ""}`}
-        >
-          Packs
-        </button>
+        <button onClick={() => setCurrentSlide(0)} className={`transition-colors ${currentSlide === 0 ? "text-primary font-medium" : ""}`}>Individuales</button>
+        <button onClick={() => setCurrentSlide(1)} className={`transition-colors ${currentSlide === 1 ? "text-primary font-medium" : ""}`}>Packs</button>
       </div>
     </div>
   )
 }
 
+// ─── SPLASH SCREEN + BURBUJA ───────────────────────────────────────────────
+//
+// Fases:
+//   "splash"    → pantalla completa azul con pulse  (0 – 3000ms)
+//   "shrinking" → colapsa hacia la esquina          (3000 – 3700ms)
+//   "tooltip"   → tooltip pequeño visible           (3700 – 18700ms)
+//   "idle"      → solo botón, tooltip con hover     (18700ms+)
+
+type Phase = "splash" | "shrinking" | "tooltip" | "idle"
+
 function TelegramBubble() {
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [phase, setPhase] = useState<Phase>("splash")
+  const [tooltipOpen, setTooltipOpen] = useState(false)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    // Al cargar, el tooltip está expandido. A los 4s se colapsa automáticamente.
-    const collapseTimer = setTimeout(() => {
-      setIsExpanded(false)
-    }, 4000)
+    const t1 = setTimeout(() => setPhase("shrinking"), 3000)
+    const t2 = setTimeout(() => { setPhase("tooltip"); setTooltipOpen(true) }, 3700)
+    const t3 = setTimeout(() => { setPhase("idle"); setTooltipOpen(false) }, 18700)
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
+  }, [])
 
-    return () => clearTimeout(collapseTimer)
+  useEffect(() => {
+    return () => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) }
   }, [])
 
   const handleMouseEnter = () => {
-    // Cancela cualquier timer pendiente de colapso
+    if (phase === "splash" || phase === "shrinking") return
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
-    setIsExpanded(true)
+    setTooltipOpen(true)
   }
 
   const handleMouseLeave = () => {
-    // Colapsa después de 15s sin hover
-    hoverTimerRef.current = setTimeout(() => {
-      setIsExpanded(false)
-    }, 15000)
+    if (phase === "splash" || phase === "shrinking") return
+    hoverTimerRef.current = setTimeout(() => setTooltipOpen(false), 15000)
   }
 
-  // Limpia el timer al desmontar
-  useEffect(() => {
-    return () => {
-      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
-    }
-  }, [])
+  // Estilos del overlay según la fase
+  const splashVisible = phase === "splash"
+  const isShrinking = phase === "shrinking"
+
+  const overlayStyle: React.CSSProperties = {
+    position: "fixed",
+    zIndex: 9999,
+    backgroundColor: "#0088cc",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+    // Transición suave entre estados
+    transition: "all 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+    // Estado splash: pantalla completa
+    ...(splashVisible && {
+      inset: 0,
+      borderRadius: "0px",
+      opacity: 1,
+    }),
+    // Estado shrinking: colapsa hacia la esquina inferior derecha
+    ...(isShrinking && {
+      top: "auto",
+      left: "auto",
+      right: "1.5rem",
+      bottom: "1.5rem",
+      width: "56px",
+      height: "56px",
+      borderRadius: "9999px",
+      opacity: 0,
+    }),
+  }
 
   return (
-    <a
-      href="https://t.me/fxautobots"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="relative">
-        {/* Mensaje expandible - ahora controlado por estado */}
-        <div
-          className={`
-            absolute bottom-full right-0 mb-3 w-72
-            transition-all duration-500 ease-in-out
-            ${isExpanded
-              ? "opacity-100 translate-y-0 pointer-events-auto"
-              : "opacity-0 translate-y-2 pointer-events-none"
-            }
-          `}
-        >
-          <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <MessageCircle className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-foreground mb-1">
-                  Asesoramiento incluido
-                </p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
-                </p>
+    <>
+      {/* Keyframes para el ping */}
+      <style>{`
+        @keyframes tg-ping {
+          0% { transform: scale(1); opacity: 0.6; }
+          75%, 100% { transform: scale(2.2); opacity: 0; }
+        }
+        @keyframes tg-ping-slow {
+          0% { transform: scale(1); opacity: 0.4; }
+          75%, 100% { transform: scale(2.8); opacity: 0; }
+        }
+        @keyframes tg-fadein {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      {/* ── OVERLAY SPLASH / SHRINKING ── */}
+      {(phase === "splash" || phase === "shrinking") && (
+        <div style={overlayStyle}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1.5rem",
+              color: "white",
+              textAlign: "center",
+              padding: "2rem",
+              opacity: splashVisible ? 1 : 0,
+              transition: "opacity 300ms ease",
+              animation: splashVisible ? "tg-fadein 400ms ease forwards" : "none",
+            }}
+          >
+            {/* Ícono con anillos de pulse */}
+            <div style={{ position: "relative", width: "80px", height: "80px" }}>
+              {/* Anillo exterior lento */}
+              <div style={{
+                position: "absolute", inset: "-16px", borderRadius: "9999px",
+                backgroundColor: "rgba(255,255,255,0.12)",
+                animation: "tg-ping-slow 2s ease-out infinite",
+              }} />
+              {/* Anillo medio */}
+              <div style={{
+                position: "absolute", inset: "-6px", borderRadius: "9999px",
+                backgroundColor: "rgba(255,255,255,0.2)",
+                animation: "tg-ping 1.5s ease-out infinite",
+                animationDelay: "0.3s",
+              }} />
+              {/* Círculo con ícono */}
+              <div style={{
+                position: "relative", zIndex: 1,
+                width: "80px", height: "80px", borderRadius: "9999px",
+                backgroundColor: "rgba(255,255,255,0.25)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <MessageCircle style={{ width: "40px", height: "40px", color: "white" }} />
               </div>
             </div>
-            {/* Flecha del tooltip */}
-            <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-border transform rotate-45"></div>
+
+            {/* Texto */}
+            <div>
+              <p style={{ fontSize: "1.75rem", fontWeight: 700, marginBottom: "0.75rem", letterSpacing: "-0.02em" }}>
+                Asesoramiento incluido
+              </p>
+              <p style={{ fontSize: "1.05rem", opacity: 0.9, maxWidth: "420px", lineHeight: 1.65 }}>
+                Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
+              </p>
+            </div>
           </div>
         </div>
+      )}
 
-        {/* Botón principal */}
-        <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-          <MessageCircle className="h-5 w-5" />
-          <span className="text-sm font-medium">Contactar</span>
+      {/* ── BURBUJA FLOTANTE ── */}
+      <a
+        href="https://t.me/fxautobots"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="relative">
+          {/* Tooltip */}
+          <div
+            className={`
+              absolute bottom-full right-0 mb-3 w-72
+              transition-all duration-500 ease-in-out
+              ${tooltipOpen
+                ? "opacity-100 translate-y-0 pointer-events-auto"
+                : "opacity-0 translate-y-2 pointer-events-none"
+              }
+            `}
+          >
+            <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <MessageCircle className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground mb-1">Asesoramiento incluido</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
+                  </p>
+                </div>
+              </div>
+              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-border transform rotate-45" />
+            </div>
+          </div>
+
+          {/* Botón */}
+          <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <MessageCircle className="h-5 w-5" />
+            <span className="text-sm font-medium">Contactar</span>
+          </div>
+
+          {/* Pulse del botón */}
+          <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20" />
         </div>
-
-        {/* Pulso animado */}
-        <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20"></div>
-      </div>
-    </a>
+      </a>
+    </>
   )
 }
+
+// ─── PÁGINA PRINCIPAL ──────────────────────────────────────────────────────
 
 export default function ComprarPage() {
   return (
@@ -405,34 +396,16 @@ export default function ComprarPage() {
             </Link>
           </div>
           <nav className="hidden md:flex gap-6">
-            <Link href="/" className="text-sm font-medium hover:text-primary">
-              Inicio
-            </Link>
-            <Link href="/backtest" className="text-sm font-medium hover:text-primary">
-              Backtest
-            </Link>
-            <Link href="/tutoriales" className="text-sm font-medium hover:text-primary">
-              Tutoriales
-            </Link>
+            <Link href="/" className="text-sm font-medium hover:text-primary">Inicio</Link>
+            <Link href="/backtest" className="text-sm font-medium hover:text-primary">Backtest</Link>
+            <Link href="/tutoriales" className="text-sm font-medium hover:text-primary">Tutoriales</Link>
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
-              <a
-                href="https://instagram.com/fxautobots"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Instagram"
-              >
+              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a
-                href="https://t.me/fxautobots"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Telegram"
-              >
+              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram">
                 <MessageCircle className="h-5 w-5" />
               </a>
             </div>
@@ -449,13 +422,11 @@ export default function ComprarPage() {
       </header>
 
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Hero */}
         <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Comprar Bot de Trading
-              </h1>
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Comprar Bot de Trading</h1>
               <p className="max-w-[700px] text-muted-foreground md:text-xl">
                 Realiza tu pago en criptomonedas y comienza a operar de forma automatizada
               </p>
@@ -463,22 +434,18 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Pricing Section with Carousel */}
+        {/* Pricing */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
-            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">
-              Precios
-            </h2>
+            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Precios</h2>
             <PricingCarousel />
           </div>
         </section>
 
-        {/* Wallets Section */}
+        {/* Wallets */}
         <section className="w-full py-12 md:py-16 bg-muted">
           <div className="container px-4 md:px-6">
-            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">
-              Wallets de Pago
-            </h2>
+            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Wallets de Pago</h2>
 
             {/* USDT */}
             <div className="mb-12">
@@ -487,19 +454,10 @@ export default function ComprarPage() {
                   <span className="text-white font-bold text-sm">$</span>
                 </div>
                 <h3 className="text-xl font-bold">USDT (Tether)</h3>
-                <span className="px-2 py-1 bg-green-500/20 text-green-600 dark:text-green-400 text-xs font-medium rounded">
-                  Recomendado
-                </span>
+                <span className="px-2 py-1 bg-green-500/20 text-green-600 dark:text-green-400 text-xs font-medium rounded">Recomendado</span>
               </div>
               <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                {wallets.usdt.map((wallet) => (
-                  <WalletCard
-                    key={wallet.network}
-                    crypto="USDT"
-                    network={wallet.network}
-                    address={wallet.address}
-                  />
-                ))}
+                {wallets.usdt.map((w) => <WalletCard key={w.network} crypto="USDT" network={w.network} address={w.address} />)}
               </div>
             </div>
 
@@ -512,14 +470,7 @@ export default function ComprarPage() {
                 <h3 className="text-xl font-bold">USDC</h3>
               </div>
               <div className="grid md:grid-cols-1 gap-4 max-w-md mx-auto">
-                {wallets.usdc.map((wallet) => (
-                  <WalletCard
-                    key={wallet.network}
-                    crypto="USDC"
-                    network={wallet.network}
-                    address={wallet.address}
-                  />
-                ))}
+                {wallets.usdc.map((w) => <WalletCard key={w.network} crypto="USDC" network={w.network} address={w.address} />)}
               </div>
             </div>
 
@@ -532,14 +483,7 @@ export default function ComprarPage() {
                 <h3 className="text-xl font-bold">Bitcoin (BTC)</h3>
               </div>
               <div className="grid md:grid-cols-1 gap-4 max-w-md mx-auto">
-                {wallets.btc.map((wallet) => (
-                  <WalletCard
-                    key={wallet.network}
-                    crypto="BTC"
-                    network={wallet.network}
-                    address={wallet.address}
-                  />
-                ))}
+                {wallets.btc.map((w) => <WalletCard key={w.network} crypto="BTC" network={w.network} address={w.address} />)}
               </div>
             </div>
 
@@ -552,14 +496,7 @@ export default function ComprarPage() {
                 <h3 className="text-xl font-bold">Ethereum (ETH)</h3>
               </div>
               <div className="grid md:grid-cols-1 gap-4 max-w-md mx-auto">
-                {wallets.eth.map((wallet) => (
-                  <WalletCard
-                    key={wallet.network}
-                    crypto="ETH"
-                    network={wallet.network}
-                    address={wallet.address}
-                  />
-                ))}
+                {wallets.eth.map((w) => <WalletCard key={w.network} crypto="ETH" network={w.network} address={w.address} />)}
               </div>
             </div>
           </div>
@@ -580,11 +517,7 @@ export default function ComprarPage() {
                   </p>
                 </div>
                 <Button size="lg" asChild className="gap-2">
-                  <a 
-                    href="https://t.me/fxautobots" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  >
+                  <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="h-5 w-5" />
                     Contactar por Telegram
                     <ExternalLink className="h-4 w-4" />
@@ -606,29 +539,17 @@ export default function ComprarPage() {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <a
-              href="https://instagram.com/fxautobots"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="Instagram"
-            >
+            <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram">
               <Instagram className="h-5 w-5" />
             </a>
-            <a
-              href="https://t.me/fxautobots"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="Telegram"
-            >
+            <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram">
               <MessageCircle className="h-5 w-5" />
             </a>
           </div>
         </div>
       </footer>
 
-      {/* Burbuja flotante de Telegram - con animación automática */}
+      {/* Burbuja flotante con splash screen */}
       <TelegramBubble />
     </div>
   )
