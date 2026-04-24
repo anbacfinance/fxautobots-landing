@@ -218,8 +218,8 @@ export default function TutorialesPage() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center">
-              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="mr-2" />
-              <span className="font-bold text-xl">FXAutoBots</span>
+              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="md:mr-2" />
+              <span className="font-bold text-xl hidden md:inline">FXAutoBots</span>
             </Link>
           </div>
           <nav className="hidden md:flex gap-6">
