@@ -142,6 +142,33 @@ function WalletCard({
 
 function PricingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+    
+    if (isLeftSwipe && currentSlide < 1) {
+      setCurrentSlide(1)
+    }
+    if (isRightSwipe && currentSlide > 0) {
+      setCurrentSlide(0)
+    }
+  }
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % 2)
@@ -153,24 +180,29 @@ function PricingCarousel() {
 
   return (
     <div className="relative">
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - Hidden on mobile */}
       <button
         onClick={prevSlide}
-        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
+        className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
         aria-label="Anterior"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
+        className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
         aria-label="Siguiente"
       >
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      {/* Slides Container */}
-      <div className="overflow-hidden">
+      {/* Slides Container with touch support */}
+      <div 
+        className="overflow-hidden touch-pan-y"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -196,9 +228,9 @@ function PricingCarousel() {
           {/* Slide 2: Packs */}
           <div className="w-full flex-shrink-0 px-4">
             <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
-            <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+            <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
               {packs.map((pack) => (
-                <Card key={pack.name} className="text-center relative overflow-hidden">
+                <Card key={pack.name} className="text-center relative overflow-hidden md:flex-1 md:max-w-xs">
                   <div className={`absolute top-0 right-0 ${pack.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-bl-lg`}>
                     {pack.badge}
                   </div>
@@ -232,8 +264,13 @@ function PricingCarousel() {
         </div>
       </div>
 
+      {/* Swipe hint for mobile */}
+      <p className="text-center text-xs text-muted-foreground mt-4 md:hidden">
+        Desliza para ver mas opciones
+      </p>
+
       {/* Indicators */}
-      <div className="flex justify-center gap-2 mt-6">
+      <div className="flex justify-center gap-2 mt-4">
         <button
           onClick={() => setCurrentSlide(0)}
           className={`w-3 h-3 rounded-full transition-colors ${
