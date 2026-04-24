@@ -3,17 +3,48 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { Instagram, MessageCircle, Copy, Check, ExternalLink } from "lucide-react"
+import { MobileNav } from "@/components/mobile-nav"
+import { Instagram, MessageCircle, Copy, Check, ExternalLink, ChevronLeft, ChevronRight, Package } from "lucide-react"
 import { useState } from "react"
 import { QRCodeSVG } from "qrcode.react"
 
 const bots = [
-  { name: "Bot Akira", price: 120 },
-  { name: "Bot Deus", price: 120 },
-  { name: "Bot Scalper", price: 120 },
-  { name: "Bot Atlas", price: 600 },
+  { name: "Bot Akira", price: 120, description: "Trading automatizado" },
+  { name: "Bot Deus", price: 120, description: "Trading automatizado" },
+  { name: "Bot Scalper", price: 120, description: "Trading automatizado" },
+  { name: "Bot Atlas", price: 600, description: "Trading premium" },
+]
+
+const packs = [
+  {
+    name: "Pack Duo",
+    price: 200,
+    originalPrice: 240,
+    savings: 40,
+    bots: ["Akira o Deus", "Scalper"],
+    badge: "AHORRA $40",
+    badgeColor: "bg-green-500",
+  },
+  {
+    name: "Pack Completo",
+    price: 280,
+    originalPrice: 360,
+    savings: 80,
+    bots: ["Akira", "Deus", "Scalper"],
+    badge: "MEJOR OFERTA",
+    badgeColor: "bg-primary",
+  },
+  {
+    name: "Pack Ultimate",
+    price: 850,
+    originalPrice: 1060,
+    savings: 210,
+    bots: ["Akira", "Deus", "Scalper", "Atlas"],
+    badge: "PACK ULTIMATE",
+    badgeColor: "bg-amber-500",
+  },
 ]
 
 const wallets = {
@@ -109,6 +140,135 @@ function WalletCard({
   )
 }
 
+function PricingCarousel() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % 2)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + 2) % 2)
+  }
+
+  return (
+    <div className="relative">
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
+        aria-label="Anterior"
+      >
+        <ChevronLeft className="h-6 w-6" />
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
+        aria-label="Siguiente"
+      >
+        <ChevronRight className="h-6 w-6" />
+      </button>
+
+      {/* Slides Container */}
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          {/* Slide 1: Bots Individuales */}
+          <div className="w-full flex-shrink-0 px-4">
+            <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              {bots.map((bot) => (
+                <Card key={bot.name} className="text-center">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg">{bot.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-3xl font-bold text-primary">${bot.price}</p>
+                    <p className="text-sm text-muted-foreground">USD</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Slide 2: Packs */}
+          <div className="w-full flex-shrink-0 px-4">
+            <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
+            <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+              {packs.map((pack) => (
+                <Card key={pack.name} className="text-center relative overflow-hidden">
+                  <div className={`absolute top-0 right-0 ${pack.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-bl-lg`}>
+                    {pack.badge}
+                  </div>
+                  <CardHeader className="pb-2 pt-8">
+                    <div className="flex items-center justify-center gap-2">
+                      <Package className={`h-5 w-5 ${pack.name === "Pack Ultimate" ? "text-amber-500" : "text-primary"}`} />
+                      <CardTitle className="text-xl">{pack.name}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div>
+                      <p className={`text-3xl font-bold ${pack.name === "Pack Ultimate" ? "text-amber-500" : "text-primary"}`}>
+                        ${pack.price}
+                      </p>
+                      <p className="text-sm text-muted-foreground line-through">${pack.originalPrice} USD</p>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      <p className="font-medium mb-1">Incluye:</p>
+                      {pack.bots.map((bot, index) => (
+                        <p key={index}>{bot}</p>
+                      ))}
+                    </div>
+                    <p className="text-green-500 text-sm font-semibold">
+                      Ahorras ${pack.savings} USD
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Indicators */}
+      <div className="flex justify-center gap-2 mt-6">
+        <button
+          onClick={() => setCurrentSlide(0)}
+          className={`w-3 h-3 rounded-full transition-colors ${
+            currentSlide === 0 ? "bg-primary" : "bg-muted-foreground/30"
+          }`}
+          aria-label="Ver bots individuales"
+        />
+        <button
+          onClick={() => setCurrentSlide(1)}
+          className={`w-3 h-3 rounded-full transition-colors ${
+            currentSlide === 1 ? "bg-primary" : "bg-muted-foreground/30"
+          }`}
+          aria-label="Ver packs"
+        />
+      </div>
+
+      {/* Slide Labels */}
+      <div className="flex justify-center gap-8 mt-3 text-sm text-muted-foreground">
+        <button
+          onClick={() => setCurrentSlide(0)}
+          className={`transition-colors ${currentSlide === 0 ? "text-primary font-medium" : ""}`}
+        >
+          Individuales
+        </button>
+        <button
+          onClick={() => setCurrentSlide(1)}
+          className={`transition-colors ${currentSlide === 1 ? "text-primary font-medium" : ""}`}
+        >
+          Packs
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function ComprarPage() {
   return (
     <div className="flex min-h-screen flex-col">
@@ -154,6 +314,13 @@ export default function ComprarPage() {
               </a>
             </div>
             <ThemeToggle />
+            <MobileNav
+              links={[
+                { href: "/", label: "Inicio" },
+                { href: "/backtest", label: "Backtest" },
+                { href: "/tutoriales", label: "Tutoriales" },
+              ]}
+            />
           </div>
         </div>
       </header>
@@ -173,25 +340,13 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Pricing Section */}
+        {/* Pricing Section with Carousel */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
             <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">
               Precios
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-              {bots.map((bot) => (
-                <Card key={bot.name} className="text-center">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">{bot.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-3xl font-bold text-primary">${bot.price}</p>
-                    <p className="text-sm text-muted-foreground">USD</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <PricingCarousel />
           </div>
         </section>
 
@@ -206,7 +361,7 @@ export default function ComprarPage() {
             <div className="mb-12">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="h-8 w-8 rounded-full bg-[#26A17B] flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">₮</span>
+                  <span className="text-white font-bold text-sm">$</span>
                 </div>
                 <h3 className="text-xl font-bold">USDT (Tether)</h3>
                 <span className="px-2 py-1 bg-green-500/20 text-green-600 dark:text-green-400 text-xs font-medium rounded">
@@ -249,7 +404,7 @@ export default function ComprarPage() {
             <div className="mb-12">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="h-8 w-8 rounded-full bg-[#F7931A] flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">₿</span>
+                  <span className="text-white font-bold text-sm">B</span>
                 </div>
                 <h3 className="text-xl font-bold">Bitcoin (BTC)</h3>
               </div>
@@ -269,7 +424,7 @@ export default function ComprarPage() {
             <div className="mb-8">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="h-8 w-8 rounded-full bg-[#627EEA] flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">Ξ</span>
+                  <span className="text-white font-bold text-sm">E</span>
                 </div>
                 <h3 className="text-xl font-bold">Ethereum (ETH)</h3>
               </div>
