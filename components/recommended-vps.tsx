@@ -91,7 +91,7 @@ export function RecommendedVPS() {
         <div className="mt-10 text-center">
           <p className="text-sm text-muted-foreground max-w-[800px] mx-auto">
             Un VPS (Servidor Privado Virtual) te permite ejecutar tus bots de trading las 24 horas del dia, los 7 dias
-            de la semana, sin depender de tu computadora personal. FXVM ofrece servidores optimizados especificamente
+            de la semana, sin depender de tu computadora personal. Este VPS ofrece servidores optimizados especificamente
             para trading con conexiones de baja latencia a los principales brokers.
           </p>
         </div>
