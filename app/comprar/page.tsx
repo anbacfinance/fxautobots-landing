@@ -504,6 +504,46 @@ export default function ComprarPage() {
           </div>
         </div>
       </footer>
+
+      {/* Burbuja flotante de Telegram */}
+      <a
+        href="https://t.me/fxautobots"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 group"
+      >
+        <div className="relative">
+          {/* Mensaje expandible */}
+          <div className="absolute bottom-full right-0 mb-3 w-72 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 pointer-events-none group-hover:pointer-events-auto">
+            <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <MessageCircle className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground mb-1">
+                    Asesoramiento incluido
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
+                  </p>
+                </div>
+              </div>
+              {/* Flecha del tooltip */}
+              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-border transform rotate-45"></div>
+            </div>
+          </div>
+          
+          {/* Boton principal */}
+          <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <MessageCircle className="h-5 w-5" />
+            <span className="text-sm font-medium">Contactar</span>
+          </div>
+          
+          {/* Pulso animado */}
+          <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20"></div>
+        </div>
+      </a>
     </div>
   )
 }
