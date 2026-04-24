@@ -3,11 +3,11 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { MobileNav } from "@/components/mobile-nav"
 import { Instagram, MessageCircle, Copy, Check, ExternalLink, ChevronLeft, ChevronRight, Package } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { QRCodeSVG } from "qrcode.react"
 
 const bots = [
@@ -306,6 +306,92 @@ function PricingCarousel() {
   )
 }
 
+function TelegramBubble() {
+  const [isExpanded, setIsExpanded] = useState(true)
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    // Al cargar, el tooltip está expandido. A los 4s se colapsa automáticamente.
+    const collapseTimer = setTimeout(() => {
+      setIsExpanded(false)
+    }, 4000)
+
+    return () => clearTimeout(collapseTimer)
+  }, [])
+
+  const handleMouseEnter = () => {
+    // Cancela cualquier timer pendiente de colapso
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
+    setIsExpanded(true)
+  }
+
+  const handleMouseLeave = () => {
+    // Colapsa después de 15s sin hover
+    hoverTimerRef.current = setTimeout(() => {
+      setIsExpanded(false)
+    }, 15000)
+  }
+
+  // Limpia el timer al desmontar
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
+    }
+  }, [])
+
+  return (
+    <a
+      href="https://t.me/fxautobots"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-50"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="relative">
+        {/* Mensaje expandible - ahora controlado por estado */}
+        <div
+          className={`
+            absolute bottom-full right-0 mb-3 w-72
+            transition-all duration-500 ease-in-out
+            ${isExpanded
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 translate-y-2 pointer-events-none"
+            }
+          `}
+        >
+          <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <MessageCircle className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-foreground mb-1">
+                  Asesoramiento incluido
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
+                </p>
+              </div>
+            </div>
+            {/* Flecha del tooltip */}
+            <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-border transform rotate-45"></div>
+          </div>
+        </div>
+
+        {/* Botón principal */}
+        <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <MessageCircle className="h-5 w-5" />
+          <span className="text-sm font-medium">Contactar</span>
+        </div>
+
+        {/* Pulso animado */}
+        <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20"></div>
+      </div>
+    </a>
+  )
+}
+
 export default function ComprarPage() {
   return (
     <div className="flex min-h-screen flex-col">
@@ -542,45 +628,8 @@ export default function ComprarPage() {
         </div>
       </footer>
 
-      {/* Burbuja flotante de Telegram */}
-      <a
-        href="https://t.me/fxautobots"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 group"
-      >
-        <div className="relative">
-          {/* Mensaje expandible */}
-          <div className="absolute bottom-full right-0 mb-3 w-72 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 pointer-events-none group-hover:pointer-events-auto">
-            <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <MessageCircle className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground mb-1">
-                    Asesoramiento incluido
-                  </p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
-                  </p>
-                </div>
-              </div>
-              {/* Flecha del tooltip */}
-              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-border transform rotate-45"></div>
-            </div>
-          </div>
-          
-          {/* Boton principal */}
-          <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <MessageCircle className="h-5 w-5" />
-            <span className="text-sm font-medium">Contactar</span>
-          </div>
-          
-          {/* Pulso animado */}
-          <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20"></div>
-        </div>
-      </a>
+      {/* Burbuja flotante de Telegram - con animación automática */}
+      <TelegramBubble />
     </div>
   )
 }
