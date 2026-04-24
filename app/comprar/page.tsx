@@ -210,15 +210,16 @@ function PricingCarousel() {
           {/* Slide 1: Bots Individuales */}
           <div className="w-full flex-shrink-0 px-4">
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
               {bots.map((bot) => (
-                <Card key={bot.name} className="text-center">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">{bot.name}</CardTitle>
+                <Card key={bot.name} className="text-center md:flex-1 md:max-w-xs">
+                  <CardHeader className="pb-2 pt-6">
+                    <CardTitle className="text-xl">{bot.name}</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-3xl font-bold text-primary">${bot.price}</p>
-                    <p className="text-sm text-muted-foreground">USD</p>
+                  <CardContent className="pb-6">
+                    <p className="text-4xl font-bold text-primary">${bot.price}</p>
+                    <p className="text-sm text-muted-foreground mt-1">USD</p>
+                    <p className="text-xs text-muted-foreground mt-3">Licencia de por vida</p>
                   </CardContent>
                 </Card>
               ))}
