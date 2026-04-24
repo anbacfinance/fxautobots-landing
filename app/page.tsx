@@ -17,6 +17,8 @@ import {
   Instagram,
   MessageCircle,
   Shield,
+  Menu,
+  X,
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import { BotsComparison } from "../components/bots-comparison"
@@ -24,6 +26,7 @@ import { ProfitCalculator } from "../components/profit-calculator"
 import { ThemeToggle } from "../components/theme-toggle"
 import { RecommendedBrokers } from "../components/recommended-brokers"
 import { RecommendedVPS } from "../components/recommended-vps"
+import { MobileNav } from "../components/mobile-nav"
 
 function TestimonialCarousel() {
   const testimonials = [
@@ -187,9 +190,21 @@ export default function LandingPage() {
               </a>
             </div>
             <ThemeToggle />
-            <Button asChild>
+            <Button asChild className="hidden md:inline-flex">
               <Link href="#cta">Comenzar</Link>
             </Button>
+            <MobileNav
+              links={[
+                { href: "/backtest", label: "Backtest" },
+                { href: "#features", label: "Caracteristicas" },
+                { href: "#testimonials", label: "Testimonios" },
+                { href: "#pricing", label: "Precios" },
+                { href: "#brokers", label: "Brokers" },
+                { href: "#vps", label: "VPS" },
+                { href: "/tutoriales", label: "Tutoriales" },
+                { href: "/comprar", label: "Comprar" },
+              ]}
+            />
           </div>
         </div>
       </header>
