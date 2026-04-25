@@ -329,9 +329,9 @@ function TickerTape() {
 // ─── STATS BAR ────────────────────────────────────────────────────────────
 function StatsBar() {
   const stats = [
-    { icon: Users,  label: "Traders activos",   value: 500,  suffix: "+" },
+    { icon: Users,  label: "Traders activos",   value: 82,  suffix: "+" },
     { icon: TrendingUp, label: "Horas de backtest", value: 5000, suffix: "h" },
-    { icon: Award,  label: "Tasa de éxito",      value: 94,   suffix: "%" },
+    { icon: Award,  label: "Tasa de éxito",      value: 76,   suffix: "%" },
     { icon: Zap,    label: "Operaciones auto",    value: 12000, suffix: "+" },
   ]
 
