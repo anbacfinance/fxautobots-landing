@@ -18,10 +18,10 @@ export function ProfitCalculator() {
 
   // Factores de rendimiento mensual máximo por bot (según los valores proporcionados)
   const maxMonthlyReturnFactors = {
-    akira: 0.2, // 20% mensual en escenario de máximo riesgo
+    akira: 0.4, // 35% mensual en escenario de máximo riesgo
     deus: 0.2, // 20% mensual en escenario de máximo riesgo
     scalper: 0.15, // 15% mensual en escenario de máximo riesgo
-    atlas: 0.4, // 40% mensual en escenario de máximo riesgo
+    atlas: 0.7, // 70% mensual en escenario de máximo riesgo
   }
 
   // Mostrar advertencia de alto riesgo cuando se selecciona AKIRA con nivel de riesgo alto
@@ -65,10 +65,10 @@ export function ProfitCalculator() {
   }
 
   const botMaxReturns = {
-    akira: "hasta 20% mensual",
+    akira: "hasta 40% mensual",
     deus: "hasta 20% mensual",
     scalper: "hasta 15% mensual",
-    atlas: "hasta 40% mensual",
+    atlas: "hasta 70% mensual",
   }
 
   return (
