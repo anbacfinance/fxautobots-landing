@@ -98,33 +98,92 @@ function WalletCard({ crypto, network, address }: { crypto: string; network: str
 
 function PricingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [heights, setHeights] = useState<number[]>([])
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([])
+  const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const minSwipeDistance = 50
+
+  // Medir la altura real de cada slide
+  useEffect(() => {
+    const measure = () => {
+      const measured = slideRefs.current.map((el) => el?.scrollHeight ?? 0)
+      setHeights(measured)
+    }
+    measure()
+    window.addEventListener("resize", measure)
+    return () => window.removeEventListener("resize", measure)
+  }, [])
+
+  // Auto-play: 3s en cada slide
+  const startAutoplay = () => {
+    if (autoplayRef.current) clearTimeout(autoplayRef.current)
+    autoplayRef.current = setTimeout(() => {
+      setCurrentSlide((prev) => (prev + 1) % 2)
+    }, 3000)
+  }
+
+  useEffect(() => {
+    startAutoplay()
+    return () => { if (autoplayRef.current) clearTimeout(autoplayRef.current) }
+  }, [currentSlide])
+
+  const goTo = (index: number) => {
+    setCurrentSlide(index)
+    // Reinicia el autoplay al hacer clic manual
+    if (autoplayRef.current) clearTimeout(autoplayRef.current)
+  }
 
   const onTouchStart = (e: React.TouchEvent) => { setTouchEnd(null); setTouchStart(e.targetTouches[0].clientX) }
   const onTouchMove  = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX)
   const onTouchEnd   = () => {
     if (!touchStart || !touchEnd) return
     const d = touchStart - touchEnd
-    if (d >  minSwipeDistance && currentSlide < 1) setCurrentSlide(1)
-    if (d < -minSwipeDistance && currentSlide > 0) setCurrentSlide(0)
+    if (d >  minSwipeDistance) goTo((currentSlide + 1) % 2)
+    if (d < -minSwipeDistance) goTo((currentSlide - 1 + 2) % 2)
   }
+
+  const currentHeight = heights[currentSlide] ?? "auto"
 
   return (
     <div className="relative">
-      <button onClick={() => setCurrentSlide((p) => (p - 1 + 2) % 2)} className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Anterior">
+      {/* Flechas desktop */}
+      <button
+        onClick={() => goTo((currentSlide - 1 + 2) % 2)}
+        className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
+        aria-label="Anterior"
+      >
         <ChevronLeft className="h-6 w-6" />
       </button>
-      <button onClick={() => setCurrentSlide((p) => (p + 1) % 2)} className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Siguiente">
+      <button
+        onClick={() => goTo((currentSlide + 1) % 2)}
+        className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
+        aria-label="Siguiente"
+      >
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      <div className="overflow-hidden touch-pan-y" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
-        <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-
-          {/* Slide 1 */}
-          <div className="w-full flex-shrink-0 px-4">
+      {/* Contenedor con altura animada según el slide activo */}
+      <div
+        className="overflow-hidden touch-pan-y"
+        style={{
+          height: currentHeight ? `${currentHeight}px` : "auto",
+          transition: "height 500ms cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        <div
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          {/* Slide 1: Bots Individuales */}
+          <div
+            className="w-full flex-shrink-0 px-4"
+            ref={(el) => { slideRefs.current[0] = el }}
+          >
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {bots.map((bot) => (
@@ -139,8 +198,11 @@ function PricingCarousel() {
             </div>
           </div>
 
-          {/* Slide 2 */}
-          <div className="w-full flex-shrink-0 px-4">
+          {/* Slide 2: Packs */}
+          <div
+            className="w-full flex-shrink-0 px-4"
+            ref={(el) => { slideRefs.current[1] = el }}
+          >
             <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
             <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
               {packs.map((pack) => (
@@ -170,44 +232,57 @@ function PricingCarousel() {
         </div>
       </div>
 
+      {/* Hint mobile */}
       <p className="text-center text-xs text-muted-foreground mt-4 md:hidden">Desliza para ver mas opciones</p>
 
-      <div className="flex justify-center gap-2 mt-4">
+      {/* Barra de progreso autoplay */}
+      <div className="flex justify-center gap-3 mt-5">
         {[0, 1].map((i) => (
-          <button key={i} onClick={() => setCurrentSlide(i)} className={`w-3 h-3 rounded-full transition-colors ${currentSlide === i ? "bg-primary" : "bg-muted-foreground/30"}`} aria-label={i === 0 ? "Ver bots individuales" : "Ver packs"} />
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className="relative h-1.5 rounded-full overflow-hidden bg-muted-foreground/20"
+            style={{ width: "64px" }}
+            aria-label={i === 0 ? "Ver bots individuales" : "Ver packs"}
+          >
+            {/* Barra de progreso animada cuando este slide es el activo */}
+            <span
+              className="absolute inset-y-0 left-0 rounded-full bg-primary"
+              style={{
+                width: currentSlide === i ? "100%" : "0%",
+                transition: currentSlide === i ? "width 3000ms linear" : "none",
+              }}
+            />
+          </button>
         ))}
       </div>
 
+      {/* Labels */}
       <div className="flex justify-center gap-8 mt-3 text-sm text-muted-foreground">
-        <button onClick={() => setCurrentSlide(0)} className={`transition-colors ${currentSlide === 0 ? "text-primary font-medium" : ""}`}>Individuales</button>
-        <button onClick={() => setCurrentSlide(1)} className={`transition-colors ${currentSlide === 1 ? "text-primary font-medium" : ""}`}>Packs</button>
+        <button onClick={() => goTo(0)} className={`transition-colors ${currentSlide === 0 ? "text-primary font-medium" : ""}`}>
+          Individuales
+        </button>
+        <button onClick={() => goTo(1)} className={`transition-colors ${currentSlide === 1 ? "text-primary font-medium" : ""}`}>
+          Packs
+        </button>
       </div>
     </div>
   )
 }
 
 // ─── SPLASH + BURBUJA ─────────────────────────────────────────────────────
-//
-//  Fases:
-//  "splash"    0 – 2000ms   pantalla completa azul con pulse
-//  "shrinking" 2000 – 2400ms  se achica hacia la esquina (400ms, velocidad normal)
-//  "tooltip"   2400 – 17400ms tooltip pequeño visible (15s)
-//  "idle"      17400ms+     solo botón, tooltip con hover
 
 type Phase = "splash" | "shrinking" | "tooltip" | "idle"
 
 function TelegramBubble() {
-  const [phase, setPhase]       = useState<Phase>("splash")
+  const [phase, setPhase]             = useState<Phase>("splash")
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    // Splash dura 2s, luego empieza a achicarse
     const t1 = setTimeout(() => setPhase("shrinking"), 2000)
-    // Shrink dura 400ms (velocidad normal de una transición CSS)
     const t2 = setTimeout(() => { setPhase("tooltip"); setTooltipOpen(true) }, 2400)
-    // Tooltip visible 15s
-    const t3 = setTimeout(() => { setPhase("idle"); setTooltipOpen(false) }, 17400)
+    const t3 = setTimeout(() => { setPhase("idle");    setTooltipOpen(false) }, 17400)
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
   }, [])
 
@@ -226,7 +301,6 @@ function TelegramBubble() {
   return (
     <>
       <style>{`
-        /* Anillos de pulse del splash */
         @keyframes tg-ring1 {
           0%   { transform: scale(1);   opacity: 0.55; }
           100% { transform: scale(2.4); opacity: 0; }
@@ -235,12 +309,10 @@ function TelegramBubble() {
           0%   { transform: scale(1);   opacity: 0.35; }
           100% { transform: scale(3.2); opacity: 0; }
         }
-        /* Fade-in del contenido del splash */
         @keyframes tg-fadein {
           from { opacity: 0; transform: translateY(14px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        /* El overlay pasa de pantalla completa a una píldora en la esquina */
         .tg-overlay {
           position: fixed;
           z-index: 9999;
@@ -249,7 +321,6 @@ function TelegramBubble() {
           align-items: center;
           justify-content: center;
           overflow: hidden;
-          /* Cuando está en splash: cubre todo */
           inset: 0;
           border-radius: 0px;
           opacity: 1;
@@ -263,7 +334,6 @@ function TelegramBubble() {
             border-radius 400ms cubic-bezier(0.4, 0, 0.2, 1),
             opacity 300ms ease 100ms;
         }
-        /* Cuando está encogido: píldora pequeña sobre el botón */
         .tg-overlay.shrinking {
           inset: auto;
           bottom: 1.5rem;
@@ -277,51 +347,25 @@ function TelegramBubble() {
         }
       `}</style>
 
-      {/* ── OVERLAY ── */}
       {(phase === "splash" || phase === "shrinking") && (
         <div className={`tg-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
           <div style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "1.75rem",
-            color: "white",
-            textAlign: "center",
-            padding: "2rem",
-            /* El texto desaparece rápido para no verse raro durante el shrink */
+            display: "flex", flexDirection: "column", alignItems: "center",
+            gap: "1.75rem", color: "white", textAlign: "center", padding: "2rem",
             opacity: phase === "splash" ? 1 : 0,
             transition: "opacity 200ms ease",
             animation: phase === "splash" ? "tg-fadein 500ms ease forwards" : "none",
             pointerEvents: "none",
           }}>
-            {/* Ícono con anillos */}
             <div style={{ position: "relative", width: "88px", height: "88px" }}>
-              <div style={{
-                position: "absolute", inset: 0, borderRadius: "9999px",
-                backgroundColor: "rgba(255,255,255,0.22)",
-                animation: "tg-ring1 1.6s ease-out infinite",
-              }} />
-              <div style={{
-                position: "absolute", inset: 0, borderRadius: "9999px",
-                backgroundColor: "rgba(255,255,255,0.12)",
-                animation: "tg-ring2 1.6s ease-out infinite",
-                animationDelay: "0.4s",
-              }} />
-              <div style={{
-                position: "relative", zIndex: 1,
-                width: "88px", height: "88px", borderRadius: "9999px",
-                backgroundColor: "rgba(255,255,255,0.28)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
+              <div style={{ position: "absolute", inset: 0, borderRadius: "9999px", backgroundColor: "rgba(255,255,255,0.22)", animation: "tg-ring1 1.6s ease-out infinite" }} />
+              <div style={{ position: "absolute", inset: 0, borderRadius: "9999px", backgroundColor: "rgba(255,255,255,0.12)", animation: "tg-ring2 1.6s ease-out infinite", animationDelay: "0.4s" }} />
+              <div style={{ position: "relative", zIndex: 1, width: "88px", height: "88px", borderRadius: "9999px", backgroundColor: "rgba(255,255,255,0.28)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <MessageCircle style={{ width: "44px", height: "44px", color: "white" }} />
               </div>
             </div>
-
-            {/* Texto */}
             <div>
-              <p style={{ fontSize: "1.8rem", fontWeight: 700, marginBottom: "0.6rem", letterSpacing: "-0.025em" }}>
-                Asesoramiento incluido
-              </p>
+              <p style={{ fontSize: "1.8rem", fontWeight: 700, marginBottom: "0.6rem", letterSpacing: "-0.025em" }}>Asesoramiento incluido</p>
               <p style={{ fontSize: "1.05rem", opacity: 0.88, maxWidth: "420px", lineHeight: 1.65 }}>
                 Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
               </p>
@@ -330,7 +374,6 @@ function TelegramBubble() {
         </div>
       )}
 
-      {/* ── BURBUJA FLOTANTE ── */}
       <a
         href="https://t.me/fxautobots"
         target="_blank"
@@ -340,12 +383,7 @@ function TelegramBubble() {
         onMouseLeave={handleMouseLeave}
       >
         <div className="relative">
-          {/* Tooltip */}
-          <div className={`
-            absolute bottom-full right-0 mb-3 w-72
-            transition-all duration-500 ease-in-out
-            ${tooltipOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}
-          `}>
+          <div className={`absolute bottom-full right-0 mb-3 w-72 transition-all duration-500 ease-in-out ${tooltipOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}`}>
             <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -362,13 +400,10 @@ function TelegramBubble() {
             </div>
           </div>
 
-          {/* Botón */}
           <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <MessageCircle className="h-5 w-5" />
             <span className="text-sm font-medium">Contactar</span>
           </div>
-
-          {/* Pulse del botón */}
           <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20" />
         </div>
       </a>
@@ -382,7 +417,6 @@ export default function ComprarPage() {
   return (
     <div className="flex min-h-screen flex-col">
 
-      {/* Header */}
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
@@ -419,7 +453,6 @@ export default function ComprarPage() {
 
       <main className="flex-1">
 
-        {/* Hero */}
         <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4">
@@ -431,7 +464,6 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Pricing */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
             <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Precios</h2>
@@ -439,12 +471,10 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Wallets */}
         <section className="w-full py-12 md:py-16 bg-muted">
           <div className="container px-4 md:px-6">
             <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Wallets de Pago</h2>
 
-            {/* USDT */}
             <div className="mb-12">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="h-8 w-8 rounded-full bg-[#26A17B] flex items-center justify-center">
@@ -458,7 +488,6 @@ export default function ComprarPage() {
               </div>
             </div>
 
-            {/* USDC */}
             <div className="mb-12">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="h-8 w-8 rounded-full bg-[#2775CA] flex items-center justify-center">
@@ -471,7 +500,6 @@ export default function ComprarPage() {
               </div>
             </div>
 
-            {/* BTC */}
             <div className="mb-12">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="h-8 w-8 rounded-full bg-[#F7931A] flex items-center justify-center">
@@ -484,7 +512,6 @@ export default function ComprarPage() {
               </div>
             </div>
 
-            {/* ETH */}
             <div className="mb-8">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="h-8 w-8 rounded-full bg-[#627EEA] flex items-center justify-center">
@@ -499,7 +526,6 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Telegram CTA */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
             <Card className="max-w-2xl mx-auto border-primary/20 bg-primary/5">
@@ -526,7 +552,6 @@ export default function ComprarPage() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="w-full border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex items-center gap-2">
