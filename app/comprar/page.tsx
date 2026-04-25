@@ -83,20 +83,15 @@ function WelcomeSplash() {
         @keyframes ws-ring1 { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(2.2);opacity:0} }
         @keyframes ws-ring2 { 0%{transform:scale(1);opacity:.3} 100%{transform:scale(3);opacity:0} }
         @keyframes ws-fadein { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes ws-dots { 0%,80%,100%{transform:scale(0);opacity:0} 40%{transform:scale(1);opacity:1} }
         .ws-overlay {
           position:fixed; inset:0; z-index:9999; background:#0088cc;
           display:flex; align-items:center; justify-content:center; overflow:hidden;
           border-radius:0px; opacity:1;
           transition:
-            top 700ms cubic-bezier(.4,0,.2,1),
-            left 700ms cubic-bezier(.4,0,.2,1),
-            right 700ms cubic-bezier(.4,0,.2,1),
-            bottom 700ms cubic-bezier(.4,0,.2,1),
-            width 700ms cubic-bezier(.4,0,.2,1),
-            height 700ms cubic-bezier(.4,0,.2,1),
-            border-radius 700ms cubic-bezier(.4,0,.2,1),
-            opacity 500ms ease 200ms;
+            top 700ms cubic-bezier(.4,0,.2,1), left 700ms cubic-bezier(.4,0,.2,1),
+            right 700ms cubic-bezier(.4,0,.2,1), bottom 700ms cubic-bezier(.4,0,.2,1),
+            width 700ms cubic-bezier(.4,0,.2,1), height 700ms cubic-bezier(.4,0,.2,1),
+            border-radius 700ms cubic-bezier(.4,0,.2,1), opacity 500ms ease 200ms;
         }
         .ws-overlay.shrinking {
           inset:auto; bottom:1.5rem; right:1.5rem; left:auto; top:auto;
@@ -107,14 +102,12 @@ function WelcomeSplash() {
       <div className={`ws-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
         <div style={{
           display:"flex", flexDirection:"column", alignItems:"center",
-          gap:"1.5rem", color:"white", textAlign:"center", padding:"2rem",
-          maxWidth:"520px",
+          gap:"1.5rem", color:"white", textAlign:"center", padding:"2rem", maxWidth:"520px",
           opacity: phase === "visible" ? 1 : 0,
           transition: "opacity 300ms ease",
           animation: phase === "visible" ? "ws-fadein 600ms ease forwards" : "none",
           pointerEvents: "none",
         }}>
-          {/* Ícono con rings */}
           <div style={{ position:"relative", width:"80px", height:"80px" }}>
             <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.2)", animation:"ws-ring1 1.8s ease-out infinite" }} />
             <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.1)", animation:"ws-ring2 1.8s ease-out infinite", animationDelay:"0.5s" }} />
@@ -122,28 +115,14 @@ function WelcomeSplash() {
               <Sparkles style={{ width:"38px", height:"38px", color:"white" }} />
             </div>
           </div>
-
-          {/* Texto */}
           <div style={{ display:"flex", flexDirection:"column", gap:"0.6rem" }}>
-            <p style={{ fontSize:"1.7rem", fontWeight:800, letterSpacing:"-0.03em", lineHeight:1.2 }}>
-              ¡Bienvenido a nuestra tienda!
-            </p>
-            <p style={{ fontSize:"1rem", opacity:0.9, lineHeight:1.7 }}>
-              Seguí los pasos para hacer tu compra de forma correcta.<br />
-              Cualquier duda, ¡contactanos! Estamos para ayudarte.
-            </p>
+            <p style={{ fontSize:"1.7rem", fontWeight:800, letterSpacing:"-0.03em", lineHeight:1.2 }}>¡Bienvenido a nuestra tienda!</p>
+            <p style={{ fontSize:"1rem", opacity:0.9, lineHeight:1.7 }}>Seguí los pasos para hacer tu compra de forma correcta.<br />Cualquier duda, ¡contactanos! Estamos para ayudarte.</p>
           </div>
-
-          {/* Pasos rápidos */}
           <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem", width:"100%", marginTop:"0.25rem" }}>
-            {[
-              "1. Elegí tu bot o pack",
-              "2. Confirmá y seleccioná cómo pagar",
-              "3. Envianos el comprobante por Telegram",
-            ].map((step) => (
+            {["1. Elegí tu bot o pack", "2. Confirmá y seleccioná cómo pagar", "3. Envianos el comprobante por Telegram"].map((step) => (
               <div key={step} style={{ display:"flex", alignItems:"center", gap:"0.6rem", backgroundColor:"rgba(255,255,255,0.12)", borderRadius:"10px", padding:"0.5rem 0.85rem", fontSize:"0.9rem", textAlign:"left" }}>
-                <span style={{ opacity:0.8 }}>✓</span>
-                <span>{step}</span>
+                <span style={{ opacity:0.8 }}>✓</span><span>{step}</span>
               </div>
             ))}
           </div>
@@ -156,17 +135,14 @@ function WelcomeSplash() {
 // ─── HOOK: PRECIO EN TIEMPO REAL BTC / ETH ────────────────────────────────
 
 function useCryptoPrices() {
-  const [prices, setPrices] = useState<{ btc: number | null; eth: number | null }>({ btc: null, eth: null })
-  const [loading, setLoading] = useState(true)
+  const [prices, setPrices]       = useState<{ btc: number | null; eth: number | null }>({ btc: null, eth: null })
+  const [loading, setLoading]     = useState(true)
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
 
   const fetchPrices = useCallback(async () => {
     try {
       setLoading(true)
-      const res = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd",
-        { cache: "no-store" }
-      )
+      const res  = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd", { cache: "no-store" })
       const data = await res.json()
       setPrices({ btc: data.bitcoin.usd, eth: data.ethereum.usd })
       setLastUpdated(new Date())
@@ -198,7 +174,6 @@ function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice
   return (
     <div className="rounded-xl border bg-card p-4 flex flex-col gap-3">
       <p className="text-sm font-semibold text-muted-foreground">{network}</p>
-
       {cryptoSymbol && (
         <div className="rounded-lg bg-primary/5 border border-primary/15 px-3 py-2 flex items-center justify-between gap-2">
           <div>
@@ -211,7 +186,6 @@ function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice
           <div className="text-2xl">{cryptoSymbol === "BTC" ? "₿" : "Ξ"}</div>
         </div>
       )}
-
       <div className="bg-white rounded-lg p-2 flex justify-center">
         <QRCodeSVG value={address} size={110} level="H" includeMargin={false} />
       </div>
@@ -275,13 +249,8 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
 
           {(activeCrypto === "btc" || activeCrypto === "eth") && (
             <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-              <span>
-                {activeCrypto === "btc"
-                  ? prices.btc ? `1 BTC = $${prices.btc.toLocaleString()} USD` : "Cargando precio..."
-                  : prices.eth ? `1 ETH = $${prices.eth.toLocaleString()} USD` : "Cargando precio..."
-                }
-              </span>
-              <button onClick={refresh} className="flex items-center gap-1 hover:text-primary transition-colors" title="Actualizar precio">
+              <span>{activeCrypto === "btc" ? (prices.btc ? `1 BTC = $${prices.btc.toLocaleString()} USD` : "Cargando precio...") : (prices.eth ? `1 ETH = $${prices.eth.toLocaleString()} USD` : "Cargando precio...")}</span>
+              <button onClick={refresh} className="flex items-center gap-1 hover:text-primary transition-colors">
                 <RefreshCw className={`h-3 w-3 ${loadingPrice ? "animate-spin" : ""}`} />
                 {lastUpdated ? `hace ${Math.floor((Date.now() - lastUpdated.getTime()) / 1000)}s` : ""}
               </button>
@@ -320,12 +289,22 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
 
 // ─── SELECTOR DE PRODUCTO ─────────────────────────────────────────────────
 
-function ProductSelector() {
+function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => void }) {
   const [selected, setSelected]         = useState<string | null>(null)
   const [open, setOpen]                 = useState(false)
   const [modalProduct, setModalProduct] = useState<typeof allProducts[0] | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const selectedProduct = allProducts.find((p) => p.id === selected)
+
+  // Notifica al padre cuando el modal abre o cierra
+  const openModal = (p: typeof allProducts[0]) => {
+    setModalProduct(p)
+    onModalChange(true)
+  }
+  const closeModal = () => {
+    setModalProduct(null)
+    onModalChange(false)
+  }
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -397,7 +376,7 @@ function ProductSelector() {
 
         <button
           disabled={!selectedProduct}
-          onClick={() => selectedProduct && setModalProduct(selectedProduct)}
+          onClick={() => selectedProduct && openModal(selectedProduct)}
           className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base transition-all ${selectedProduct ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg hover:scale-[1.01]" : "bg-muted text-muted-foreground cursor-not-allowed"}`}
         >
           {selectedProduct
@@ -413,7 +392,7 @@ function ProductSelector() {
         )}
       </div>
 
-      {modalProduct && <WalletModal product={modalProduct} onClose={() => setModalProduct(null)} />}
+      {modalProduct && <WalletModal product={modalProduct} onClose={closeModal} />}
     </>
   )
 }
@@ -480,7 +459,6 @@ function PricingCarousel() {
       >
         <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 50}%)`, width: "200%" }}>
 
-          {/* Slide 0 — Bots individuales */}
           <div className="px-4 pb-2" style={{ width: "50%" }} ref={(el) => { slideRefs.current[0] = el }}>
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
@@ -499,7 +477,6 @@ function PricingCarousel() {
             </div>
           </div>
 
-          {/* Slide 1 — Packs */}
           <div className="px-4 pb-2" style={{ width: "50%" }} ref={(el) => { slideRefs.current[1] = el }}>
             <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
             <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
@@ -550,11 +527,19 @@ function PricingCarousel() {
 
 // ─── BURBUJA TELEGRAM ─────────────────────────────────────────────────────
 
-function TelegramBubble() {
+function TelegramBubble({ hidden }: { hidden: boolean }) {
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => () => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) }, [])
+
+  // Cierra el tooltip si el modal se abre
+  useEffect(() => {
+    if (hidden) {
+      setTooltipOpen(false)
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
+    }
+  }, [hidden])
 
   const handleMouseEnter = () => {
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
@@ -565,7 +550,14 @@ function TelegramBubble() {
   }
 
   return (
-    <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <a
+      href="https://t.me/fxautobots"
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${hidden ? "opacity-0 pointer-events-none translate-y-4" : "opacity-100 translate-y-0"}`}
+    >
       <div className="relative">
         <div className={`absolute bottom-full right-0 mb-3 w-72 transition-all duration-500 ease-in-out ${tooltipOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}`}>
           <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
@@ -594,10 +586,11 @@ function TelegramBubble() {
 // ─── PÁGINA ───────────────────────────────────────────────────────────────
 
 export default function ComprarPage() {
+  const [modalOpen, setModalOpen] = useState(false)
+
   return (
     <div className="flex min-h-screen flex-col">
 
-      {/* Splash de bienvenida */}
       <WelcomeSplash />
 
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
@@ -626,7 +619,6 @@ export default function ComprarPage() {
 
       <main className="flex-1">
 
-        {/* Hero */}
         <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4">
@@ -636,18 +628,17 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* 1. Selector de compra — ARRIBA */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl">¿Qué querés comprar?</h2>
               <p className="text-muted-foreground mt-2">Elegí tu bot o pack y te mostramos cómo pagar</p>
             </div>
-            <ProductSelector />
+            {/* Pasa el callback para saber cuándo el modal abre/cierra */}
+            <ProductSelector onModalChange={setModalOpen} />
           </div>
         </section>
 
-        {/* 2. Carousel de precios — ABAJO */}
         <section className="w-full py-12 md:py-16 bg-muted">
           <div className="container px-4 md:px-6">
             <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Precios</h2>
@@ -670,7 +661,9 @@ export default function ComprarPage() {
         </div>
       </footer>
 
-      <TelegramBubble />
+      {/* El botón se oculta con slide-down cuando el modal está abierto */}
+      <TelegramBubble hidden={modalOpen} />
+
     </div>
   )
 }
