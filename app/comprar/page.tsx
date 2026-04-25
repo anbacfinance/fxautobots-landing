@@ -8,7 +8,8 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { MobileNav } from "@/components/mobile-nav"
 import {
   Instagram, MessageCircle, Copy, Check, ExternalLink,
-  ChevronLeft, ChevronRight, Package, X, ChevronDown, ShoppingCart
+  ChevronLeft, ChevronRight, Package, X, ChevronDown,
+  ShoppingCart, RefreshCw
 } from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { QRCodeSVG } from "qrcode.react"
@@ -43,15 +44,14 @@ const packs = [
   },
 ]
 
-// Todos los productos en una lista plana para el selector
 const allProducts = [
-  { id: "akira",    name: "Bot Akira",       price: 120, type: "bot",  tag: "" },
-  { id: "deus",     name: "Bot Deus",        price: 120, type: "bot",  tag: "" },
-  { id: "scalper",  name: "Bot Scalper",     price: 120, type: "bot",  tag: "" },
-  { id: "atlas",    name: "Bot Atlas",       price: 600, type: "bot",  tag: "Premium" },
-  { id: "duo",      name: "Pack Duo",        price: 200, type: "pack", tag: "Ahorra $40" },
-  { id: "completo", name: "Pack Completo",   price: 280, type: "pack", tag: "Mejor oferta" },
-  { id: "ultimate", name: "Pack Ultimate",   price: 850, type: "pack", tag: "Ahorra $210" },
+  { id: "akira",    name: "Bot Akira",     price: 120, type: "bot",  tag: "" },
+  { id: "deus",     name: "Bot Deus",      price: 120, type: "bot",  tag: "" },
+  { id: "scalper",  name: "Bot Scalper",   price: 120, type: "bot",  tag: "" },
+  { id: "atlas",    name: "Bot Atlas",     price: 600, type: "bot",  tag: "Premium" },
+  { id: "duo",      name: "Pack Duo",      price: 200, type: "pack", tag: "Ahorra $40" },
+  { id: "completo", name: "Pack Completo", price: 280, type: "pack", tag: "Mejor oferta" },
+  { id: "ultimate", name: "Pack Ultimate", price: 850, type: "pack", tag: "Ahorra $210" },
 ]
 
 const wallets = {
@@ -63,16 +63,58 @@ const wallets = {
     { network: "BEP20 (BSC)",  address: "0x4aa985333c25c0911088392dbd886558344fd6d3" },
   ],
   btc: [
-    { network: "Bitcoin",      address: "12BA8zHb7o1hga3SmX63sjvMrw23e3SFPa" },
+    { network: "Bitcoin", address: "12BA8zHb7o1hga3SmX63sjvMrw23e3SFPa" },
   ],
   eth: [
-    { network: "Ethereum",     address: "0x4aa985333c25c0911088392dbd886558344fd6d3" },
+    { network: "Ethereum", address: "0x4aa985333c25c0911088392dbd886558344fd6d3" },
   ],
+}
+
+// ─── HOOK: PRECIO EN TIEMPO REAL BTC / ETH ────────────────────────────────
+
+function useCryptoPrices() {
+  const [prices, setPrices] = useState<{ btc: number | null; eth: number | null }>({ btc: null, eth: null })
+  const [loading, setLoading] = useState(true)
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
+
+  const fetch_prices = useCallback(async () => {
+    try {
+      setLoading(true)
+      const res = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd",
+        { cache: "no-store" }
+      )
+      const data = await res.json()
+      setPrices({ btc: data.bitcoin.usd, eth: data.ethereum.usd })
+      setLastUpdated(new Date())
+    } catch {
+      // Silencio si falla, mantiene los valores anteriores
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetch_prices()
+    // Refresca cada 60 segundos
+    const interval = setInterval(fetch_prices, 60_000)
+    return () => clearInterval(interval)
+  }, [fetch_prices])
+
+  return { prices, loading, lastUpdated, refresh: fetch_prices }
 }
 
 // ─── WALLET CARD ──────────────────────────────────────────────────────────
 
-function WalletCard({ network, address }: { network: string; address: string }) {
+function WalletCard({
+  network, address, cryptoAmount, cryptoSymbol, loadingPrice,
+}: {
+  network: string
+  address: string
+  cryptoAmount?: string
+  cryptoSymbol?: string
+  loadingPrice?: boolean
+}) {
   const [copied, setCopied] = useState(false)
   const copy = async () => {
     await navigator.clipboard.writeText(address)
@@ -82,6 +124,24 @@ function WalletCard({ network, address }: { network: string; address: string }) 
   return (
     <div className="rounded-xl border bg-card p-4 flex flex-col gap-3">
       <p className="text-sm font-semibold text-muted-foreground">{network}</p>
+
+      {/* Monto en cripto — solo para BTC y ETH */}
+      {cryptoSymbol && (
+        <div className="rounded-lg bg-primary/5 border border-primary/15 px-3 py-2 flex items-center justify-between gap-2">
+          <div>
+            <p className="text-xs text-muted-foreground mb-0.5">Enviá exactamente</p>
+            {loadingPrice ? (
+              <div className="h-5 w-32 bg-muted animate-pulse rounded" />
+            ) : (
+              <p className="font-bold text-primary tracking-tight">
+                {cryptoAmount} <span className="text-sm font-semibold">{cryptoSymbol}</span>
+              </p>
+            )}
+          </div>
+          <div className="text-2xl">{cryptoSymbol === "BTC" ? "₿" : "Ξ"}</div>
+        </div>
+      )}
+
       <div className="bg-white rounded-lg p-2 flex justify-center">
         <QRCodeSVG value={address} size={110} level="H" includeMargin={false} />
       </div>
@@ -99,12 +159,16 @@ function WalletCard({ network, address }: { network: string; address: string }) 
 
 function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onClose: () => void }) {
   const [activeCrypto, setActiveCrypto] = useState<"usdt" | "usdc" | "btc" | "eth">("usdt")
+  const { prices, loading: loadingPrice, lastUpdated, refresh } = useCryptoPrices()
 
-  // Bloquear scroll del body mientras el modal está abierto
   useEffect(() => {
     document.body.style.overflow = "hidden"
     return () => { document.body.style.overflow = "" }
   }, [])
+
+  // Calcular cuánto cripto hay que enviar
+  const btcAmount = prices.btc ? (product.price / prices.btc).toFixed(6) : null
+  const ethAmount = prices.eth ? (product.price / prices.eth).toFixed(5) : null
 
   const cryptos: { key: "usdt" | "usdc" | "btc" | "eth"; label: string; color: string; symbol: string }[] = [
     { key: "usdt", label: "USDT", color: "#26A17B", symbol: "$" },
@@ -114,30 +178,27 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
   ]
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end md:items-center justify-center"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
-    >
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Panel */}
       <div className="relative z-10 w-full md:max-w-lg max-h-[92vh] overflow-y-auto bg-background rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col">
 
-        {/* Header del modal */}
+        {/* Header */}
         <div className="sticky top-0 bg-background z-10 px-6 pt-5 pb-4 border-b">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Pagar</p>
               <h2 className="text-xl font-bold">{product.name}</h2>
-              <p className="text-2xl font-bold text-primary mt-1">${product.price} <span className="text-sm font-normal text-muted-foreground">USD</span></p>
+              <p className="text-2xl font-bold text-primary mt-1">
+                ${product.price} <span className="text-sm font-normal text-muted-foreground">USD</span>
+              </p>
             </div>
             <button onClick={onClose} className="p-2 rounded-full hover:bg-muted transition-colors mt-1">
               <X className="h-5 w-5" />
             </button>
           </div>
 
-          {/* Selector de cripto */}
+          {/* Tabs de cripto */}
           <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
             {cryptos.map((c) => (
               <button
@@ -149,25 +210,51 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
                     : "border-border bg-muted/40 text-muted-foreground hover:border-primary/40"
                 }`}
               >
-                <span
-                  className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[9px] font-bold"
-                  style={{ backgroundColor: c.color }}
-                >
+                <span className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[9px] font-bold" style={{ backgroundColor: c.color }}>
                   {c.symbol}
                 </span>
                 {c.label}
-                {c.key === "usdt" && (
-                  <span className="text-[9px] bg-green-500/20 text-green-600 dark:text-green-400 px-1 rounded">REC</span>
-                )}
+                {c.key === "usdt" && <span className="text-[9px] bg-green-500/20 text-green-600 dark:text-green-400 px-1 rounded">REC</span>}
               </button>
             ))}
           </div>
+
+          {/* Precio en tiempo real para BTC/ETH */}
+          {(activeCrypto === "btc" || activeCrypto === "eth") && (
+            <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+              <span>
+                {activeCrypto === "btc"
+                  ? prices.btc ? `1 BTC = $${prices.btc.toLocaleString()} USD` : "Cargando precio..."
+                  : prices.eth ? `1 ETH = $${prices.eth.toLocaleString()} USD` : "Cargando precio..."
+                }
+              </span>
+              <button
+                onClick={refresh}
+                className="flex items-center gap-1 hover:text-primary transition-colors"
+                title="Actualizar precio"
+              >
+                <RefreshCw className={`h-3 w-3 ${loadingPrice ? "animate-spin" : ""}`} />
+                {lastUpdated ? `hace ${Math.floor((Date.now() - lastUpdated.getTime()) / 1000)}s` : ""}
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Wallets del cripto seleccionado */}
+        {/* Wallets */}
         <div className="px-6 py-4 flex flex-col gap-3">
           {wallets[activeCrypto].map((w) => (
-            <WalletCard key={w.network} network={w.network} address={w.address} />
+            <WalletCard
+              key={w.network}
+              network={w.network}
+              address={w.address}
+              cryptoAmount={
+                activeCrypto === "btc" ? (btcAmount ?? undefined)
+                : activeCrypto === "eth" ? (ethAmount ?? undefined)
+                : undefined
+              }
+              cryptoSymbol={activeCrypto === "btc" ? "BTC" : activeCrypto === "eth" ? "ETH" : undefined}
+              loadingPrice={loadingPrice}
+            />
           ))}
         </div>
 
@@ -197,19 +284,16 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
 // ─── SELECTOR DE PRODUCTO ─────────────────────────────────────────────────
 
 function ProductSelector() {
-  const [selected, setSelected] = useState<string | null>(null)
-  const [open, setOpen] = useState(false)
+  const [selected, setSelected]       = useState<string | null>(null)
+  const [open, setOpen]               = useState(false)
   const [modalProduct, setModalProduct] = useState<typeof allProducts[0] | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const selectedProduct = allProducts.find((p) => p.id === selected)
 
-  // Cerrar dropdown al hacer click afuera
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setOpen(false)
-      }
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setOpen(false)
     }
     document.addEventListener("mousedown", handler)
     return () => document.removeEventListener("mousedown", handler)
@@ -221,14 +305,10 @@ function ProductSelector() {
   return (
     <>
       <div className="max-w-lg mx-auto flex flex-col gap-4">
-
-        {/* Dropdown */}
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setOpen((o) => !o)}
-            className={`w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl border-2 bg-background text-left transition-all ${
-              open ? "border-primary shadow-md" : "border-border hover:border-primary/40"
-            }`}
+            className={`w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl border-2 bg-background text-left transition-all ${open ? "border-primary shadow-md" : "border-border hover:border-primary/40"}`}
           >
             <div className="flex items-center gap-3">
               <ShoppingCart className="h-5 w-5 text-muted-foreground shrink-0" />
@@ -244,50 +324,32 @@ function ProductSelector() {
             <ChevronDown className={`h-5 w-5 text-muted-foreground shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
           </button>
 
-          {/* Lista desplegable */}
           {open && (
             <div className="absolute top-full left-0 right-0 mt-2 z-20 bg-background border rounded-xl shadow-xl overflow-hidden">
-
-              {/* Bots individuales */}
               <div className="px-3 pt-3 pb-1">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest px-1 mb-2">Bots individuales</p>
                 {bots_list.map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => { setSelected(p.id); setOpen(false) }}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors mb-1 ${
-                      selected === p.id ? "bg-primary/10 text-primary" : "hover:bg-muted"
-                    }`}
+                  <button key={p.id} onClick={() => { setSelected(p.id); setOpen(false) }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors mb-1 ${selected === p.id ? "bg-primary/10 text-primary" : "hover:bg-muted"}`}
                   >
                     <span className="font-medium">{p.name}</span>
                     <div className="flex items-center gap-2">
-                      {p.tag && (
-                        <span className="text-xs bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full">{p.tag}</span>
-                      )}
+                      {p.tag && <span className="text-xs bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full">{p.tag}</span>}
                       <span className="font-bold text-primary">${p.price}</span>
                     </div>
                   </button>
                 ))}
               </div>
-
               <div className="border-t mx-3" />
-
-              {/* Packs */}
               <div className="px-3 pt-2 pb-3">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest px-1 mb-2">Packs con descuento</p>
                 {packs_list.map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => { setSelected(p.id); setOpen(false) }}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors mb-1 ${
-                      selected === p.id ? "bg-primary/10 text-primary" : "hover:bg-muted"
-                    }`}
+                  <button key={p.id} onClick={() => { setSelected(p.id); setOpen(false) }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors mb-1 ${selected === p.id ? "bg-primary/10 text-primary" : "hover:bg-muted"}`}
                   >
                     <span className="font-medium">{p.name}</span>
                     <div className="flex items-center gap-2">
-                      {p.tag && (
-                        <span className="text-xs bg-green-500/10 text-green-600 dark:text-green-400 px-2 py-0.5 rounded-full">{p.tag}</span>
-                      )}
+                      {p.tag && <span className="text-xs bg-green-500/10 text-green-600 dark:text-green-400 px-2 py-0.5 rounded-full">{p.tag}</span>}
                       <span className="font-bold text-primary">${p.price}</span>
                     </div>
                   </button>
@@ -297,7 +359,6 @@ function ProductSelector() {
           )}
         </div>
 
-        {/* Botón confirmar */}
         <button
           disabled={!selectedProduct}
           onClick={() => selectedProduct && setModalProduct(selectedProduct)}
@@ -308,10 +369,7 @@ function ProductSelector() {
           }`}
         >
           {selectedProduct ? (
-            <>
-              <ShoppingCart className="h-5 w-5" />
-              Confirmar — ${selectedProduct.price} USD
-            </>
+            <><ShoppingCart className="h-5 w-5" /> Confirmar — ${selectedProduct.price} USD</>
           ) : (
             "Seleccioná un producto primero"
           )}
@@ -324,10 +382,7 @@ function ProductSelector() {
         )}
       </div>
 
-      {/* Modal */}
-      {modalProduct && (
-        <WalletModal product={modalProduct} onClose={() => setModalProduct(null)} />
-      )}
+      {modalProduct && <WalletModal product={modalProduct} onClose={() => setModalProduct(null)} />}
     </>
   )
 }
@@ -336,16 +391,15 @@ function ProductSelector() {
 
 function PricingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [heights, setHeights] = useState<number[]>([0, 0])
-  const slideRefs = useRef<(HTMLDivElement | null)[]>([null, null])
+  const [heights, setHeights]           = useState<number[]>([0, 0])
+  const slideRefs  = useRef<(HTMLDivElement | null)[]>([null, null])
   const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const [touchStart, setTouchStart] = useState<number | null>(null)
-  const [touchEnd, setTouchEnd]     = useState<number | null>(null)
+  const [touchStart, setTouchStart]     = useState<number | null>(null)
+  const [touchEnd, setTouchEnd]         = useState<number | null>(null)
   const minSwipeDistance = 50
 
   const measureSlides = useCallback(() => {
-    const measured = slideRefs.current.map((el) => el?.offsetHeight ?? 0)
-    setHeights(measured)
+    setHeights(slideRefs.current.map((el) => el?.offsetHeight ?? 0))
   }, [])
 
   useEffect(() => {
@@ -397,16 +451,19 @@ function PricingCarousel() {
       >
         <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 50}%)`, width: "200%" }}>
 
-          {/* Slide 0 — Bots individuales */}
+          {/* Slide 0 — Bots individuales (cards 50% más grandes) */}
           <div className="px-4 pb-2" style={{ width: "50%" }} ref={(el) => { slideRefs.current[0] = el }}>
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {bots.map((bot) => (
                 <Card key={bot.name} className="text-center">
-                  <CardHeader className="pb-2"><CardTitle className="text-lg">{bot.name}</CardTitle></CardHeader>
-                  <CardContent>
-                    <p className="text-3xl font-bold text-primary">${bot.price}</p>
-                    <p className="text-sm text-muted-foreground">USD</p>
+                  <CardHeader className="pb-3 pt-8">
+                    <CardTitle className="text-xl">{bot.name}</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">{bot.description}</p>
+                  </CardHeader>
+                  <CardContent className="pb-8">
+                    <p className="text-4xl font-bold text-primary">${bot.price}</p>
+                    <p className="text-sm text-muted-foreground mt-1">USD</p>
                   </CardContent>
                 </Card>
               ))}
@@ -446,10 +503,9 @@ function PricingCarousel() {
 
       <p className="text-center text-xs text-muted-foreground mt-4 md:hidden">Desliza para ver mas opciones</p>
 
-      {/* Barras de progreso */}
       <div className="flex justify-center gap-3 mt-5">
         {[0, 1].map((i) => (
-          <button key={i} onClick={() => goTo(i)} className="relative h-1.5 rounded-full overflow-hidden bg-muted-foreground/20" style={{ width: "64px" }} aria-label={i === 0 ? "Individuales" : "Packs"}>
+          <button key={i} onClick={() => goTo(i)} className="relative h-1.5 rounded-full overflow-hidden bg-muted-foreground/20" style={{ width: "64px" }}>
             <span className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: currentSlide === i ? "100%" : "0%", transition: currentSlide === i ? "width 3000ms linear" : "none" }} />
           </button>
         ))}
@@ -589,7 +645,6 @@ export default function ComprarPage() {
 
       <main className="flex-1">
 
-        {/* Hero */}
         <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4">
@@ -599,7 +654,6 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Carousel de precios */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
             <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Precios</h2>
@@ -607,7 +661,6 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Selector de compra */}
         <section className="w-full py-12 md:py-16 bg-muted">
           <div className="container px-4 md:px-6">
             <div className="text-center mb-8">
