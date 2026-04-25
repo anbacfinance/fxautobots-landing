@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { MobileNav } from "@/components/mobile-nav"
 import { Instagram, MessageCircle, Copy, Check, ExternalLink, ChevronLeft, ChevronRight, Package } from "lucide-react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { QRCodeSVG } from "qrcode.react"
 
 const bots = [
@@ -65,19 +65,15 @@ const wallets = {
 
 function WalletCard({ crypto, network, address }: { crypto: string; network: string; address: string }) {
   const [copied, setCopied] = useState(false)
-
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(address)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
-
   return (
     <Card className="overflow-hidden">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center justify-between">
-          <span>{network}</span>
-        </CardTitle>
+        <CardTitle className="text-lg"><span>{network}</span></CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
         <div className="bg-white p-3 rounded-lg">
@@ -98,41 +94,53 @@ function WalletCard({ crypto, network, address }: { crypto: string; network: str
 
 function PricingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [heights, setHeights] = useState<number[]>([])
-  const slideRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [heights, setHeights] = useState<number[]>([0, 0])
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([null, null])
   const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const minSwipeDistance = 50
 
-  // Medir la altura real de cada slide
-  useEffect(() => {
-    const measure = () => {
-      const measured = slideRefs.current.map((el) => el?.scrollHeight ?? 0)
-      setHeights(measured)
-    }
-    measure()
-    window.addEventListener("resize", measure)
-    return () => window.removeEventListener("resize", measure)
+  // Medir cada slide de forma independiente con ResizeObserver
+  // Los slides están en un flex-row con overflow hidden, por lo que
+  // aunque el slide 1 esté "fuera de pantalla" sigue teniendo su layout
+  // correcto y podemos leer su offsetHeight.
+  const measureSlides = useCallback(() => {
+    const measured = slideRefs.current.map((el) => {
+      if (!el) return 0
+      // Forzamos que el elemento reporte su altura real aunque esté desplazado
+      return el.offsetHeight
+    })
+    setHeights(measured)
   }, [])
 
-  // Auto-play: 3s en cada slide
-  const startAutoplay = () => {
-    if (autoplayRef.current) clearTimeout(autoplayRef.current)
+  useEffect(() => {
+    // Primer render
+    measureSlides()
+
+    // ResizeObserver en cada slide para detectar cambios de altura
+    const observers: ResizeObserver[] = []
+    slideRefs.current.forEach((el) => {
+      if (!el) return
+      const ro = new ResizeObserver(measureSlides)
+      ro.observe(el)
+      observers.push(ro)
+    })
+
+    return () => observers.forEach((ro) => ro.disconnect())
+  }, [measureSlides])
+
+  // Autoplay 3s por slide
+  useEffect(() => {
     autoplayRef.current = setTimeout(() => {
       setCurrentSlide((prev) => (prev + 1) % 2)
     }, 3000)
-  }
-
-  useEffect(() => {
-    startAutoplay()
     return () => { if (autoplayRef.current) clearTimeout(autoplayRef.current) }
   }, [currentSlide])
 
   const goTo = (index: number) => {
-    setCurrentSlide(index)
-    // Reinicia el autoplay al hacer clic manual
     if (autoplayRef.current) clearTimeout(autoplayRef.current)
+    setCurrentSlide(index)
   }
 
   const onTouchStart = (e: React.TouchEvent) => { setTouchEnd(null); setTouchStart(e.targetTouches[0].clientX) }
@@ -144,44 +152,41 @@ function PricingCarousel() {
     if (d < -minSwipeDistance) goTo((currentSlide - 1 + 2) % 2)
   }
 
-  const currentHeight = heights[currentSlide] ?? "auto"
+  const activeHeight = heights[currentSlide] || "auto"
 
   return (
     <div className="relative">
       {/* Flechas desktop */}
-      <button
-        onClick={() => goTo((currentSlide - 1 + 2) % 2)}
-        className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
-        aria-label="Anterior"
-      >
+      <button onClick={() => goTo((currentSlide - 1 + 2) % 2)} className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Anterior">
         <ChevronLeft className="h-6 w-6" />
       </button>
-      <button
-        onClick={() => goTo((currentSlide + 1) % 2)}
-        className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors"
-        aria-label="Siguiente"
-      >
+      <button onClick={() => goTo((currentSlide + 1) % 2)} className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Siguiente">
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      {/* Contenedor con altura animada según el slide activo */}
+      {/* Wrapper con altura animada exacta al slide activo */}
       <div
-        className="overflow-hidden touch-pan-y"
+        className="overflow-hidden"
         style={{
-          height: currentHeight ? `${currentHeight}px` : "auto",
+          height: activeHeight ? `${activeHeight}px` : "auto",
           transition: "height 500ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
+        {/* Track: los dos slides lado a lado */}
         <div
           className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          style={{
+            transform: `translateX(-${currentSlide * 50}%)`,
+            width: "200%",
+          }}
         >
-          {/* Slide 1: Bots Individuales */}
+          {/* Slide 0 — Bots individuales */}
           <div
-            className="w-full flex-shrink-0 px-4"
+            className="px-4 pb-2"
+            style={{ width: "50%" }}
             ref={(el) => { slideRefs.current[0] = el }}
           >
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
@@ -198,9 +203,10 @@ function PricingCarousel() {
             </div>
           </div>
 
-          {/* Slide 2: Packs */}
+          {/* Slide 1 — Packs */}
           <div
-            className="w-full flex-shrink-0 px-4"
+            className="px-4 pb-2"
+            style={{ width: "50%" }}
             ref={(el) => { slideRefs.current[1] = el }}
           >
             <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
@@ -232,10 +238,9 @@ function PricingCarousel() {
         </div>
       </div>
 
-      {/* Hint mobile */}
       <p className="text-center text-xs text-muted-foreground mt-4 md:hidden">Desliza para ver mas opciones</p>
 
-      {/* Barra de progreso autoplay */}
+      {/* Barras de progreso autoplay */}
       <div className="flex justify-center gap-3 mt-5">
         {[0, 1].map((i) => (
           <button
@@ -245,7 +250,6 @@ function PricingCarousel() {
             style={{ width: "64px" }}
             aria-label={i === 0 ? "Ver bots individuales" : "Ver packs"}
           >
-            {/* Barra de progreso animada cuando este slide es el activo */}
             <span
               className="absolute inset-y-0 left-0 rounded-full bg-primary"
               style={{
@@ -259,12 +263,8 @@ function PricingCarousel() {
 
       {/* Labels */}
       <div className="flex justify-center gap-8 mt-3 text-sm text-muted-foreground">
-        <button onClick={() => goTo(0)} className={`transition-colors ${currentSlide === 0 ? "text-primary font-medium" : ""}`}>
-          Individuales
-        </button>
-        <button onClick={() => goTo(1)} className={`transition-colors ${currentSlide === 1 ? "text-primary font-medium" : ""}`}>
-          Packs
-        </button>
+        <button onClick={() => goTo(0)} className={`transition-colors ${currentSlide === 0 ? "text-primary font-medium" : ""}`}>Individuales</button>
+        <button onClick={() => goTo(1)} className={`transition-colors ${currentSlide === 1 ? "text-primary font-medium" : ""}`}>Packs</button>
       </div>
     </div>
   )
@@ -314,59 +314,47 @@ function TelegramBubble() {
           to   { opacity: 1; transform: translateY(0); }
         }
         .tg-overlay {
-          position: fixed;
-          z-index: 9999;
+          position: fixed; z-index: 9999;
           background-color: #0088cc;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          display: flex; align-items: center; justify-content: center;
           overflow: hidden;
-          inset: 0;
-          border-radius: 0px;
-          opacity: 1;
+          inset: 0; border-radius: 0px; opacity: 1;
           transition:
-            top    400ms cubic-bezier(0.4, 0, 0.2, 1),
-            left   400ms cubic-bezier(0.4, 0, 0.2, 1),
-            right  400ms cubic-bezier(0.4, 0, 0.2, 1),
-            bottom 400ms cubic-bezier(0.4, 0, 0.2, 1),
-            width  400ms cubic-bezier(0.4, 0, 0.2, 1),
-            height 400ms cubic-bezier(0.4, 0, 0.2, 1),
-            border-radius 400ms cubic-bezier(0.4, 0, 0.2, 1),
+            top 400ms cubic-bezier(0.4,0,0.2,1),
+            left 400ms cubic-bezier(0.4,0,0.2,1),
+            right 400ms cubic-bezier(0.4,0,0.2,1),
+            bottom 400ms cubic-bezier(0.4,0,0.2,1),
+            width 400ms cubic-bezier(0.4,0,0.2,1),
+            height 400ms cubic-bezier(0.4,0,0.2,1),
+            border-radius 400ms cubic-bezier(0.4,0,0.2,1),
             opacity 300ms ease 100ms;
         }
         .tg-overlay.shrinking {
-          inset: auto;
-          bottom: 1.5rem;
-          right:  1.5rem;
-          left:   auto;
-          top:    auto;
-          width:  130px;
-          height: 44px;
-          border-radius: 9999px;
-          opacity: 0;
+          inset: auto; bottom: 1.5rem; right: 1.5rem; left: auto; top: auto;
+          width: 130px; height: 44px; border-radius: 9999px; opacity: 0;
         }
       `}</style>
 
       {(phase === "splash" || phase === "shrinking") && (
         <div className={`tg-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
           <div style={{
-            display: "flex", flexDirection: "column", alignItems: "center",
-            gap: "1.75rem", color: "white", textAlign: "center", padding: "2rem",
+            display:"flex", flexDirection:"column", alignItems:"center",
+            gap:"1.75rem", color:"white", textAlign:"center", padding:"2rem",
             opacity: phase === "splash" ? 1 : 0,
             transition: "opacity 200ms ease",
             animation: phase === "splash" ? "tg-fadein 500ms ease forwards" : "none",
             pointerEvents: "none",
           }}>
-            <div style={{ position: "relative", width: "88px", height: "88px" }}>
-              <div style={{ position: "absolute", inset: 0, borderRadius: "9999px", backgroundColor: "rgba(255,255,255,0.22)", animation: "tg-ring1 1.6s ease-out infinite" }} />
-              <div style={{ position: "absolute", inset: 0, borderRadius: "9999px", backgroundColor: "rgba(255,255,255,0.12)", animation: "tg-ring2 1.6s ease-out infinite", animationDelay: "0.4s" }} />
-              <div style={{ position: "relative", zIndex: 1, width: "88px", height: "88px", borderRadius: "9999px", backgroundColor: "rgba(255,255,255,0.28)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <MessageCircle style={{ width: "44px", height: "44px", color: "white" }} />
+            <div style={{ position:"relative", width:"88px", height:"88px" }}>
+              <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.22)", animation:"tg-ring1 1.6s ease-out infinite" }} />
+              <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.12)", animation:"tg-ring2 1.6s ease-out infinite", animationDelay:"0.4s" }} />
+              <div style={{ position:"relative", zIndex:1, width:"88px", height:"88px", borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.28)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <MessageCircle style={{ width:"44px", height:"44px", color:"white" }} />
               </div>
             </div>
             <div>
-              <p style={{ fontSize: "1.8rem", fontWeight: 700, marginBottom: "0.6rem", letterSpacing: "-0.025em" }}>Asesoramiento incluido</p>
-              <p style={{ fontSize: "1.05rem", opacity: 0.88, maxWidth: "420px", lineHeight: 1.65 }}>
+              <p style={{ fontSize:"1.8rem", fontWeight:700, marginBottom:"0.6rem", letterSpacing:"-0.025em" }}>Asesoramiento incluido</p>
+              <p style={{ fontSize:"1.05rem", opacity:0.88, maxWidth:"420px", lineHeight:1.65 }}>
                 Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
               </p>
             </div>
@@ -374,14 +362,7 @@ function TelegramBubble() {
         </div>
       )}
 
-      <a
-        href="https://t.me/fxautobots"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <div className="relative">
           <div className={`absolute bottom-full right-0 mb-3 w-72 transition-all duration-500 ease-in-out ${tooltipOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}`}>
             <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
@@ -391,15 +372,12 @@ function TelegramBubble() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground mb-1">Asesoramiento incluido</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
-                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.</p>
                 </div>
               </div>
               <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-border transform rotate-45" />
             </div>
           </div>
-
           <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <MessageCircle className="h-5 w-5" />
             <span className="text-sm font-medium">Contactar</span>
@@ -432,21 +410,11 @@ export default function ComprarPage() {
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram">
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram">
-                <MessageCircle className="h-5 w-5" />
-              </a>
+              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
+              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
             </div>
             <ThemeToggle />
-            <MobileNav
-              links={[
-                { href: "/", label: "Inicio" },
-                { href: "/backtest", label: "Backtest" },
-                { href: "/tutoriales", label: "Tutoriales" },
-              ]}
-            />
+            <MobileNav links={[{ href: "/", label: "Inicio" }, { href: "/backtest", label: "Backtest" }, { href: "/tutoriales", label: "Tutoriales" }]} />
           </div>
         </div>
       </header>
@@ -457,9 +425,7 @@ export default function ComprarPage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Comprar Bot de Trading</h1>
-              <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                Realiza tu pago en criptomonedas y comienza a operar de forma automatizada
-              </p>
+              <p className="max-w-[700px] text-muted-foreground md:text-xl">Realiza tu pago en criptomonedas y comienza a operar de forma automatizada</p>
             </div>
           </div>
         </section>
@@ -477,9 +443,7 @@ export default function ComprarPage() {
 
             <div className="mb-12">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="h-8 w-8 rounded-full bg-[#26A17B] flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">$</span>
-                </div>
+                <div className="h-8 w-8 rounded-full bg-[#26A17B] flex items-center justify-center"><span className="text-white font-bold text-sm">$</span></div>
                 <h3 className="text-xl font-bold">USDT (Tether)</h3>
                 <span className="px-2 py-1 bg-green-500/20 text-green-600 dark:text-green-400 text-xs font-medium rounded">Recomendado</span>
               </div>
@@ -490,9 +454,7 @@ export default function ComprarPage() {
 
             <div className="mb-12">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="h-8 w-8 rounded-full bg-[#2775CA] flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">$</span>
-                </div>
+                <div className="h-8 w-8 rounded-full bg-[#2775CA] flex items-center justify-center"><span className="text-white font-bold text-sm">$</span></div>
                 <h3 className="text-xl font-bold">USDC</h3>
               </div>
               <div className="grid md:grid-cols-1 gap-4 max-w-md mx-auto">
@@ -502,9 +464,7 @@ export default function ComprarPage() {
 
             <div className="mb-12">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="h-8 w-8 rounded-full bg-[#F7931A] flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">B</span>
-                </div>
+                <div className="h-8 w-8 rounded-full bg-[#F7931A] flex items-center justify-center"><span className="text-white font-bold text-sm">B</span></div>
                 <h3 className="text-xl font-bold">Bitcoin (BTC)</h3>
               </div>
               <div className="grid md:grid-cols-1 gap-4 max-w-md mx-auto">
@@ -514,9 +474,7 @@ export default function ComprarPage() {
 
             <div className="mb-8">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="h-8 w-8 rounded-full bg-[#627EEA] flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">E</span>
-                </div>
+                <div className="h-8 w-8 rounded-full bg-[#627EEA] flex items-center justify-center"><span className="text-white font-bold text-sm">E</span></div>
                 <h3 className="text-xl font-bold">Ethereum (ETH)</h3>
               </div>
               <div className="grid md:grid-cols-1 gap-4 max-w-md mx-auto">
@@ -535,9 +493,7 @@ export default function ComprarPage() {
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-2xl font-bold">Confirma tu pago</h3>
-                  <p className="text-muted-foreground max-w-md">
-                    Una vez realizado el pago, envia el comprobante a nuestro Telegram y te asesoraremos cuanto antes
-                  </p>
+                  <p className="text-muted-foreground max-w-md">Una vez realizado el pago, envia el comprobante a nuestro Telegram y te asesoraremos cuanto antes</p>
                 </div>
                 <Button size="lg" asChild className="gap-2">
                   <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer">
@@ -556,17 +512,11 @@ export default function ComprarPage() {
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex items-center gap-2">
             <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={24} height={24} />
-            <p className="text-center text-sm leading-loose md:text-left">
-              &copy; {new Date().getFullYear()} FXAutoBots. Todos los derechos reservados.
-            </p>
+            <p className="text-center text-sm leading-loose md:text-left">&copy; {new Date().getFullYear()} FXAutoBots. Todos los derechos reservados.</p>
           </div>
           <div className="flex items-center gap-4">
-            <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram">
-              <Instagram className="h-5 w-5" />
-            </a>
-            <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram">
-              <MessageCircle className="h-5 w-5" />
-            </a>
+            <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
+            <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
           </div>
         </div>
       </footer>
