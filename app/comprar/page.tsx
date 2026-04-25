@@ -9,7 +9,7 @@ import { MobileNav } from "@/components/mobile-nav"
 import {
   Instagram, MessageCircle, Copy, Check, ExternalLink,
   ChevronLeft, ChevronRight, Package, X, ChevronDown,
-  ShoppingCart, RefreshCw
+  ShoppingCart, RefreshCw, Sparkles
 } from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { QRCodeSVG } from "qrcode.react"
@@ -59,15 +59,98 @@ const wallets = {
     { network: "TRC20 (Tron)", address: "TQYdX5MWMaMr4jxb37V25WyvjXQ7DLCoY6" },
     { network: "BEP20 (BSC)",  address: "0x4aa985333c25c0911088392dbd886558344fd6d3" },
   ],
-  usdc: [
-    { network: "BEP20 (BSC)",  address: "0x4aa985333c25c0911088392dbd886558344fd6d3" },
-  ],
-  btc: [
-    { network: "Bitcoin", address: "12BA8zHb7o1hga3SmX63sjvMrw23e3SFPa" },
-  ],
-  eth: [
-    { network: "Ethereum", address: "0x4aa985333c25c0911088392dbd886558344fd6d3" },
-  ],
+  usdc: [{ network: "BEP20 (BSC)",  address: "0x4aa985333c25c0911088392dbd886558344fd6d3" }],
+  btc:  [{ network: "Bitcoin",      address: "12BA8zHb7o1hga3SmX63sjvMrw23e3SFPa" }],
+  eth:  [{ network: "Ethereum",     address: "0x4aa985333c25c0911088392dbd886558344fd6d3" }],
+}
+
+// ─── SPLASH DE BIENVENIDA ─────────────────────────────────────────────────
+
+function WelcomeSplash() {
+  const [phase, setPhase] = useState<"visible" | "shrinking" | "gone">("visible")
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setPhase("shrinking"), 3500)
+    const t2 = setTimeout(() => setPhase("gone"), 4200)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
+  }, [])
+
+  if (phase === "gone") return null
+
+  return (
+    <>
+      <style>{`
+        @keyframes ws-ring1 { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(2.2);opacity:0} }
+        @keyframes ws-ring2 { 0%{transform:scale(1);opacity:.3} 100%{transform:scale(3);opacity:0} }
+        @keyframes ws-fadein { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes ws-dots { 0%,80%,100%{transform:scale(0);opacity:0} 40%{transform:scale(1);opacity:1} }
+        .ws-overlay {
+          position:fixed; inset:0; z-index:9999; background:#0088cc;
+          display:flex; align-items:center; justify-content:center; overflow:hidden;
+          border-radius:0px; opacity:1;
+          transition:
+            top 700ms cubic-bezier(.4,0,.2,1),
+            left 700ms cubic-bezier(.4,0,.2,1),
+            right 700ms cubic-bezier(.4,0,.2,1),
+            bottom 700ms cubic-bezier(.4,0,.2,1),
+            width 700ms cubic-bezier(.4,0,.2,1),
+            height 700ms cubic-bezier(.4,0,.2,1),
+            border-radius 700ms cubic-bezier(.4,0,.2,1),
+            opacity 500ms ease 200ms;
+        }
+        .ws-overlay.shrinking {
+          inset:auto; bottom:1.5rem; right:1.5rem; left:auto; top:auto;
+          width:0px; height:0px; border-radius:9999px; opacity:0;
+        }
+      `}</style>
+
+      <div className={`ws-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
+        <div style={{
+          display:"flex", flexDirection:"column", alignItems:"center",
+          gap:"1.5rem", color:"white", textAlign:"center", padding:"2rem",
+          maxWidth:"520px",
+          opacity: phase === "visible" ? 1 : 0,
+          transition: "opacity 300ms ease",
+          animation: phase === "visible" ? "ws-fadein 600ms ease forwards" : "none",
+          pointerEvents: "none",
+        }}>
+          {/* Ícono con rings */}
+          <div style={{ position:"relative", width:"80px", height:"80px" }}>
+            <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.2)", animation:"ws-ring1 1.8s ease-out infinite" }} />
+            <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.1)", animation:"ws-ring2 1.8s ease-out infinite", animationDelay:"0.5s" }} />
+            <div style={{ position:"relative", zIndex:1, width:"80px", height:"80px", borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.25)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <Sparkles style={{ width:"38px", height:"38px", color:"white" }} />
+            </div>
+          </div>
+
+          {/* Texto */}
+          <div style={{ display:"flex", flexDirection:"column", gap:"0.6rem" }}>
+            <p style={{ fontSize:"1.7rem", fontWeight:800, letterSpacing:"-0.03em", lineHeight:1.2 }}>
+              ¡Bienvenido a nuestra tienda!
+            </p>
+            <p style={{ fontSize:"1rem", opacity:0.9, lineHeight:1.7 }}>
+              Seguí los pasos para hacer tu compra de forma correcta.<br />
+              Cualquier duda, ¡contactanos! Estamos para ayudarte.
+            </p>
+          </div>
+
+          {/* Pasos rápidos */}
+          <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem", width:"100%", marginTop:"0.25rem" }}>
+            {[
+              "1. Elegí tu bot o pack",
+              "2. Confirmá y seleccioná cómo pagar",
+              "3. Envianos el comprobante por Telegram",
+            ].map((step) => (
+              <div key={step} style={{ display:"flex", alignItems:"center", gap:"0.6rem", backgroundColor:"rgba(255,255,255,0.12)", borderRadius:"10px", padding:"0.5rem 0.85rem", fontSize:"0.9rem", textAlign:"left" }}>
+                <span style={{ opacity:0.8 }}>✓</span>
+                <span>{step}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  )
 }
 
 // ─── HOOK: PRECIO EN TIEMPO REAL BTC / ETH ────────────────────────────────
@@ -77,7 +160,7 @@ function useCryptoPrices() {
   const [loading, setLoading] = useState(true)
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
 
-  const fetch_prices = useCallback(async () => {
+  const fetchPrices = useCallback(async () => {
     try {
       setLoading(true)
       const res = await fetch(
@@ -87,33 +170,24 @@ function useCryptoPrices() {
       const data = await res.json()
       setPrices({ btc: data.bitcoin.usd, eth: data.ethereum.usd })
       setLastUpdated(new Date())
-    } catch {
-      // Silencio si falla, mantiene los valores anteriores
-    } finally {
-      setLoading(false)
-    }
+    } catch { /* mantiene valores anteriores */ }
+    finally { setLoading(false) }
   }, [])
 
   useEffect(() => {
-    fetch_prices()
-    // Refresca cada 60 segundos
-    const interval = setInterval(fetch_prices, 60_000)
+    fetchPrices()
+    const interval = setInterval(fetchPrices, 60_000)
     return () => clearInterval(interval)
-  }, [fetch_prices])
+  }, [fetchPrices])
 
-  return { prices, loading, lastUpdated, refresh: fetch_prices }
+  return { prices, loading, lastUpdated, refresh: fetchPrices }
 }
 
 // ─── WALLET CARD ──────────────────────────────────────────────────────────
 
-function WalletCard({
-  network, address, cryptoAmount, cryptoSymbol, loadingPrice,
-}: {
-  network: string
-  address: string
-  cryptoAmount?: string
-  cryptoSymbol?: string
-  loadingPrice?: boolean
+function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice }: {
+  network: string; address: string
+  cryptoAmount?: string; cryptoSymbol?: string; loadingPrice?: boolean
 }) {
   const [copied, setCopied] = useState(false)
   const copy = async () => {
@@ -125,18 +199,14 @@ function WalletCard({
     <div className="rounded-xl border bg-card p-4 flex flex-col gap-3">
       <p className="text-sm font-semibold text-muted-foreground">{network}</p>
 
-      {/* Monto en cripto — solo para BTC y ETH */}
       {cryptoSymbol && (
         <div className="rounded-lg bg-primary/5 border border-primary/15 px-3 py-2 flex items-center justify-between gap-2">
           <div>
             <p className="text-xs text-muted-foreground mb-0.5">Enviá exactamente</p>
-            {loadingPrice ? (
-              <div className="h-5 w-32 bg-muted animate-pulse rounded" />
-            ) : (
-              <p className="font-bold text-primary tracking-tight">
-                {cryptoAmount} <span className="text-sm font-semibold">{cryptoSymbol}</span>
-              </p>
-            )}
+            {loadingPrice
+              ? <div className="h-5 w-32 bg-muted animate-pulse rounded" />
+              : <p className="font-bold text-primary tracking-tight">{cryptoAmount} <span className="text-sm font-semibold">{cryptoSymbol}</span></p>
+            }
           </div>
           <div className="text-2xl">{cryptoSymbol === "BTC" ? "₿" : "Ξ"}</div>
         </div>
@@ -158,7 +228,7 @@ function WalletCard({
 // ─── MODAL DE WALLETS ─────────────────────────────────────────────────────
 
 function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onClose: () => void }) {
-  const [activeCrypto, setActiveCrypto] = useState<"usdt" | "usdc" | "btc" | "eth">("usdt")
+  const [activeCrypto, setActiveCrypto] = useState<"usdt"|"usdc"|"btc"|"eth">("usdt")
   const { prices, loading: loadingPrice, lastUpdated, refresh } = useCryptoPrices()
 
   useEffect(() => {
@@ -166,60 +236,43 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
     return () => { document.body.style.overflow = "" }
   }, [])
 
-  // Calcular cuánto cripto hay que enviar
   const btcAmount = prices.btc ? (product.price / prices.btc).toFixed(6) : null
   const ethAmount = prices.eth ? (product.price / prices.eth).toFixed(5) : null
 
-  const cryptos: { key: "usdt" | "usdc" | "btc" | "eth"; label: string; color: string; symbol: string }[] = [
-    { key: "usdt", label: "USDT", color: "#26A17B", symbol: "$" },
-    { key: "usdc", label: "USDC", color: "#2775CA", symbol: "$" },
-    { key: "btc",  label: "BTC",  color: "#F7931A", symbol: "B" },
-    { key: "eth",  label: "ETH",  color: "#627EEA", symbol: "E" },
+  const cryptos = [
+    { key: "usdt" as const, label: "USDT", color: "#26A17B", symbol: "$" },
+    { key: "usdc" as const, label: "USDC", color: "#2775CA", symbol: "$" },
+    { key: "btc"  as const, label: "BTC",  color: "#F7931A", symbol: "B" },
+    { key: "eth"  as const, label: "ETH",  color: "#627EEA", symbol: "E" },
   ]
 
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-
       <div className="relative z-10 w-full md:max-w-lg max-h-[92vh] overflow-y-auto bg-background rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col">
 
-        {/* Header */}
         <div className="sticky top-0 bg-background z-10 px-6 pt-5 pb-4 border-b">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Pagar</p>
               <h2 className="text-xl font-bold">{product.name}</h2>
-              <p className="text-2xl font-bold text-primary mt-1">
-                ${product.price} <span className="text-sm font-normal text-muted-foreground">USD</span>
-              </p>
+              <p className="text-2xl font-bold text-primary mt-1">${product.price} <span className="text-sm font-normal text-muted-foreground">USD</span></p>
             </div>
-            <button onClick={onClose} className="p-2 rounded-full hover:bg-muted transition-colors mt-1">
-              <X className="h-5 w-5" />
-            </button>
+            <button onClick={onClose} className="p-2 rounded-full hover:bg-muted transition-colors mt-1"><X className="h-5 w-5" /></button>
           </div>
 
-          {/* Tabs de cripto */}
           <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
             {cryptos.map((c) => (
-              <button
-                key={c.key}
-                onClick={() => setActiveCrypto(c.key)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
-                  activeCrypto === c.key
-                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                    : "border-border bg-muted/40 text-muted-foreground hover:border-primary/40"
-                }`}
+              <button key={c.key} onClick={() => setActiveCrypto(c.key)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${activeCrypto === c.key ? "border-primary bg-primary text-primary-foreground shadow-sm" : "border-border bg-muted/40 text-muted-foreground hover:border-primary/40"}`}
               >
-                <span className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[9px] font-bold" style={{ backgroundColor: c.color }}>
-                  {c.symbol}
-                </span>
+                <span className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[9px] font-bold" style={{ backgroundColor: c.color }}>{c.symbol}</span>
                 {c.label}
                 {c.key === "usdt" && <span className="text-[9px] bg-green-500/20 text-green-600 dark:text-green-400 px-1 rounded">REC</span>}
               </button>
             ))}
           </div>
 
-          {/* Precio en tiempo real para BTC/ETH */}
           {(activeCrypto === "btc" || activeCrypto === "eth") && (
             <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
               <span>
@@ -228,11 +281,7 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
                   : prices.eth ? `1 ETH = $${prices.eth.toLocaleString()} USD` : "Cargando precio..."
                 }
               </span>
-              <button
-                onClick={refresh}
-                className="flex items-center gap-1 hover:text-primary transition-colors"
-                title="Actualizar precio"
-              >
+              <button onClick={refresh} className="flex items-center gap-1 hover:text-primary transition-colors" title="Actualizar precio">
                 <RefreshCw className={`h-3 w-3 ${loadingPrice ? "animate-spin" : ""}`} />
                 {lastUpdated ? `hace ${Math.floor((Date.now() - lastUpdated.getTime()) / 1000)}s` : ""}
               </button>
@@ -240,34 +289,22 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
           )}
         </div>
 
-        {/* Wallets */}
         <div className="px-6 py-4 flex flex-col gap-3">
           {wallets[activeCrypto].map((w) => (
-            <WalletCard
-              key={w.network}
-              network={w.network}
-              address={w.address}
-              cryptoAmount={
-                activeCrypto === "btc" ? (btcAmount ?? undefined)
-                : activeCrypto === "eth" ? (ethAmount ?? undefined)
-                : undefined
-              }
+            <WalletCard key={w.network} network={w.network} address={w.address}
+              cryptoAmount={activeCrypto === "btc" ? (btcAmount ?? undefined) : activeCrypto === "eth" ? (ethAmount ?? undefined) : undefined}
               cryptoSymbol={activeCrypto === "btc" ? "BTC" : activeCrypto === "eth" ? "ETH" : undefined}
               loadingPrice={loadingPrice}
             />
           ))}
         </div>
 
-        {/* CTA Telegram */}
         <div className="px-6 pb-6 pt-2">
           <div className="rounded-2xl bg-primary/5 border border-primary/15 p-4 flex flex-col gap-3">
-            <p className="text-sm text-muted-foreground text-center">
-              Una vez realizado el pago, enviá el comprobante por Telegram y te damos acceso enseguida.
-            </p>
+            <p className="text-sm text-muted-foreground text-center">Una vez realizado el pago, enviá el comprobante por Telegram y te damos acceso enseguida.</p>
             <a
               href={`https://t.me/fxautobots?text=Hola!%20Acabo%20de%20realizar%20el%20pago%20de%20${encodeURIComponent(product.name)}%20($${product.price}%20USD).%20Les%20env%C3%ADo%20el%20comprobante.`}
-              target="_blank"
-              rel="noopener noreferrer"
+              target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-xl font-medium transition-colors"
             >
               <MessageCircle className="h-5 w-5" />
@@ -284,11 +321,10 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
 // ─── SELECTOR DE PRODUCTO ─────────────────────────────────────────────────
 
 function ProductSelector() {
-  const [selected, setSelected]       = useState<string | null>(null)
-  const [open, setOpen]               = useState(false)
+  const [selected, setSelected]         = useState<string | null>(null)
+  const [open, setOpen]                 = useState(false)
   const [modalProduct, setModalProduct] = useState<typeof allProducts[0] | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-
   const selectedProduct = allProducts.find((p) => p.id === selected)
 
   useEffect(() => {
@@ -362,17 +398,12 @@ function ProductSelector() {
         <button
           disabled={!selectedProduct}
           onClick={() => selectedProduct && setModalProduct(selectedProduct)}
-          className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base transition-all ${
-            selectedProduct
-              ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg hover:scale-[1.01]"
-              : "bg-muted text-muted-foreground cursor-not-allowed"
-          }`}
+          className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base transition-all ${selectedProduct ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg hover:scale-[1.01]" : "bg-muted text-muted-foreground cursor-not-allowed"}`}
         >
-          {selectedProduct ? (
-            <><ShoppingCart className="h-5 w-5" /> Confirmar — ${selectedProduct.price} USD</>
-          ) : (
-            "Seleccioná un producto primero"
-          )}
+          {selectedProduct
+            ? <><ShoppingCart className="h-5 w-5" /> Confirmar — ${selectedProduct.price} USD</>
+            : "Seleccioná un producto primero"
+          }
         </button>
 
         {selectedProduct && (
@@ -392,7 +423,7 @@ function ProductSelector() {
 function PricingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [heights, setHeights]           = useState<number[]>([0, 0])
-  const slideRefs  = useRef<(HTMLDivElement | null)[]>([null, null])
+  const slideRefs   = useRef<(HTMLDivElement | null)[]>([null, null])
   const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [touchStart, setTouchStart]     = useState<number | null>(null)
   const [touchEnd, setTouchEnd]         = useState<number | null>(null)
@@ -433,8 +464,6 @@ function PricingCarousel() {
     if (d < -minSwipeDistance) goTo((currentSlide - 1 + 2) % 2)
   }
 
-  const activeHeight = heights[currentSlide] || "auto"
-
   return (
     <div className="relative">
       <button onClick={() => goTo((currentSlide - 1 + 2) % 2)} className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Anterior">
@@ -446,12 +475,12 @@ function PricingCarousel() {
 
       <div
         className="overflow-hidden"
-        style={{ height: activeHeight ? `${activeHeight}px` : "auto", transition: "height 500ms cubic-bezier(0.4,0,0.2,1)" }}
+        style={{ height: heights[currentSlide] ? `${heights[currentSlide]}px` : "auto", transition: "height 500ms cubic-bezier(0.4,0,0.2,1)" }}
         onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
       >
         <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 50}%)`, width: "200%" }}>
 
-          {/* Slide 0 — Bots individuales (cards 50% más grandes) */}
+          {/* Slide 0 — Bots individuales */}
           <div className="px-4 pb-2" style={{ width: "50%" }} ref={(el) => { slideRefs.current[0] = el }}>
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
@@ -519,97 +548,46 @@ function PricingCarousel() {
   )
 }
 
-// ─── SPLASH + BURBUJA ─────────────────────────────────────────────────────
-
-type Phase = "splash" | "shrinking" | "tooltip" | "idle"
+// ─── BURBUJA TELEGRAM ─────────────────────────────────────────────────────
 
 function TelegramBubble() {
-  const [phase, setPhase]             = useState<Phase>("splash")
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(() => {
-    const t1 = setTimeout(() => setPhase("shrinking"), 2000)
-    const t2 = setTimeout(() => { setPhase("tooltip"); setTooltipOpen(true) }, 2400)
-    const t3 = setTimeout(() => { setPhase("idle");    setTooltipOpen(false) }, 17400)
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
-  }, [])
 
   useEffect(() => () => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) }, [])
 
   const handleMouseEnter = () => {
-    if (phase === "splash" || phase === "shrinking") return
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
     setTooltipOpen(true)
   }
   const handleMouseLeave = () => {
-    if (phase === "splash" || phase === "shrinking") return
     hoverTimerRef.current = setTimeout(() => setTooltipOpen(false), 15000)
   }
 
   return (
-    <>
-      <style>{`
-        @keyframes tg-ring1 { 0% { transform:scale(1); opacity:.55; } 100% { transform:scale(2.4); opacity:0; } }
-        @keyframes tg-ring2 { 0% { transform:scale(1); opacity:.35; } 100% { transform:scale(3.2); opacity:0; } }
-        @keyframes tg-fadein { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
-        .tg-overlay {
-          position:fixed; z-index:9999; background-color:#0088cc;
-          display:flex; align-items:center; justify-content:center; overflow:hidden;
-          inset:0; border-radius:0px; opacity:1;
-          transition: top 400ms cubic-bezier(.4,0,.2,1), left 400ms cubic-bezier(.4,0,.2,1),
-            right 400ms cubic-bezier(.4,0,.2,1), bottom 400ms cubic-bezier(.4,0,.2,1),
-            width 400ms cubic-bezier(.4,0,.2,1), height 400ms cubic-bezier(.4,0,.2,1),
-            border-radius 400ms cubic-bezier(.4,0,.2,1), opacity 300ms ease 100ms;
-        }
-        .tg-overlay.shrinking {
-          inset:auto; bottom:1.5rem; right:1.5rem; left:auto; top:auto;
-          width:130px; height:44px; border-radius:9999px; opacity:0;
-        }
-      `}</style>
-
-      {(phase === "splash" || phase === "shrinking") && (
-        <div className={`tg-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
-          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"1.75rem", color:"white", textAlign:"center", padding:"2rem", opacity:phase==="splash"?1:0, transition:"opacity 200ms ease", animation:phase==="splash"?"tg-fadein 500ms ease forwards":"none", pointerEvents:"none" }}>
-            <div style={{ position:"relative", width:"88px", height:"88px" }}>
-              <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.22)", animation:"tg-ring1 1.6s ease-out infinite" }} />
-              <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.12)", animation:"tg-ring2 1.6s ease-out infinite", animationDelay:"0.4s" }} />
-              <div style={{ position:"relative", zIndex:1, width:"88px", height:"88px", borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.28)", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <MessageCircle style={{ width:"44px", height:"44px", color:"white" }} />
+    <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <div className="relative">
+        <div className={`absolute bottom-full right-0 mb-3 w-72 transition-all duration-500 ease-in-out ${tooltipOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}`}>
+          <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <MessageCircle className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-foreground mb-1">Asesoramiento incluido</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.</p>
               </div>
             </div>
-            <div>
-              <p style={{ fontSize:"1.8rem", fontWeight:700, marginBottom:"0.6rem", letterSpacing:"-0.025em" }}>Asesoramiento incluido</p>
-              <p style={{ fontSize:"1.05rem", opacity:0.88, maxWidth:"420px", lineHeight:1.65 }}>Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.</p>
-            </div>
+            <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-border transform rotate-45" />
           </div>
         </div>
-      )}
-
-      <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <div className="relative">
-          <div className={`absolute bottom-full right-0 mb-3 w-72 transition-all duration-500 ease-in-out ${tooltipOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}`}>
-            <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <MessageCircle className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground mb-1">Asesoramiento incluido</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.</p>
-                </div>
-              </div>
-              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-border transform rotate-45" />
-            </div>
-          </div>
-          <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <MessageCircle className="h-5 w-5" />
-            <span className="text-sm font-medium">Contactar</span>
-          </div>
-          <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20" />
+        <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <MessageCircle className="h-5 w-5" />
+          <span className="text-sm font-medium">Contactar</span>
         </div>
-      </a>
-    </>
+        <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20" />
+      </div>
+    </a>
   )
 }
 
@@ -618,6 +596,9 @@ function TelegramBubble() {
 export default function ComprarPage() {
   return (
     <div className="flex min-h-screen flex-col">
+
+      {/* Splash de bienvenida */}
+      <WelcomeSplash />
 
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center justify-between">
@@ -645,6 +626,7 @@ export default function ComprarPage() {
 
       <main className="flex-1">
 
+        {/* Hero */}
         <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4">
@@ -654,20 +636,22 @@ export default function ComprarPage() {
           </div>
         </section>
 
+        {/* 1. Selector de compra — ARRIBA */}
         <section className="w-full py-12 md:py-16">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Precios</h2>
-            <PricingCarousel />
-          </div>
-        </section>
-
-        <section className="w-full py-12 md:py-16 bg-muted">
           <div className="container px-4 md:px-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl">¿Qué querés comprar?</h2>
               <p className="text-muted-foreground mt-2">Elegí tu bot o pack y te mostramos cómo pagar</p>
             </div>
             <ProductSelector />
+          </div>
+        </section>
+
+        {/* 2. Carousel de precios — ABAJO */}
+        <section className="w-full py-12 md:py-16 bg-muted">
+          <div className="container px-4 md:px-6">
+            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Precios</h2>
+            <PricingCarousel />
           </div>
         </section>
 
