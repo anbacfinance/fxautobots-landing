@@ -2,20 +2,209 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { MobileNav } from "@/components/mobile-nav"
 import {
   Instagram, MessageCircle, Copy, Check, ExternalLink,
   ChevronLeft, ChevronRight, Package, X, ChevronDown,
-  ShoppingCart, RefreshCw, Sparkles
+  ShoppingCart, RefreshCw, Sparkles, Zap
 } from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { QRCodeSVG } from "qrcode.react"
 
-// ─── DATOS ────────────────────────────────────────────────────────────────
+// ─── GLOBAL STYLES (mismo sistema que landing) ────────────────────────────
+const globalStyles = `
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reveal.revealed { opacity: 1; transform: translateY(0); }
+  .reveal-left {
+    opacity: 0; transform: translateX(-40px);
+    transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reveal-left.revealed { opacity: 1; transform: translateX(0); }
+  .reveal-right {
+    opacity: 0; transform: translateX(40px);
+    transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reveal-right.revealed { opacity: 1; transform: translateX(0); }
+  .reveal-scale {
+    opacity: 0; transform: scale(0.93);
+    transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reveal-scale.revealed { opacity: 1; transform: scale(1); }
 
+  .delay-100 { transition-delay: 0.1s; }
+  .delay-200 { transition-delay: 0.2s; }
+  .delay-300 { transition-delay: 0.3s; }
+  .delay-400 { transition-delay: 0.4s; }
+  .delay-500 { transition-delay: 0.5s; }
+
+  .card-hover {
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
+    will-change: transform;
+  }
+  .card-hover:hover {
+    transform: translateY(-6px) scale(1.015);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  }
+
+  .btn-glow {
+    position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-glow::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .btn-glow:hover::after { opacity: 1; }
+  .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .btn-glow:active { transform: translateY(0); }
+
+  #hero-canvas {
+    position: absolute; inset: 0;
+    pointer-events: none; opacity: 0.4;
+  }
+
+  @keyframes badge-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
+    50%       { box-shadow: 0 0 0 10px rgba(59,130,246,0); }
+  }
+  .badge-pulse { animation: badge-pulse 2.5s ease-in-out infinite; }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .ticker-inner { animation: ticker 22s linear infinite; }
+  .ticker-inner:hover { animation-play-state: paused; }
+
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes ws-ring1 { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(2.2);opacity:0} }
+  @keyframes ws-ring2 { 0%{transform:scale(1);opacity:.3} 100%{transform:scale(3);opacity:0} }
+  @keyframes ws-fadein { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  .ws-overlay {
+    position:fixed; inset:0; z-index:9999; background:#0088cc;
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    border-radius:0px; opacity:1;
+    transition:
+      top 700ms cubic-bezier(.4,0,.2,1), left 700ms cubic-bezier(.4,0,.2,1),
+      right 700ms cubic-bezier(.4,0,.2,1), bottom 700ms cubic-bezier(.4,0,.2,1),
+      width 700ms cubic-bezier(.4,0,.2,1), height 700ms cubic-bezier(.4,0,.2,1),
+      border-radius 700ms cubic-bezier(.4,0,.2,1), opacity 500ms ease 200ms;
+  }
+  .ws-overlay.shrinking {
+    inset:auto; bottom:1.5rem; right:1.5rem; left:auto; top:auto;
+    width:0px; height:0px; border-radius:9999px; opacity:0;
+  }
+`
+
+// ─── SCROLL REVEAL HOOK ───────────────────────────────────────────────────
+function useScrollReveal() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("revealed") }),
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    )
+    document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale")
+      .forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+}
+
+// ─── HERO PARTICLES (idénticas a landing) ─────────────────────────────────
+function HeroParticles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    let animId: number
+    const particles: { x: number; y: number; vx: number; vy: number; r: number; alpha: number }[] = []
+
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight }
+    resize()
+    window.addEventListener("resize", resize)
+
+    for (let i = 0; i < 55; i++) {
+      particles.push({
+        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+        r: Math.random() * 2 + 0.5, alpha: Math.random() * 0.5 + 0.1,
+      })
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      particles.forEach((p) => {
+        p.x += p.vx; p.y += p.vy
+        if (p.x < 0) p.x = canvas.width
+        if (p.x > canvas.width) p.x = 0
+        if (p.y < 0) p.y = canvas.height
+        if (p.y > canvas.height) p.y = 0
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(99,102,241,${p.alpha})`
+        ctx.fill()
+      })
+      particles.forEach((a, i) => {
+        particles.slice(i + 1).forEach((b) => {
+          const dist = Math.hypot(a.x - b.x, a.y - b.y)
+          if (dist < 100) {
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y)
+            ctx.strokeStyle = `rgba(99,102,241,${0.12 * (1 - dist / 100)})`
+            ctx.lineWidth = 0.5; ctx.stroke()
+          }
+        })
+      })
+      animId = requestAnimationFrame(draw)
+    }
+    draw()
+    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize) }
+  }, [])
+
+  return <canvas ref={canvasRef} id="hero-canvas" />
+}
+
+// ─── TICKER TAPE ──────────────────────────────────────────────────────────
+function TickerTape() {
+  const items = [
+    "🤖 Bots 100% Automatizados",
+    "💳 Pagá con cripto fácil",
+    "⚡ Acceso inmediato",
+    "🔒 Pago seguro",
+    "📦 Bots individuales y packs",
+    "🛡️ Asesoramiento incluido",
+    "💰 USDT · USDC · BTC · ETH",
+    "🌎 Traders en LATAM & Europa",
+  ]
+  const doubled = [...items, ...items]
+
+  return (
+    <div className="w-full overflow-hidden bg-primary/5 border-b border-primary/10 py-2.5">
+      <div className="ticker-inner flex gap-10 whitespace-nowrap w-max">
+        {doubled.map((item, i) => (
+          <span key={i} className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+            {item}<span className="text-primary/40">·</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── DATOS ────────────────────────────────────────────────────────────────
 const bots = [
   { name: "Bot Akira",   price: 120, description: "Trading automatizado" },
   { name: "Bot Deus",    price: 120, description: "Trading automatizado" },
@@ -24,24 +213,9 @@ const bots = [
 ]
 
 const packs = [
-  {
-    name: "Pack Duo",
-    price: 200, originalPrice: 240, savings: 40,
-    bots: ["Akira o Deus", "Scalper"],
-    badge: "AHORRA $40", badgeColor: "bg-green-500",
-  },
-  {
-    name: "Pack Completo",
-    price: 280, originalPrice: 360, savings: 80,
-    bots: ["Akira", "Deus", "Scalper"],
-    badge: "MEJOR OFERTA", badgeColor: "bg-primary",
-  },
-  {
-    name: "Pack Ultimate",
-    price: 850, originalPrice: 1060, savings: 210,
-    bots: ["Akira", "Deus", "Scalper", "Atlas"],
-    badge: "PACK ULTIMATE", badgeColor: "bg-amber-500",
-  },
+  { name: "Pack Duo",      price: 200, originalPrice: 240, savings: 40,  bots: ["Akira o Deus", "Scalper"],          badge: "AHORRA $40",   badgeColor: "bg-green-500" },
+  { name: "Pack Completo", price: 280, originalPrice: 360, savings: 80,  bots: ["Akira", "Deus", "Scalper"],         badge: "MEJOR OFERTA", badgeColor: "bg-primary" },
+  { name: "Pack Ultimate", price: 850, originalPrice: 1060, savings: 210, bots: ["Akira", "Deus", "Scalper", "Atlas"], badge: "PACK ULTIMATE", badgeColor: "bg-amber-500" },
 ]
 
 const allProducts = [
@@ -65,7 +239,6 @@ const wallets = {
 }
 
 // ─── SPLASH DE BIENVENIDA ─────────────────────────────────────────────────
-
 function WelcomeSplash() {
   const [phase, setPhase] = useState<"visible" | "shrinking" | "gone">("visible")
 
@@ -78,65 +251,42 @@ function WelcomeSplash() {
   if (phase === "gone") return null
 
   return (
-    <>
-      <style>{`
-        @keyframes ws-ring1 { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(2.2);opacity:0} }
-        @keyframes ws-ring2 { 0%{transform:scale(1);opacity:.3} 100%{transform:scale(3);opacity:0} }
-        @keyframes ws-fadein { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-        .ws-overlay {
-          position:fixed; inset:0; z-index:9999; background:#0088cc;
-          display:flex; align-items:center; justify-content:center; overflow:hidden;
-          border-radius:0px; opacity:1;
-          transition:
-            top 700ms cubic-bezier(.4,0,.2,1), left 700ms cubic-bezier(.7,0,.2,1),
-            right 700ms cubic-bezier(.4,0,.2,1), bottom 700ms cubic-bezier(.7,0,.2,1),
-            width 700ms cubic-bezier(.4,0,.2,1), height 700ms cubic-bezier(.7,0,.2,1),
-            border-radius 700ms cubic-bezier(.4,0,.2,1), opacity 500ms ease 200ms;
-        }
-        .ws-overlay.shrinking {
-          inset:auto; bottom:1.5rem; right:1.5rem; left:auto; top:auto;
-          width:0px; height:0px; border-radius:9999px; opacity:0;
-        }
-      `}</style>
-
-      <div className={`ws-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
-        <div style={{
-          display:"flex", flexDirection:"column", alignItems:"center",
-          gap:"1.5rem", color:"white", textAlign:"center", padding:"2rem", maxWidth:"520px",
-          opacity: phase === "visible" ? 1 : 0,
-          transition: "opacity 300ms ease",
-          animation: phase === "visible" ? "ws-fadein 600ms ease forwards" : "none",
-          pointerEvents: "none",
-        }}>
-          <div style={{ position:"relative", width:"80px", height:"80px" }}>
-            <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.2)", animation:"ws-ring1 1.8s ease-out infinite" }} />
-            <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.1)", animation:"ws-ring2 1.8s ease-out infinite", animationDelay:"0.5s" }} />
-            <div style={{ position:"relative", zIndex:1, width:"80px", height:"80px", borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.25)", display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <Sparkles style={{ width:"38px", height:"38px", color:"white" }} />
-            </div>
-          </div>
-          <div style={{ display:"flex", flexDirection:"column", gap:"0.6rem" }}>
-            <p style={{ fontSize:"1.7rem", fontWeight:800, letterSpacing:"-0.03em", lineHeight:1.2 }}>¡Bienvenido a nuestra tienda!</p>
-            <p style={{ fontSize:"1rem", opacity:0.9, lineHeight:1.7 }}>Seguí los pasos para hacer tu compra de forma correcta.<br />Cualquier duda, ¡contactanos! Estamos para ayudarte.</p>
-          </div>
-          <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem", width:"100%", marginTop:"0.25rem" }}>
-            {["1. Elegí tu bot o pack", "2. Confirmá y seleccioná cómo pagar", "3. Envianos el comprobante por Telegram"].map((step) => (
-              <div key={step} style={{ display:"flex", alignItems:"center", gap:"0.6rem", backgroundColor:"rgba(255,255,255,0.12)", borderRadius:"10px", padding:"0.5rem 0.85rem", fontSize:"0.9rem", textAlign:"left" }}>
-                <span style={{ opacity:0.8 }}>✓</span><span>{step}</span>
-              </div>
-            ))}
+    <div className={`ws-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
+      <div style={{
+        display:"flex", flexDirection:"column", alignItems:"center",
+        gap:"1.5rem", color:"white", textAlign:"center", padding:"2rem", maxWidth:"520px",
+        opacity: phase === "visible" ? 1 : 0,
+        transition: "opacity 300ms ease",
+        animation: phase === "visible" ? "ws-fadein 600ms ease forwards" : "none",
+        pointerEvents: "none",
+      }}>
+        <div style={{ position:"relative", width:"80px", height:"80px" }}>
+          <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.2)", animation:"ws-ring1 1.8s ease-out infinite" }} />
+          <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.1)", animation:"ws-ring2 1.8s ease-out infinite", animationDelay:"0.5s" }} />
+          <div style={{ position:"relative", zIndex:1, width:"80px", height:"80px", borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.25)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <Sparkles style={{ width:"38px", height:"38px", color:"white" }} />
           </div>
         </div>
+        <div style={{ display:"flex", flexDirection:"column", gap:"0.6rem" }}>
+          <p style={{ fontSize:"1.7rem", fontWeight:800, letterSpacing:"-0.03em", lineHeight:1.2 }}>¡Bienvenido a nuestra tienda!</p>
+          <p style={{ fontSize:"1rem", opacity:0.9, lineHeight:1.7 }}>Seguí los pasos para hacer tu compra de forma correcta.<br />Cualquier duda, ¡contactanos! Estamos para ayudarte.</p>
+        </div>
+        <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem", width:"100%", marginTop:"0.25rem" }}>
+          {["1. Elegí tu bot o pack", "2. Confirmá y seleccioná cómo pagar", "3. Envianos el comprobante por Telegram"].map((step) => (
+            <div key={step} style={{ display:"flex", alignItems:"center", gap:"0.6rem", backgroundColor:"rgba(255,255,255,0.12)", borderRadius:"10px", padding:"0.5rem 0.85rem", fontSize:"0.9rem", textAlign:"left" }}>
+              <span style={{ opacity:0.8 }}>✓</span><span>{step}</span>
+            </div>
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 
 // ─── HOOK: PRECIO EN TIEMPO REAL BTC / ETH ────────────────────────────────
-
 function useCryptoPrices() {
-  const [prices, setPrices]       = useState<{ btc: number | null; eth: number | null }>({ btc: null, eth: null })
-  const [loading, setLoading]     = useState(true)
+  const [prices, setPrices]           = useState<{ btc: number | null; eth: number | null }>({ btc: null, eth: null })
+  const [loading, setLoading]         = useState(true)
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
 
   const fetchPrices = useCallback(async () => {
@@ -160,7 +310,6 @@ function useCryptoPrices() {
 }
 
 // ─── WALLET CARD ──────────────────────────────────────────────────────────
-
 function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice }: {
   network: string; address: string
   cryptoAmount?: string; cryptoSymbol?: string; loadingPrice?: boolean
@@ -168,8 +317,7 @@ function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice
   const [copied, setCopied] = useState(false)
   const copy = async () => {
     await navigator.clipboard.writeText(address)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    setCopied(true); setTimeout(() => setCopied(false), 2000)
   }
   return (
     <div className="rounded-xl border bg-card p-4 flex flex-col gap-3">
@@ -200,7 +348,6 @@ function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice
 }
 
 // ─── MODAL DE WALLETS ─────────────────────────────────────────────────────
-
 function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onClose: () => void }) {
   const [activeCrypto, setActiveCrypto] = useState<"usdt"|"usdc"|"btc"|"eth">("usdt")
   const { prices, loading: loadingPrice, lastUpdated, refresh } = useCryptoPrices()
@@ -274,7 +421,7 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
             <a
               href={`https://t.me/fxautobots?text=Hola!%20Acabo%20de%20realizar%20el%20pago%20de%20${encodeURIComponent(product.name)}%20($${product.price}%20USD).%20Les%20env%C3%ADo%20el%20comprobante.`}
               target="_blank" rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-xl font-medium transition-colors"
+              className="btn-glow flex items-center justify-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-xl font-medium transition-colors"
             >
               <MessageCircle className="h-5 w-5" />
               Enviar comprobante por Telegram
@@ -288,7 +435,6 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
 }
 
 // ─── SELECTOR DE PRODUCTO ─────────────────────────────────────────────────
-
 function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => void }) {
   const [selected, setSelected]         = useState<string | null>(null)
   const [open, setOpen]                 = useState(false)
@@ -296,15 +442,8 @@ function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => 
   const dropdownRef = useRef<HTMLDivElement>(null)
   const selectedProduct = allProducts.find((p) => p.id === selected)
 
-  // Notifica al padre cuando el modal abre o cierra
-  const openModal = (p: typeof allProducts[0]) => {
-    setModalProduct(p)
-    onModalChange(true)
-  }
-  const closeModal = () => {
-    setModalProduct(null)
-    onModalChange(false)
-  }
+  const openModal = (p: typeof allProducts[0]) => { setModalProduct(p); onModalChange(true) }
+  const closeModal = () => { setModalProduct(null); onModalChange(false) }
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -377,7 +516,7 @@ function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => 
         <button
           disabled={!selectedProduct}
           onClick={() => selectedProduct && openModal(selectedProduct)}
-          className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base transition-all ${selectedProduct ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg hover:scale-[1.01]" : "bg-muted text-muted-foreground cursor-not-allowed"}`}
+          className={`btn-glow w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base transition-all ${selectedProduct ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md" : "bg-muted text-muted-foreground cursor-not-allowed"}`}
         >
           {selectedProduct
             ? <><ShoppingCart className="h-5 w-5" /> Confirmar — ${selectedProduct.price} USD</>
@@ -398,7 +537,6 @@ function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => 
 }
 
 // ─── CAROUSEL DE PRECIOS ──────────────────────────────────────────────────
-
 function PricingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [heights, setHeights]           = useState<number[]>([0, 0])
@@ -418,8 +556,7 @@ function PricingCarousel() {
     slideRefs.current.forEach((el) => {
       if (!el) return
       const ro = new ResizeObserver(measureSlides)
-      ro.observe(el)
-      observers.push(ro)
+      ro.observe(el); observers.push(ro)
     })
     return () => observers.forEach((ro) => ro.disconnect())
   }, [measureSlides])
@@ -429,10 +566,7 @@ function PricingCarousel() {
     return () => { if (autoplayRef.current) clearTimeout(autoplayRef.current) }
   }, [currentSlide])
 
-  const goTo = (i: number) => {
-    if (autoplayRef.current) clearTimeout(autoplayRef.current)
-    setCurrentSlide(i)
-  }
+  const goTo = (i: number) => { if (autoplayRef.current) clearTimeout(autoplayRef.current); setCurrentSlide(i) }
 
   const onTouchStart = (e: React.TouchEvent) => { setTouchEnd(null); setTouchStart(e.targetTouches[0].clientX) }
   const onTouchMove  = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX)
@@ -463,7 +597,7 @@ function PricingCarousel() {
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {bots.map((bot) => (
-                <Card key={bot.name} className="text-center">
+                <Card key={bot.name} className="text-center card-hover">
                   <CardHeader className="pb-3 pt-8">
                     <CardTitle className="text-xl">{bot.name}</CardTitle>
                     <p className="text-sm text-muted-foreground mt-1">{bot.description}</p>
@@ -481,7 +615,7 @@ function PricingCarousel() {
             <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
             <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
               {packs.map((pack) => (
-                <Card key={pack.name} className="text-center relative overflow-hidden md:flex-1 md:max-w-xs">
+                <Card key={pack.name} className="text-center relative overflow-hidden md:flex-1 md:max-w-xs card-hover">
                   <div className={`absolute top-0 right-0 ${pack.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-bl-lg`}>{pack.badge}</div>
                   <CardHeader className="pb-2 pt-8">
                     <div className="flex items-center justify-center gap-2">
@@ -526,36 +660,23 @@ function PricingCarousel() {
 }
 
 // ─── BURBUJA TELEGRAM ─────────────────────────────────────────────────────
-
 function TelegramBubble({ hidden }: { hidden: boolean }) {
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => () => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) }, [])
 
-  // Cierra el tooltip si el modal se abre
   useEffect(() => {
-    if (hidden) {
-      setTooltipOpen(false)
-      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
-    }
+    if (hidden) { setTooltipOpen(false); if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) }
   }, [hidden])
 
-  const handleMouseEnter = () => {
-    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
-    setTooltipOpen(true)
-  }
-  const handleMouseLeave = () => {
-    hoverTimerRef.current = setTimeout(() => setTooltipOpen(false), 15000)
-  }
+  const handleMouseEnter = () => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current); setTooltipOpen(true) }
+  const handleMouseLeave = () => { hoverTimerRef.current = setTimeout(() => setTooltipOpen(false), 15000) }
 
   return (
     <a
-      href="https://t.me/fxautobots"
-      target="_blank"
-      rel="noopener noreferrer"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer"
+      onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
       className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${hidden ? "opacity-0 pointer-events-none translate-y-4" : "opacity-100 translate-y-0"}`}
     >
       <div className="relative">
@@ -573,7 +694,7 @@ function TelegramBubble({ hidden }: { hidden: boolean }) {
             <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-border transform rotate-45" />
           </div>
         </div>
-        <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+        <div className="btn-glow flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
           <MessageCircle className="h-5 w-5" />
           <span className="text-sm font-medium">Contactar</span>
         </div>
@@ -584,32 +705,39 @@ function TelegramBubble({ hidden }: { hidden: boolean }) {
 }
 
 // ─── PÁGINA ───────────────────────────────────────────────────────────────
-
 export default function ComprarPage() {
   const [modalOpen, setModalOpen] = useState(false)
+  useScrollReveal()
 
   return (
     <div className="flex min-h-screen flex-col">
+      <style>{globalStyles}</style>
 
       <WelcomeSplash />
 
+      {/* ── HEADER ── */}
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center">
-              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="md:mr-2" />
+            <Link href="/" className="flex items-center group">
+              <div className="transition-transform duration-300 group-hover:rotate-12">
+                <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="md:mr-2" />
+              </div>
               <span className="font-bold text-xl hidden md:inline">FXAutoBots</span>
             </Link>
           </div>
           <nav className="hidden md:flex gap-6">
-            <Link href="/" className="text-sm font-medium hover:text-primary">Inicio</Link>
-            <Link href="/backtest" className="text-sm font-medium hover:text-primary">Backtest</Link>
-            <Link href="/tutoriales" className="text-sm font-medium hover:text-primary">Tutoriales</Link>
+            {[{ href: "/", label: "Inicio" }, { href: "/backtest", label: "Backtest" }, { href: "/tutoriales", label: "Tutoriales" }].map((link) => (
+              <Link key={link.href} href={link.href} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative group">
+                {link.label}
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+              </Link>
+            ))}
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
-              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
+              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
+              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
             </div>
             <ThemeToggle />
             <MobileNav links={[{ href:"/", label:"Inicio" }, { href:"/backtest", label:"Backtest" }, { href:"/tutoriales", label:"Tutoriales" }]} />
@@ -617,37 +745,64 @@ export default function ComprarPage() {
         </div>
       </header>
 
+      {/* ── TICKER ── */}
+      <TickerTape />
+
       <main className="flex-1">
 
-        <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center text-center space-y-4">
+        {/* ── HERO ── */}
+        <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted relative overflow-hidden">
+          <HeroParticles />
+          {/* Background orbs */}
+          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-1/4 left-1/3 w-48 h-48 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="container px-4 md:px-6 relative z-10">
+            <div className="flex flex-col items-center text-center space-y-4 reveal">
+              {/* Logo con pulse */}
+              <div className="badge-pulse rounded-full mb-2">
+                <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={64} height={64} />
+              </div>
+              {/* Tag */}
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                <Zap className="h-3.5 w-3.5" />
+                Tienda oficial FXAutoBots
+              </div>
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Comprar Bot de Trading</h1>
-              <p className="max-w-[700px] text-muted-foreground md:text-xl">Realiza tu pago en criptomonedas y comienza a operar de forma automatizada</p>
+              <p className="max-w-[700px] text-muted-foreground md:text-xl">Realizá tu pago en criptomonedas y comenzá a operar de forma automatizada</p>
             </div>
           </div>
         </section>
 
+        {/* ── SELECTOR ── */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
-            <div className="text-center mb-8">
+            <div className="text-center mb-8 reveal">
               <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl">¿Qué querés comprar?</h2>
               <p className="text-muted-foreground mt-2">Elegí tu bot o pack y te mostramos cómo pagar</p>
             </div>
-            {/* Pasa el callback para saber cuándo el modal abre/cierra */}
-            <ProductSelector onModalChange={setModalOpen} />
+            <div className="reveal delay-200">
+              <ProductSelector onModalChange={setModalOpen} />
+            </div>
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-16 bg-muted">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Precios</h2>
-            <PricingCarousel />
+        {/* ── CAROUSEL ── */}
+        <section className="w-full py-12 md:py-16 bg-muted relative overflow-hidden">
+          {/* Orb decorativo */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-primary/4 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="container px-4 md:px-6 relative z-10">
+            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8 reveal">Precios</h2>
+            <div className="reveal delay-200">
+              <PricingCarousel />
+            </div>
           </div>
         </section>
 
       </main>
 
+      {/* ── FOOTER ── */}
       <footer className="w-full border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex items-center gap-2">
@@ -655,15 +810,13 @@ export default function ComprarPage() {
             <p className="text-center text-sm leading-loose md:text-left">&copy; {new Date().getFullYear()} FXAutoBots. Todos los derechos reservados.</p>
           </div>
           <div className="flex items-center gap-4">
-            <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
-            <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
+            <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
+            <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
           </div>
         </div>
       </footer>
 
-      {/* El botón se oculta con slide-down cuando el modal está abierto */}
       <TelegramBubble hidden={modalOpen} />
-
     </div>
   )
 }
