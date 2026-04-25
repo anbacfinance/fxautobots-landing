@@ -13,39 +13,24 @@ import {
 import { useState, useEffect, useRef, useCallback } from "react"
 import { QRCodeSVG } from "qrcode.react"
 
-// ─── GLOBAL STYLES (mismo sistema que landing) ────────────────────────────
+// ─── GLOBAL STYLES ────────────────────────────────────────────────────────
 const globalStyles = `
   .reveal {
-    opacity: 0;
-    transform: translateY(32px);
+    opacity: 0; transform: translateY(32px);
     transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
   }
   .reveal.revealed { opacity: 1; transform: translateY(0); }
-  .reveal-left {
-    opacity: 0; transform: translateX(-40px);
-    transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
-  }
-  .reveal-left.revealed { opacity: 1; transform: translateX(0); }
-  .reveal-right {
-    opacity: 0; transform: translateX(40px);
-    transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
-  }
-  .reveal-right.revealed { opacity: 1; transform: translateX(0); }
   .reveal-scale {
     opacity: 0; transform: scale(0.93);
     transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
   }
   .reveal-scale.revealed { opacity: 1; transform: scale(1); }
-
   .delay-100 { transition-delay: 0.1s; }
   .delay-200 { transition-delay: 0.2s; }
   .delay-300 { transition-delay: 0.3s; }
-  .delay-400 { transition-delay: 0.4s; }
-  .delay-500 { transition-delay: 0.5s; }
 
   .card-hover {
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
-    will-change: transform;
   }
   .card-hover:hover {
     transform: translateY(-6px) scale(1.015);
@@ -65,7 +50,7 @@ const globalStyles = `
   .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
   .btn-glow:active { transform: translateY(0); }
 
-  #hero-canvas {
+  #comprar-canvas {
     position: absolute; inset: 0;
     pointer-events: none; opacity: 0.4;
   }
@@ -82,11 +67,6 @@ const globalStyles = `
   }
   .ticker-inner { animation: ticker 22s linear infinite; }
   .ticker-inner:hover { animation-play-state: paused; }
-
-  @keyframes shimmer {
-    0%   { background-position: -200% center; }
-    100% { background-position: 200% center; }
-  }
 
   @keyframes ws-ring1 { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(2.2);opacity:0} }
   @keyframes ws-ring2 { 0%{transform:scale(1);opacity:.3} 100%{transform:scale(3);opacity:0} }
@@ -105,22 +85,39 @@ const globalStyles = `
     inset:auto; bottom:1.5rem; right:1.5rem; left:auto; top:auto;
     width:0px; height:0px; border-radius:9999px; opacity:0;
   }
+
+  /* Slide fade transition */
+  .slide-panel {
+    transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1);
+  }
+  .slide-enter-from-right {
+    opacity: 0; transform: translateX(40px);
+  }
+  .slide-enter-from-left {
+    opacity: 0; transform: translateX(-40px);
+  }
+  .slide-active {
+    opacity: 1; transform: translateX(0);
+  }
+  .slide-exit {
+    opacity: 0; transform: translateX(0);
+  }
 `
 
-// ─── SCROLL REVEAL HOOK ───────────────────────────────────────────────────
+// ─── SCROLL REVEAL ────────────────────────────────────────────────────────
 function useScrollReveal() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("revealed") }),
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
     )
-    document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale")
+    document.querySelectorAll(".reveal, .reveal-scale")
       .forEach((el) => observer.observe(el))
     return () => observer.disconnect()
   }, [])
 }
 
-// ─── HERO PARTICLES (idénticas a landing) ─────────────────────────────────
+// ─── PARTICLES ────────────────────────────────────────────────────────────
 function HeroParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -153,10 +150,8 @@ function HeroParticles() {
         if (p.x > canvas.width) p.x = 0
         if (p.y < 0) p.y = canvas.height
         if (p.y > canvas.height) p.y = 0
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(99,102,241,${p.alpha})`
-        ctx.fill()
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(99,102,241,${p.alpha})`; ctx.fill()
       })
       particles.forEach((a, i) => {
         particles.slice(i + 1).forEach((b) => {
@@ -174,23 +169,18 @@ function HeroParticles() {
     return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize) }
   }, [])
 
-  return <canvas ref={canvasRef} id="hero-canvas" />
+  return <canvas ref={canvasRef} id="comprar-canvas" />
 }
 
-// ─── TICKER TAPE ──────────────────────────────────────────────────────────
+// ─── TICKER ───────────────────────────────────────────────────────────────
 function TickerTape() {
   const items = [
-    "🤖 Bots 100% Automatizados",
-    "💳 Pagá con cripto fácil",
-    "⚡ Acceso inmediato",
-    "🔒 Pago seguro",
-    "📦 Bots individuales y packs",
-    "🛡️ Asesoramiento incluido",
-    "💰 USDT · USDC · BTC · ETH",
-    "🌎 Traders en LATAM & Europa",
+    "🤖 Bots 100% Automatizados", "💳 Pagá con cripto fácil",
+    "⚡ Acceso inmediato", "🔒 Pago seguro",
+    "📦 Bots individuales y packs", "🛡️ Asesoramiento incluido",
+    "💰 USDT · USDC · BTC · ETH", "🌎 Traders en LATAM & Europa",
   ]
   const doubled = [...items, ...items]
-
   return (
     <div className="w-full overflow-hidden bg-primary/5 border-b border-primary/10 py-2.5">
       <div className="ticker-inner flex gap-10 whitespace-nowrap w-max">
@@ -211,13 +201,11 @@ const bots = [
   { name: "Bot Scalper", price: 120, description: "Trading automatizado" },
   { name: "Bot Atlas",   price: 600, description: "Trading premium" },
 ]
-
 const packs = [
-  { name: "Pack Duo",      price: 200, originalPrice: 240, savings: 40,  bots: ["Akira o Deus", "Scalper"],          badge: "AHORRA $40",   badgeColor: "bg-green-500" },
-  { name: "Pack Completo", price: 280, originalPrice: 360, savings: 80,  bots: ["Akira", "Deus", "Scalper"],         badge: "MEJOR OFERTA", badgeColor: "bg-primary" },
+  { name: "Pack Duo",      price: 200, originalPrice: 240,  savings: 40,  bots: ["Akira o Deus", "Scalper"],          badge: "AHORRA $40",   badgeColor: "bg-green-500" },
+  { name: "Pack Completo", price: 280, originalPrice: 360,  savings: 80,  bots: ["Akira", "Deus", "Scalper"],         badge: "MEJOR OFERTA", badgeColor: "bg-primary" },
   { name: "Pack Ultimate", price: 850, originalPrice: 1060, savings: 210, bots: ["Akira", "Deus", "Scalper", "Atlas"], badge: "PACK ULTIMATE", badgeColor: "bg-amber-500" },
 ]
-
 const allProducts = [
   { id: "akira",    name: "Bot Akira",     price: 120, type: "bot",  tag: "" },
   { id: "deus",     name: "Bot Deus",      price: 120, type: "bot",  tag: "" },
@@ -227,7 +215,6 @@ const allProducts = [
   { id: "completo", name: "Pack Completo", price: 280, type: "pack", tag: "Mejor oferta" },
   { id: "ultimate", name: "Pack Ultimate", price: 850, type: "pack", tag: "Ahorra $210" },
 ]
-
 const wallets = {
   usdt: [
     { network: "TRC20 (Tron)", address: "TQYdX5MWMaMr4jxb37V25WyvjXQ7DLCoY6" },
@@ -238,28 +225,18 @@ const wallets = {
   eth:  [{ network: "Ethereum",     address: "0x4aa985333c25c0911088392dbd886558344fd6d3" }],
 }
 
-// ─── SPLASH DE BIENVENIDA ─────────────────────────────────────────────────
+// ─── SPLASH ───────────────────────────────────────────────────────────────
 function WelcomeSplash() {
   const [phase, setPhase] = useState<"visible" | "shrinking" | "gone">("visible")
-
   useEffect(() => {
     const t1 = setTimeout(() => setPhase("shrinking"), 3500)
     const t2 = setTimeout(() => setPhase("gone"), 4200)
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
-
   if (phase === "gone") return null
-
   return (
     <div className={`ws-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
-      <div style={{
-        display:"flex", flexDirection:"column", alignItems:"center",
-        gap:"1.5rem", color:"white", textAlign:"center", padding:"2rem", maxWidth:"520px",
-        opacity: phase === "visible" ? 1 : 0,
-        transition: "opacity 300ms ease",
-        animation: phase === "visible" ? "ws-fadein 600ms ease forwards" : "none",
-        pointerEvents: "none",
-      }}>
+      <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"1.5rem", color:"white", textAlign:"center", padding:"2rem", maxWidth:"520px", opacity:phase==="visible"?1:0, transition:"opacity 300ms ease", animation:phase==="visible"?"ws-fadein 600ms ease forwards":"none", pointerEvents:"none" }}>
         <div style={{ position:"relative", width:"80px", height:"80px" }}>
           <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.2)", animation:"ws-ring1 1.8s ease-out infinite" }} />
           <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.1)", animation:"ws-ring2 1.8s ease-out infinite", animationDelay:"0.5s" }} />
@@ -283,12 +260,11 @@ function WelcomeSplash() {
   )
 }
 
-// ─── HOOK: PRECIO EN TIEMPO REAL BTC / ETH ────────────────────────────────
+// ─── CRYPTO PRICES ────────────────────────────────────────────────────────
 function useCryptoPrices() {
   const [prices, setPrices]           = useState<{ btc: number | null; eth: number | null }>({ btc: null, eth: null })
   const [loading, setLoading]         = useState(true)
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
-
   const fetchPrices = useCallback(async () => {
     try {
       setLoading(true)
@@ -296,29 +272,18 @@ function useCryptoPrices() {
       const data = await res.json()
       setPrices({ btc: data.bitcoin.usd, eth: data.ethereum.usd })
       setLastUpdated(new Date())
-    } catch { /* mantiene valores anteriores */ }
-    finally { setLoading(false) }
+    } catch { /* mantiene */ } finally { setLoading(false) }
   }, [])
-
-  useEffect(() => {
-    fetchPrices()
-    const interval = setInterval(fetchPrices, 60_000)
-    return () => clearInterval(interval)
-  }, [fetchPrices])
-
+  useEffect(() => { fetchPrices(); const iv = setInterval(fetchPrices, 60_000); return () => clearInterval(iv) }, [fetchPrices])
   return { prices, loading, lastUpdated, refresh: fetchPrices }
 }
 
 // ─── WALLET CARD ──────────────────────────────────────────────────────────
 function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice }: {
-  network: string; address: string
-  cryptoAmount?: string; cryptoSymbol?: string; loadingPrice?: boolean
+  network: string; address: string; cryptoAmount?: string; cryptoSymbol?: string; loadingPrice?: boolean
 }) {
   const [copied, setCopied] = useState(false)
-  const copy = async () => {
-    await navigator.clipboard.writeText(address)
-    setCopied(true); setTimeout(() => setCopied(false), 2000)
-  }
+  const copy = async () => { await navigator.clipboard.writeText(address); setCopied(true); setTimeout(() => setCopied(false), 2000) }
   return (
     <div className="rounded-xl border bg-card p-4 flex flex-col gap-3">
       <p className="text-sm font-semibold text-muted-foreground">{network}</p>
@@ -326,10 +291,7 @@ function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice
         <div className="rounded-lg bg-primary/5 border border-primary/15 px-3 py-2 flex items-center justify-between gap-2">
           <div>
             <p className="text-xs text-muted-foreground mb-0.5">Enviá exactamente</p>
-            {loadingPrice
-              ? <div className="h-5 w-32 bg-muted animate-pulse rounded" />
-              : <p className="font-bold text-primary tracking-tight">{cryptoAmount} <span className="text-sm font-semibold">{cryptoSymbol}</span></p>
-            }
+            {loadingPrice ? <div className="h-5 w-32 bg-muted animate-pulse rounded" /> : <p className="font-bold text-primary tracking-tight">{cryptoAmount} <span className="text-sm font-semibold">{cryptoSymbol}</span></p>}
           </div>
           <div className="text-2xl">{cryptoSymbol === "BTC" ? "₿" : "Ξ"}</div>
         </div>
@@ -347,31 +309,23 @@ function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice
   )
 }
 
-// ─── MODAL DE WALLETS ─────────────────────────────────────────────────────
+// ─── MODAL ────────────────────────────────────────────────────────────────
 function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onClose: () => void }) {
   const [activeCrypto, setActiveCrypto] = useState<"usdt"|"usdc"|"btc"|"eth">("usdt")
   const { prices, loading: loadingPrice, lastUpdated, refresh } = useCryptoPrices()
-
-  useEffect(() => {
-    document.body.style.overflow = "hidden"
-    return () => { document.body.style.overflow = "" }
-  }, [])
-
+  useEffect(() => { document.body.style.overflow = "hidden"; return () => { document.body.style.overflow = "" } }, [])
   const btcAmount = prices.btc ? (product.price / prices.btc).toFixed(6) : null
   const ethAmount = prices.eth ? (product.price / prices.eth).toFixed(5) : null
-
   const cryptos = [
     { key: "usdt" as const, label: "USDT", color: "#26A17B", symbol: "$" },
     { key: "usdc" as const, label: "USDC", color: "#2775CA", symbol: "$" },
     { key: "btc"  as const, label: "BTC",  color: "#F7931A", symbol: "B" },
     { key: "eth"  as const, label: "ETH",  color: "#627EEA", symbol: "E" },
   ]
-
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 w-full md:max-w-lg max-h-[92vh] overflow-y-auto bg-background rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col">
-
         <div className="sticky top-0 bg-background z-10 px-6 pt-5 pb-4 border-b">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -381,7 +335,6 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
             </div>
             <button onClick={onClose} className="p-2 rounded-full hover:bg-muted transition-colors mt-1"><X className="h-5 w-5" /></button>
           </div>
-
           <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
             {cryptos.map((c) => (
               <button key={c.key} onClick={() => setActiveCrypto(c.key)}
@@ -393,10 +346,9 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
               </button>
             ))}
           </div>
-
           {(activeCrypto === "btc" || activeCrypto === "eth") && (
             <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-              <span>{activeCrypto === "btc" ? (prices.btc ? `1 BTC = $${prices.btc.toLocaleString()} USD` : "Cargando precio...") : (prices.eth ? `1 ETH = $${prices.eth.toLocaleString()} USD` : "Cargando precio...")}</span>
+              <span>{activeCrypto === "btc" ? (prices.btc ? `1 BTC = $${prices.btc.toLocaleString()} USD` : "Cargando...") : (prices.eth ? `1 ETH = $${prices.eth.toLocaleString()} USD` : "Cargando...")}</span>
               <button onClick={refresh} className="flex items-center gap-1 hover:text-primary transition-colors">
                 <RefreshCw className={`h-3 w-3 ${loadingPrice ? "animate-spin" : ""}`} />
                 {lastUpdated ? `hace ${Math.floor((Date.now() - lastUpdated.getTime()) / 1000)}s` : ""}
@@ -404,7 +356,6 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
             </div>
           )}
         </div>
-
         <div className="px-6 py-4 flex flex-col gap-3">
           {wallets[activeCrypto].map((w) => (
             <WalletCard key={w.network} network={w.network} address={w.address}
@@ -414,7 +365,6 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
             />
           ))}
         </div>
-
         <div className="px-6 pb-6 pt-2">
           <div className="rounded-2xl bg-primary/5 border border-primary/15 p-4 flex flex-col gap-3">
             <p className="text-sm text-muted-foreground text-center">Una vez realizado el pago, enviá el comprobante por Telegram y te damos acceso enseguida.</p>
@@ -423,9 +373,7 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
               target="_blank" rel="noopener noreferrer"
               className="btn-glow flex items-center justify-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-xl font-medium transition-colors"
             >
-              <MessageCircle className="h-5 w-5" />
-              Enviar comprobante por Telegram
-              <ExternalLink className="h-4 w-4" />
+              <MessageCircle className="h-5 w-5" />Enviar comprobante por Telegram<ExternalLink className="h-4 w-4" />
             </a>
           </div>
         </div>
@@ -434,7 +382,7 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
   )
 }
 
-// ─── SELECTOR DE PRODUCTO ─────────────────────────────────────────────────
+// ─── SELECTOR ─────────────────────────────────────────────────────────────
 function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => void }) {
   const [selected, setSelected]         = useState<string | null>(null)
   const [open, setOpen]                 = useState(false)
@@ -442,13 +390,11 @@ function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => 
   const dropdownRef = useRef<HTMLDivElement>(null)
   const selectedProduct = allProducts.find((p) => p.id === selected)
 
-  const openModal = (p: typeof allProducts[0]) => { setModalProduct(p); onModalChange(true) }
+  const openModal  = (p: typeof allProducts[0]) => { setModalProduct(p); onModalChange(true) }
   const closeModal = () => { setModalProduct(null); onModalChange(false) }
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setOpen(false)
-    }
+    const handler = (e: MouseEvent) => { if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setOpen(false) }
     document.addEventListener("mousedown", handler)
     return () => document.removeEventListener("mousedown", handler)
   }, [])
@@ -460,20 +406,14 @@ function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => 
     <>
       <div className="max-w-lg mx-auto flex flex-col gap-4">
         <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={() => setOpen((o) => !o)}
+          <button onClick={() => setOpen((o) => !o)}
             className={`w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl border-2 bg-background text-left transition-all ${open ? "border-primary shadow-md" : "border-border hover:border-primary/40"}`}
           >
             <div className="flex items-center gap-3">
               <ShoppingCart className="h-5 w-5 text-muted-foreground shrink-0" />
               {selectedProduct ? (
-                <div>
-                  <p className="font-semibold leading-tight">{selectedProduct.name}</p>
-                  <p className="text-sm text-primary font-bold">${selectedProduct.price} USD</p>
-                </div>
-              ) : (
-                <span className="text-muted-foreground">Elegí tu bot o pack...</span>
-              )}
+                <div><p className="font-semibold leading-tight">{selectedProduct.name}</p><p className="text-sm text-primary font-bold">${selectedProduct.price} USD</p></div>
+              ) : <span className="text-muted-foreground">Elegí tu bot o pack...</span>}
             </div>
             <ChevronDown className={`h-5 w-5 text-muted-foreground shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
           </button>
@@ -513,15 +453,10 @@ function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => 
           )}
         </div>
 
-        <button
-          disabled={!selectedProduct}
-          onClick={() => selectedProduct && openModal(selectedProduct)}
+        <button disabled={!selectedProduct} onClick={() => selectedProduct && openModal(selectedProduct)}
           className={`btn-glow w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base transition-all ${selectedProduct ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md" : "bg-muted text-muted-foreground cursor-not-allowed"}`}
         >
-          {selectedProduct
-            ? <><ShoppingCart className="h-5 w-5" /> Confirmar — ${selectedProduct.price} USD</>
-            : "Seleccioná un producto primero"
-          }
+          {selectedProduct ? <><ShoppingCart className="h-5 w-5" /> Confirmar — ${selectedProduct.price} USD</> : "Seleccioná un producto primero"}
         </button>
 
         {selectedProduct && (
@@ -530,130 +465,143 @@ function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => 
           </p>
         )}
       </div>
-
       {modalProduct && <WalletModal product={modalProduct} onClose={closeModal} />}
     </>
   )
 }
 
-// ─── CAROUSEL DE PRECIOS ──────────────────────────────────────────────────
+// ─── CAROUSEL — FIXED ─────────────────────────────────────────────────────
+//
+// Fix del bug: en lugar de un flex-row con width:200% (que causaba que el
+// slide oculto se superponiera al modal y cortara el contenido), ahora
+// usamos position:relative en el wrapper y cada slide se renderiza solo
+// cuando está activo, con una transición de fade + slide horizontal.
+// Esto elimina completamente el problema de solapamiento.
+
 function PricingCarousel() {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [heights, setHeights]           = useState<number[]>([0, 0])
-  const slideRefs   = useRef<(HTMLDivElement | null)[]>([null, null])
+  const [current, setCurrent]     = useState(0)
+  const [prev, setPrev]           = useState<number | null>(null)
+  const [direction, setDirection] = useState<"left" | "right">("right")
+  const [animating, setAnimating] = useState(false)
   const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const [touchStart, setTouchStart]     = useState<number | null>(null)
-  const [touchEnd, setTouchEnd]         = useState<number | null>(null)
-  const minSwipeDistance = 50
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd]     = useState<number | null>(null)
 
-  const measureSlides = useCallback(() => {
-    setHeights(slideRefs.current.map((el) => el?.offsetHeight ?? 0))
-  }, [])
+  const goTo = useCallback((next: number, dir: "left" | "right" = "right") => {
+    if (animating || next === current) return
+    if (autoplayRef.current) clearTimeout(autoplayRef.current)
+    setDirection(dir)
+    setPrev(current)
+    setCurrent(next)
+    setAnimating(true)
+    setTimeout(() => { setPrev(null); setAnimating(false) }, 460)
+  }, [animating, current])
 
+  // Autoplay
   useEffect(() => {
-    measureSlides()
-    const observers: ResizeObserver[] = []
-    slideRefs.current.forEach((el) => {
-      if (!el) return
-      const ro = new ResizeObserver(measureSlides)
-      ro.observe(el); observers.push(ro)
-    })
-    return () => observers.forEach((ro) => ro.disconnect())
-  }, [measureSlides])
-
-  useEffect(() => {
-    autoplayRef.current = setTimeout(() => setCurrentSlide((p) => (p + 1) % 2), 3000)
+    autoplayRef.current = setTimeout(() => goTo((current + 1) % 2, "right"), 3000)
     return () => { if (autoplayRef.current) clearTimeout(autoplayRef.current) }
-  }, [currentSlide])
-
-  const goTo = (i: number) => { if (autoplayRef.current) clearTimeout(autoplayRef.current); setCurrentSlide(i) }
+  }, [current, goTo])
 
   const onTouchStart = (e: React.TouchEvent) => { setTouchEnd(null); setTouchStart(e.targetTouches[0].clientX) }
   const onTouchMove  = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX)
   const onTouchEnd   = () => {
     if (!touchStart || !touchEnd) return
     const d = touchStart - touchEnd
-    if (d >  minSwipeDistance) goTo((currentSlide + 1) % 2)
-    if (d < -minSwipeDistance) goTo((currentSlide - 1 + 2) % 2)
+    if (d >  50) goTo((current + 1) % 2, "right")
+    if (d < -50) goTo((current - 1 + 2) % 2, "left")
   }
 
+  // Slide content
+  const slides = [
+    // Slide 0: Bots individuales
+    <div key="bots" className="w-full px-4 pb-2">
+      <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+        {bots.map((bot) => (
+          <Card key={bot.name} className="text-center card-hover">
+            <CardHeader className="pb-3 pt-8">
+              <CardTitle className="text-xl">{bot.name}</CardTitle>
+              <p className="text-sm text-muted-foreground mt-1">{bot.description}</p>
+            </CardHeader>
+            <CardContent className="pb-8">
+              <p className="text-4xl font-bold text-primary">${bot.price}</p>
+              <p className="text-sm text-muted-foreground mt-1">USD</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>,
+
+    // Slide 1: Packs
+    <div key="packs" className="w-full px-4 pb-2">
+      <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
+      <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
+        {packs.map((pack) => (
+          <Card key={pack.name} className="text-center relative overflow-hidden md:flex-1 md:max-w-xs card-hover">
+            <div className={`absolute top-0 right-0 ${pack.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-bl-lg`}>{pack.badge}</div>
+            <CardHeader className="pb-2 pt-8">
+              <div className="flex items-center justify-center gap-2">
+                <Package className={`h-5 w-5 ${pack.name === "Pack Ultimate" ? "text-amber-500" : "text-primary"}`} />
+                <CardTitle className="text-xl">{pack.name}</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div>
+                <p className={`text-3xl font-bold ${pack.name === "Pack Ultimate" ? "text-amber-500" : "text-primary"}`}>${pack.price}</p>
+                <p className="text-sm text-muted-foreground line-through">${pack.originalPrice} USD</p>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                <p className="font-medium mb-1">Incluye:</p>
+                {pack.bots.map((b, i) => <p key={i}>{b}</p>)}
+              </div>
+              <p className="text-green-500 text-sm font-semibold">Ahorras ${pack.savings} USD</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>,
+  ]
+
   return (
-    <div className="relative">
-      <button onClick={() => goTo((currentSlide - 1 + 2) % 2)} className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Anterior">
-        <ChevronLeft className="h-6 w-6" />
-      </button>
-      <button onClick={() => goTo((currentSlide + 1) % 2)} className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Siguiente">
-        <ChevronRight className="h-6 w-6" />
-      </button>
+    <div onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+      {/* Flechas desktop */}
+      <div className="relative">
+        <button onClick={() => goTo((current - 1 + 2) % 2, "left")} className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Anterior">
+          <ChevronLeft className="h-6 w-6" />
+        </button>
+        <button onClick={() => goTo((current + 1) % 2, "right")} className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Siguiente">
+          <ChevronRight className="h-6 w-6" />
+        </button>
 
-      <div
-        className="overflow-hidden"
-        style={{ height: heights[currentSlide] ? `${heights[currentSlide]}px` : "auto", transition: "height 500ms cubic-bezier(0.4,0,0.2,1)" }}
-        onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
-      >
-        <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 50}%)`, width: "200%" }}>
-
-          <div className="px-4 pb-2" style={{ width: "50%" }} ref={(el) => { slideRefs.current[0] = el }}>
-            <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-              {bots.map((bot) => (
-                <Card key={bot.name} className="text-center card-hover">
-                  <CardHeader className="pb-3 pt-8">
-                    <CardTitle className="text-xl">{bot.name}</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">{bot.description}</p>
-                  </CardHeader>
-                  <CardContent className="pb-8">
-                    <p className="text-4xl font-bold text-primary">${bot.price}</p>
-                    <p className="text-sm text-muted-foreground mt-1">USD</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          <div className="px-4 pb-2" style={{ width: "50%" }} ref={(el) => { slideRefs.current[1] = el }}>
-            <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
-            <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
-              {packs.map((pack) => (
-                <Card key={pack.name} className="text-center relative overflow-hidden md:flex-1 md:max-w-xs card-hover">
-                  <div className={`absolute top-0 right-0 ${pack.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-bl-lg`}>{pack.badge}</div>
-                  <CardHeader className="pb-2 pt-8">
-                    <div className="flex items-center justify-center gap-2">
-                      <Package className={`h-5 w-5 ${pack.name === "Pack Ultimate" ? "text-amber-500" : "text-primary"}`} />
-                      <CardTitle className="text-xl">{pack.name}</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <p className={`text-3xl font-bold ${pack.name === "Pack Ultimate" ? "text-amber-500" : "text-primary"}`}>${pack.price}</p>
-                      <p className="text-sm text-muted-foreground line-through">${pack.originalPrice} USD</p>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      <p className="font-medium mb-1">Incluye:</p>
-                      {pack.bots.map((b, i) => <p key={i}>{b}</p>)}
-                    </div>
-                    <p className="text-green-500 text-sm font-semibold">Ahorras ${pack.savings} USD</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
+        {/* Slide activo — sin overflow hidden, sin posición absoluta */}
+        <div
+          className="slide-panel slide-active"
+          style={{
+            opacity: animating ? 0 : 1,
+            transform: animating
+              ? direction === "right" ? "translateX(-20px)" : "translateX(20px)"
+              : "translateX(0)",
+          }}
+        >
+          {slides[current]}
         </div>
       </div>
 
       <p className="text-center text-xs text-muted-foreground mt-4 md:hidden">Desliza para ver mas opciones</p>
 
+      {/* Barras de progreso */}
       <div className="flex justify-center gap-3 mt-5">
         {[0, 1].map((i) => (
-          <button key={i} onClick={() => goTo(i)} className="relative h-1.5 rounded-full overflow-hidden bg-muted-foreground/20" style={{ width: "64px" }}>
-            <span className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: currentSlide === i ? "100%" : "0%", transition: currentSlide === i ? "width 3000ms linear" : "none" }} />
+          <button key={i} onClick={() => goTo(i, i > current ? "right" : "left")} className="relative h-1.5 rounded-full overflow-hidden bg-muted-foreground/20" style={{ width: "64px" }}>
+            <span className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: current === i ? "100%" : "0%", transition: current === i ? "width 3000ms linear" : "none" }} />
           </button>
         ))}
       </div>
 
       <div className="flex justify-center gap-8 mt-3 text-sm text-muted-foreground">
-        <button onClick={() => goTo(0)} className={`transition-colors ${currentSlide === 0 ? "text-primary font-medium" : ""}`}>Individuales</button>
-        <button onClick={() => goTo(1)} className={`transition-colors ${currentSlide === 1 ? "text-primary font-medium" : ""}`}>Packs</button>
+        <button onClick={() => goTo(0, "left")} className={`transition-colors ${current === 0 ? "text-primary font-medium" : ""}`}>Individuales</button>
+        <button onClick={() => goTo(1, "right")} className={`transition-colors ${current === 1 ? "text-primary font-medium" : ""}`}>Packs</button>
       </div>
     </div>
   )
@@ -663,29 +611,21 @@ function PricingCarousel() {
 function TelegramBubble({ hidden }: { hidden: boolean }) {
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
   useEffect(() => () => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) }, [])
-
-  useEffect(() => {
-    if (hidden) { setTooltipOpen(false); if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) }
-  }, [hidden])
-
-  const handleMouseEnter = () => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current); setTooltipOpen(true) }
-  const handleMouseLeave = () => { hoverTimerRef.current = setTimeout(() => setTooltipOpen(false), 15000) }
+  useEffect(() => { if (hidden) { setTooltipOpen(false); if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current) } }, [hidden])
 
   return (
     <a
       href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer"
-      onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => { if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current); setTooltipOpen(true) }}
+      onMouseLeave={() => { hoverTimerRef.current = setTimeout(() => setTooltipOpen(false), 15000) }}
       className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${hidden ? "opacity-0 pointer-events-none translate-y-4" : "opacity-100 translate-y-0"}`}
     >
       <div className="relative">
         <div className={`absolute bottom-full right-0 mb-3 w-72 transition-all duration-500 ease-in-out ${tooltipOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}`}>
           <div className="bg-card border border-border rounded-2xl p-4 shadow-2xl">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <MessageCircle className="h-5 w-5 text-primary" />
-              </div>
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0"><MessageCircle className="h-5 w-5 text-primary" /></div>
               <div>
                 <p className="text-sm font-medium text-foreground mb-1">Asesoramiento incluido</p>
                 <p className="text-xs text-muted-foreground leading-relaxed">Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.</p>
@@ -695,8 +635,7 @@ function TelegramBubble({ hidden }: { hidden: boolean }) {
           </div>
         </div>
         <div className="btn-glow flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-          <MessageCircle className="h-5 w-5" />
-          <span className="text-sm font-medium">Contactar</span>
+          <MessageCircle className="h-5 w-5" /><span className="text-sm font-medium">Contactar</span>
         </div>
         <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20" />
       </div>
@@ -712,22 +651,19 @@ export default function ComprarPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <style>{globalStyles}</style>
-
       <WelcomeSplash />
 
-      {/* ── HEADER ── */}
+      {/* Header */}
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center group">
-              <div className="transition-transform duration-300 group-hover:rotate-12">
-                <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="md:mr-2" />
-              </div>
-              <span className="font-bold text-xl hidden md:inline">FXAutoBots</span>
-            </Link>
-          </div>
+          <Link href="/" className="flex items-center group">
+            <div className="transition-transform duration-300 group-hover:rotate-12">
+              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="md:mr-2" />
+            </div>
+            <span className="font-bold text-xl hidden md:inline">FXAutoBots</span>
+          </Link>
           <nav className="hidden md:flex gap-6">
-            {[{ href: "/", label: "Inicio" }, { href: "/backtest", label: "Backtest" }, { href: "/tutoriales", label: "Tutoriales" }].map((link) => (
+            {[{ href:"/", label:"Inicio" }, { href:"/backtest", label:"Backtest" }, { href:"/tutoriales", label:"Tutoriales" }].map((link) => (
               <Link key={link.href} href={link.href} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative group">
                 {link.label}
                 <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
@@ -745,28 +681,22 @@ export default function ComprarPage() {
         </div>
       </header>
 
-      {/* ── TICKER ── */}
       <TickerTape />
 
       <main className="flex-1">
 
-        {/* ── HERO ── */}
+        {/* Hero con partículas */}
         <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted relative overflow-hidden">
           <HeroParticles />
-          {/* Background orbs */}
           <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-1/4 left-1/3 w-48 h-48 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
-
           <div className="container px-4 md:px-6 relative z-10">
             <div className="flex flex-col items-center text-center space-y-4 reveal">
-              {/* Logo con pulse */}
               <div className="badge-pulse rounded-full mb-2">
                 <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={64} height={64} />
               </div>
-              {/* Tag */}
               <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                <Zap className="h-3.5 w-3.5" />
-                Tienda oficial FXAutoBots
+                <Zap className="h-3.5 w-3.5" />Tienda oficial FXAutoBots
               </div>
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Comprar Bot de Trading</h1>
               <p className="max-w-[700px] text-muted-foreground md:text-xl">Realizá tu pago en criptomonedas y comenzá a operar de forma automatizada</p>
@@ -774,7 +704,7 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* ── SELECTOR ── */}
+        {/* Selector */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
             <div className="text-center mb-8 reveal">
@@ -787,11 +717,9 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* ── CAROUSEL ── */}
-        <section className="w-full py-12 md:py-16 bg-muted relative overflow-hidden">
-          {/* Orb decorativo */}
+        {/* Carousel — sin overflow-hidden en el wrapper exterior */}
+        <section className="w-full py-12 md:py-16 bg-muted relative">
           <div className="absolute top-0 right-0 w-80 h-80 bg-primary/4 rounded-full blur-3xl pointer-events-none" />
-
           <div className="container px-4 md:px-6 relative z-10">
             <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8 reveal">Precios</h2>
             <div className="reveal delay-200">
@@ -802,7 +730,6 @@ export default function ComprarPage() {
 
       </main>
 
-      {/* ── FOOTER ── */}
       <footer className="w-full border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex items-center gap-2">
