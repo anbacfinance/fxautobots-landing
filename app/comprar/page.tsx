@@ -6,91 +6,333 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { MobileNav } from "@/components/mobile-nav"
-import { Instagram, MessageCircle, Copy, Check, ExternalLink, ChevronLeft, ChevronRight, Package } from "lucide-react"
+import {
+  Instagram, MessageCircle, Copy, Check, ExternalLink,
+  ChevronLeft, ChevronRight, Package, X, ChevronDown, ShoppingCart
+} from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { QRCodeSVG } from "qrcode.react"
 
+// ─── DATOS ────────────────────────────────────────────────────────────────
+
 const bots = [
-  { name: "Bot Akira", price: 120, description: "Trading automatizado" },
-  { name: "Bot Deus", price: 120, description: "Trading automatizado" },
+  { name: "Bot Akira",   price: 120, description: "Trading automatizado" },
+  { name: "Bot Deus",    price: 120, description: "Trading automatizado" },
   { name: "Bot Scalper", price: 120, description: "Trading automatizado" },
-  { name: "Bot Atlas", price: 600, description: "Trading premium" },
+  { name: "Bot Atlas",   price: 600, description: "Trading premium" },
 ]
 
 const packs = [
   {
     name: "Pack Duo",
-    price: 200,
-    originalPrice: 240,
-    savings: 40,
+    price: 200, originalPrice: 240, savings: 40,
     bots: ["Akira o Deus", "Scalper"],
-    badge: "AHORRA $40",
-    badgeColor: "bg-green-500",
+    badge: "AHORRA $40", badgeColor: "bg-green-500",
   },
   {
     name: "Pack Completo",
-    price: 280,
-    originalPrice: 360,
-    savings: 80,
+    price: 280, originalPrice: 360, savings: 80,
     bots: ["Akira", "Deus", "Scalper"],
-    badge: "MEJOR OFERTA",
-    badgeColor: "bg-primary",
+    badge: "MEJOR OFERTA", badgeColor: "bg-primary",
   },
   {
     name: "Pack Ultimate",
-    price: 850,
-    originalPrice: 1060,
-    savings: 210,
+    price: 850, originalPrice: 1060, savings: 210,
     bots: ["Akira", "Deus", "Scalper", "Atlas"],
-    badge: "PACK ULTIMATE",
-    badgeColor: "bg-amber-500",
+    badge: "PACK ULTIMATE", badgeColor: "bg-amber-500",
   },
+]
+
+// Todos los productos en una lista plana para el selector
+const allProducts = [
+  { id: "akira",    name: "Bot Akira",       price: 120, type: "bot",  tag: "" },
+  { id: "deus",     name: "Bot Deus",        price: 120, type: "bot",  tag: "" },
+  { id: "scalper",  name: "Bot Scalper",     price: 120, type: "bot",  tag: "" },
+  { id: "atlas",    name: "Bot Atlas",       price: 600, type: "bot",  tag: "Premium" },
+  { id: "duo",      name: "Pack Duo",        price: 200, type: "pack", tag: "Ahorra $40" },
+  { id: "completo", name: "Pack Completo",   price: 280, type: "pack", tag: "Mejor oferta" },
+  { id: "ultimate", name: "Pack Ultimate",   price: 850, type: "pack", tag: "Ahorra $210" },
 ]
 
 const wallets = {
   usdt: [
-    { network: "TRC20 (Tron)", address: "TQYdX5MWMaMr4jxb37V25WyvjXQ7DLCoY6", icon: "🔴" },
-    { network: "BEP20 (BSC)", address: "0x4aa985333c25c0911088392dbd886558344fd6d3", icon: "🟡" },
+    { network: "TRC20 (Tron)", address: "TQYdX5MWMaMr4jxb37V25WyvjXQ7DLCoY6" },
+    { network: "BEP20 (BSC)",  address: "0x4aa985333c25c0911088392dbd886558344fd6d3" },
   ],
   usdc: [
-    { network: "BEP20 (BSC)", address: "0x4aa985333c25c0911088392dbd886558344fd6d3", icon: "🟡" },
+    { network: "BEP20 (BSC)",  address: "0x4aa985333c25c0911088392dbd886558344fd6d3" },
   ],
   btc: [
-    { network: "Bitcoin", address: "12BA8zHb7o1hga3SmX63sjvMrw23e3SFPa", icon: "🟠" },
+    { network: "Bitcoin",      address: "12BA8zHb7o1hga3SmX63sjvMrw23e3SFPa" },
   ],
   eth: [
-    { network: "Ethereum", address: "0x4aa985333c25c0911088392dbd886558344fd6d3", icon: "🔵" },
+    { network: "Ethereum",     address: "0x4aa985333c25c0911088392dbd886558344fd6d3" },
   ],
 }
 
-function WalletCard({ crypto, network, address }: { crypto: string; network: string; address: string }) {
+// ─── WALLET CARD ──────────────────────────────────────────────────────────
+
+function WalletCard({ network, address }: { network: string; address: string }) {
   const [copied, setCopied] = useState(false)
-  const copyToClipboard = async () => {
+  const copy = async () => {
     await navigator.clipboard.writeText(address)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
   return (
-    <Card className="overflow-hidden">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg"><span>{network}</span></CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4">
-        <div className="bg-white p-3 rounded-lg">
-          <QRCodeSVG value={address} size={140} level="H" includeMargin={false} />
-        </div>
-        <div className="w-full">
-          <div className="flex items-center gap-2 bg-muted p-2 rounded-lg">
-            <code className="text-xs flex-1 break-all font-mono">{address}</code>
-            <Button variant="ghost" size="icon" className="shrink-0 h-8 w-8" onClick={copyToClipboard}>
-              {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-            </Button>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="rounded-xl border bg-card p-4 flex flex-col gap-3">
+      <p className="text-sm font-semibold text-muted-foreground">{network}</p>
+      <div className="bg-white rounded-lg p-2 flex justify-center">
+        <QRCodeSVG value={address} size={110} level="H" includeMargin={false} />
+      </div>
+      <div className="flex items-center gap-2 bg-muted p-2 rounded-lg">
+        <code className="text-xs flex-1 break-all font-mono">{address}</code>
+        <button onClick={copy} className="shrink-0 p-1 rounded hover:bg-muted-foreground/10 transition-colors">
+          {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4 text-muted-foreground" />}
+        </button>
+      </div>
+    </div>
   )
 }
+
+// ─── MODAL DE WALLETS ─────────────────────────────────────────────────────
+
+function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onClose: () => void }) {
+  const [activeCrypto, setActiveCrypto] = useState<"usdt" | "usdc" | "btc" | "eth">("usdt")
+
+  // Bloquear scroll del body mientras el modal está abierto
+  useEffect(() => {
+    document.body.style.overflow = "hidden"
+    return () => { document.body.style.overflow = "" }
+  }, [])
+
+  const cryptos: { key: "usdt" | "usdc" | "btc" | "eth"; label: string; color: string; symbol: string }[] = [
+    { key: "usdt", label: "USDT", color: "#26A17B", symbol: "$" },
+    { key: "usdc", label: "USDC", color: "#2775CA", symbol: "$" },
+    { key: "btc",  label: "BTC",  color: "#F7931A", symbol: "B" },
+    { key: "eth",  label: "ETH",  color: "#627EEA", symbol: "E" },
+  ]
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end md:items-center justify-center"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+
+      {/* Panel */}
+      <div className="relative z-10 w-full md:max-w-lg max-h-[92vh] overflow-y-auto bg-background rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col">
+
+        {/* Header del modal */}
+        <div className="sticky top-0 bg-background z-10 px-6 pt-5 pb-4 border-b">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Pagar</p>
+              <h2 className="text-xl font-bold">{product.name}</h2>
+              <p className="text-2xl font-bold text-primary mt-1">${product.price} <span className="text-sm font-normal text-muted-foreground">USD</span></p>
+            </div>
+            <button onClick={onClose} className="p-2 rounded-full hover:bg-muted transition-colors mt-1">
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Selector de cripto */}
+          <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
+            {cryptos.map((c) => (
+              <button
+                key={c.key}
+                onClick={() => setActiveCrypto(c.key)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
+                  activeCrypto === c.key
+                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                    : "border-border bg-muted/40 text-muted-foreground hover:border-primary/40"
+                }`}
+              >
+                <span
+                  className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[9px] font-bold"
+                  style={{ backgroundColor: c.color }}
+                >
+                  {c.symbol}
+                </span>
+                {c.label}
+                {c.key === "usdt" && (
+                  <span className="text-[9px] bg-green-500/20 text-green-600 dark:text-green-400 px-1 rounded">REC</span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Wallets del cripto seleccionado */}
+        <div className="px-6 py-4 flex flex-col gap-3">
+          {wallets[activeCrypto].map((w) => (
+            <WalletCard key={w.network} network={w.network} address={w.address} />
+          ))}
+        </div>
+
+        {/* CTA Telegram */}
+        <div className="px-6 pb-6 pt-2">
+          <div className="rounded-2xl bg-primary/5 border border-primary/15 p-4 flex flex-col gap-3">
+            <p className="text-sm text-muted-foreground text-center">
+              Una vez realizado el pago, enviá el comprobante por Telegram y te damos acceso enseguida.
+            </p>
+            <a
+              href={`https://t.me/fxautobots?text=Hola!%20Acabo%20de%20realizar%20el%20pago%20de%20${encodeURIComponent(product.name)}%20($${product.price}%20USD).%20Les%20env%C3%ADo%20el%20comprobante.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-xl font-medium transition-colors"
+            >
+              <MessageCircle className="h-5 w-5" />
+              Enviar comprobante por Telegram
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── SELECTOR DE PRODUCTO ─────────────────────────────────────────────────
+
+function ProductSelector() {
+  const [selected, setSelected] = useState<string | null>(null)
+  const [open, setOpen] = useState(false)
+  const [modalProduct, setModalProduct] = useState<typeof allProducts[0] | null>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const selectedProduct = allProducts.find((p) => p.id === selected)
+
+  // Cerrar dropdown al hacer click afuera
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [])
+
+  const bots_list  = allProducts.filter((p) => p.type === "bot")
+  const packs_list = allProducts.filter((p) => p.type === "pack")
+
+  return (
+    <>
+      <div className="max-w-lg mx-auto flex flex-col gap-4">
+
+        {/* Dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setOpen((o) => !o)}
+            className={`w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl border-2 bg-background text-left transition-all ${
+              open ? "border-primary shadow-md" : "border-border hover:border-primary/40"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <ShoppingCart className="h-5 w-5 text-muted-foreground shrink-0" />
+              {selectedProduct ? (
+                <div>
+                  <p className="font-semibold leading-tight">{selectedProduct.name}</p>
+                  <p className="text-sm text-primary font-bold">${selectedProduct.price} USD</p>
+                </div>
+              ) : (
+                <span className="text-muted-foreground">Elegí tu bot o pack...</span>
+              )}
+            </div>
+            <ChevronDown className={`h-5 w-5 text-muted-foreground shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+          </button>
+
+          {/* Lista desplegable */}
+          {open && (
+            <div className="absolute top-full left-0 right-0 mt-2 z-20 bg-background border rounded-xl shadow-xl overflow-hidden">
+
+              {/* Bots individuales */}
+              <div className="px-3 pt-3 pb-1">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest px-1 mb-2">Bots individuales</p>
+                {bots_list.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => { setSelected(p.id); setOpen(false) }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors mb-1 ${
+                      selected === p.id ? "bg-primary/10 text-primary" : "hover:bg-muted"
+                    }`}
+                  >
+                    <span className="font-medium">{p.name}</span>
+                    <div className="flex items-center gap-2">
+                      {p.tag && (
+                        <span className="text-xs bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full">{p.tag}</span>
+                      )}
+                      <span className="font-bold text-primary">${p.price}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              <div className="border-t mx-3" />
+
+              {/* Packs */}
+              <div className="px-3 pt-2 pb-3">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest px-1 mb-2">Packs con descuento</p>
+                {packs_list.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => { setSelected(p.id); setOpen(false) }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors mb-1 ${
+                      selected === p.id ? "bg-primary/10 text-primary" : "hover:bg-muted"
+                    }`}
+                  >
+                    <span className="font-medium">{p.name}</span>
+                    <div className="flex items-center gap-2">
+                      {p.tag && (
+                        <span className="text-xs bg-green-500/10 text-green-600 dark:text-green-400 px-2 py-0.5 rounded-full">{p.tag}</span>
+                      )}
+                      <span className="font-bold text-primary">${p.price}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Botón confirmar */}
+        <button
+          disabled={!selectedProduct}
+          onClick={() => selectedProduct && setModalProduct(selectedProduct)}
+          className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base transition-all ${
+            selectedProduct
+              ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg hover:scale-[1.01]"
+              : "bg-muted text-muted-foreground cursor-not-allowed"
+          }`}
+        >
+          {selectedProduct ? (
+            <>
+              <ShoppingCart className="h-5 w-5" />
+              Confirmar — ${selectedProduct.price} USD
+            </>
+          ) : (
+            "Seleccioná un producto primero"
+          )}
+        </button>
+
+        {selectedProduct && (
+          <p className="text-center text-xs text-muted-foreground">
+            Al confirmar verás las wallets de pago para <span className="font-medium text-foreground">{selectedProduct.name}</span>
+          </p>
+        )}
+      </div>
+
+      {/* Modal */}
+      {modalProduct && (
+        <WalletModal product={modalProduct} onClose={() => setModalProduct(null)} />
+      )}
+    </>
+  )
+}
+
+// ─── CAROUSEL DE PRECIOS ──────────────────────────────────────────────────
 
 function PricingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -98,27 +340,16 @@ function PricingCarousel() {
   const slideRefs = useRef<(HTMLDivElement | null)[]>([null, null])
   const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [touchStart, setTouchStart] = useState<number | null>(null)
-  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd]     = useState<number | null>(null)
   const minSwipeDistance = 50
 
-  // Medir cada slide de forma independiente con ResizeObserver
-  // Los slides están en un flex-row con overflow hidden, por lo que
-  // aunque el slide 1 esté "fuera de pantalla" sigue teniendo su layout
-  // correcto y podemos leer su offsetHeight.
   const measureSlides = useCallback(() => {
-    const measured = slideRefs.current.map((el) => {
-      if (!el) return 0
-      // Forzamos que el elemento reporte su altura real aunque esté desplazado
-      return el.offsetHeight
-    })
+    const measured = slideRefs.current.map((el) => el?.offsetHeight ?? 0)
     setHeights(measured)
   }, [])
 
   useEffect(() => {
-    // Primer render
     measureSlides()
-
-    // ResizeObserver en cada slide para detectar cambios de altura
     const observers: ResizeObserver[] = []
     slideRefs.current.forEach((el) => {
       if (!el) return
@@ -126,21 +357,17 @@ function PricingCarousel() {
       ro.observe(el)
       observers.push(ro)
     })
-
     return () => observers.forEach((ro) => ro.disconnect())
   }, [measureSlides])
 
-  // Autoplay 3s por slide
   useEffect(() => {
-    autoplayRef.current = setTimeout(() => {
-      setCurrentSlide((prev) => (prev + 1) % 2)
-    }, 3000)
+    autoplayRef.current = setTimeout(() => setCurrentSlide((p) => (p + 1) % 2), 3000)
     return () => { if (autoplayRef.current) clearTimeout(autoplayRef.current) }
   }, [currentSlide])
 
-  const goTo = (index: number) => {
+  const goTo = (i: number) => {
     if (autoplayRef.current) clearTimeout(autoplayRef.current)
-    setCurrentSlide(index)
+    setCurrentSlide(i)
   }
 
   const onTouchStart = (e: React.TouchEvent) => { setTouchEnd(null); setTouchStart(e.targetTouches[0].clientX) }
@@ -156,7 +383,6 @@ function PricingCarousel() {
 
   return (
     <div className="relative">
-      {/* Flechas desktop */}
       <button onClick={() => goTo((currentSlide - 1 + 2) % 2)} className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 p-2 rounded-full bg-background border shadow-md hover:bg-muted transition-colors" aria-label="Anterior">
         <ChevronLeft className="h-6 w-6" />
       </button>
@@ -164,31 +390,15 @@ function PricingCarousel() {
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      {/* Wrapper con altura animada exacta al slide activo */}
       <div
         className="overflow-hidden"
-        style={{
-          height: activeHeight ? `${activeHeight}px` : "auto",
-          transition: "height 500ms cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
+        style={{ height: activeHeight ? `${activeHeight}px` : "auto", transition: "height 500ms cubic-bezier(0.4,0,0.2,1)" }}
+        onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
       >
-        {/* Track: los dos slides lado a lado */}
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{
-            transform: `translateX(-${currentSlide * 50}%)`,
-            width: "200%",
-          }}
-        >
+        <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 50}%)`, width: "200%" }}>
+
           {/* Slide 0 — Bots individuales */}
-          <div
-            className="px-4 pb-2"
-            style={{ width: "50%" }}
-            ref={(el) => { slideRefs.current[0] = el }}
-          >
+          <div className="px-4 pb-2" style={{ width: "50%" }} ref={(el) => { slideRefs.current[0] = el }}>
             <h3 className="text-xl font-semibold text-center mb-6">Bots Individuales</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {bots.map((bot) => (
@@ -204,11 +414,7 @@ function PricingCarousel() {
           </div>
 
           {/* Slide 1 — Packs */}
-          <div
-            className="px-4 pb-2"
-            style={{ width: "50%" }}
-            ref={(el) => { slideRefs.current[1] = el }}
-          >
+          <div className="px-4 pb-2" style={{ width: "50%" }} ref={(el) => { slideRefs.current[1] = el }}>
             <h3 className="text-xl font-semibold text-center mb-6">Packs con Descuento</h3>
             <div className="flex flex-col md:flex-row md:justify-center gap-4 max-w-5xl mx-auto">
               {packs.map((pack) => (
@@ -240,28 +446,15 @@ function PricingCarousel() {
 
       <p className="text-center text-xs text-muted-foreground mt-4 md:hidden">Desliza para ver mas opciones</p>
 
-      {/* Barras de progreso autoplay */}
+      {/* Barras de progreso */}
       <div className="flex justify-center gap-3 mt-5">
         {[0, 1].map((i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            className="relative h-1.5 rounded-full overflow-hidden bg-muted-foreground/20"
-            style={{ width: "64px" }}
-            aria-label={i === 0 ? "Ver bots individuales" : "Ver packs"}
-          >
-            <span
-              className="absolute inset-y-0 left-0 rounded-full bg-primary"
-              style={{
-                width: currentSlide === i ? "100%" : "0%",
-                transition: currentSlide === i ? "width 3000ms linear" : "none",
-              }}
-            />
+          <button key={i} onClick={() => goTo(i)} className="relative h-1.5 rounded-full overflow-hidden bg-muted-foreground/20" style={{ width: "64px" }} aria-label={i === 0 ? "Individuales" : "Packs"}>
+            <span className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: currentSlide === i ? "100%" : "0%", transition: currentSlide === i ? "width 3000ms linear" : "none" }} />
           </button>
         ))}
       </div>
 
-      {/* Labels */}
       <div className="flex justify-center gap-8 mt-3 text-sm text-muted-foreground">
         <button onClick={() => goTo(0)} className={`transition-colors ${currentSlide === 0 ? "text-primary font-medium" : ""}`}>Individuales</button>
         <button onClick={() => goTo(1)} className={`transition-colors ${currentSlide === 1 ? "text-primary font-medium" : ""}`}>Packs</button>
@@ -301,50 +494,27 @@ function TelegramBubble() {
   return (
     <>
       <style>{`
-        @keyframes tg-ring1 {
-          0%   { transform: scale(1);   opacity: 0.55; }
-          100% { transform: scale(2.4); opacity: 0; }
-        }
-        @keyframes tg-ring2 {
-          0%   { transform: scale(1);   opacity: 0.35; }
-          100% { transform: scale(3.2); opacity: 0; }
-        }
-        @keyframes tg-fadein {
-          from { opacity: 0; transform: translateY(14px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes tg-ring1 { 0% { transform:scale(1); opacity:.55; } 100% { transform:scale(2.4); opacity:0; } }
+        @keyframes tg-ring2 { 0% { transform:scale(1); opacity:.35; } 100% { transform:scale(3.2); opacity:0; } }
+        @keyframes tg-fadein { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
         .tg-overlay {
-          position: fixed; z-index: 9999;
-          background-color: #0088cc;
-          display: flex; align-items: center; justify-content: center;
-          overflow: hidden;
-          inset: 0; border-radius: 0px; opacity: 1;
-          transition:
-            top 400ms cubic-bezier(0.4,0,0.2,1),
-            left 400ms cubic-bezier(0.4,0,0.2,1),
-            right 400ms cubic-bezier(0.4,0,0.2,1),
-            bottom 400ms cubic-bezier(0.4,0,0.2,1),
-            width 400ms cubic-bezier(0.4,0,0.2,1),
-            height 400ms cubic-bezier(0.4,0,0.2,1),
-            border-radius 400ms cubic-bezier(0.4,0,0.2,1),
-            opacity 300ms ease 100ms;
+          position:fixed; z-index:9999; background-color:#0088cc;
+          display:flex; align-items:center; justify-content:center; overflow:hidden;
+          inset:0; border-radius:0px; opacity:1;
+          transition: top 400ms cubic-bezier(.4,0,.2,1), left 400ms cubic-bezier(.4,0,.2,1),
+            right 400ms cubic-bezier(.4,0,.2,1), bottom 400ms cubic-bezier(.4,0,.2,1),
+            width 400ms cubic-bezier(.4,0,.2,1), height 400ms cubic-bezier(.4,0,.2,1),
+            border-radius 400ms cubic-bezier(.4,0,.2,1), opacity 300ms ease 100ms;
         }
         .tg-overlay.shrinking {
-          inset: auto; bottom: 1.5rem; right: 1.5rem; left: auto; top: auto;
-          width: 130px; height: 44px; border-radius: 9999px; opacity: 0;
+          inset:auto; bottom:1.5rem; right:1.5rem; left:auto; top:auto;
+          width:130px; height:44px; border-radius:9999px; opacity:0;
         }
       `}</style>
 
       {(phase === "splash" || phase === "shrinking") && (
         <div className={`tg-overlay${phase === "shrinking" ? " shrinking" : ""}`}>
-          <div style={{
-            display:"flex", flexDirection:"column", alignItems:"center",
-            gap:"1.75rem", color:"white", textAlign:"center", padding:"2rem",
-            opacity: phase === "splash" ? 1 : 0,
-            transition: "opacity 200ms ease",
-            animation: phase === "splash" ? "tg-fadein 500ms ease forwards" : "none",
-            pointerEvents: "none",
-          }}>
+          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"1.75rem", color:"white", textAlign:"center", padding:"2rem", opacity:phase==="splash"?1:0, transition:"opacity 200ms ease", animation:phase==="splash"?"tg-fadein 500ms ease forwards":"none", pointerEvents:"none" }}>
             <div style={{ position:"relative", width:"88px", height:"88px" }}>
               <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.22)", animation:"tg-ring1 1.6s ease-out infinite" }} />
               <div style={{ position:"absolute", inset:0, borderRadius:"9999px", backgroundColor:"rgba(255,255,255,0.12)", animation:"tg-ring2 1.6s ease-out infinite", animationDelay:"0.4s" }} />
@@ -354,9 +524,7 @@ function TelegramBubble() {
             </div>
             <div>
               <p style={{ fontSize:"1.8rem", fontWeight:700, marginBottom:"0.6rem", letterSpacing:"-0.025em" }}>Asesoramiento incluido</p>
-              <p style={{ fontSize:"1.05rem", opacity:0.88, maxWidth:"420px", lineHeight:1.65 }}>
-                Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.
-              </p>
+              <p style={{ fontSize:"1.05rem", opacity:0.88, maxWidth:"420px", lineHeight:1.65 }}>Una vez abonado, envianos el comprobante y te daremos acceso, asesoramiento y configuracion completa.</p>
             </div>
           </div>
         </div>
@@ -414,13 +582,14 @@ export default function ComprarPage() {
               <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
             </div>
             <ThemeToggle />
-            <MobileNav links={[{ href: "/", label: "Inicio" }, { href: "/backtest", label: "Backtest" }, { href: "/tutoriales", label: "Tutoriales" }]} />
+            <MobileNav links={[{ href:"/", label:"Inicio" }, { href:"/backtest", label:"Backtest" }, { href:"/tutoriales", label:"Tutoriales" }]} />
           </div>
         </div>
       </header>
 
       <main className="flex-1">
 
+        {/* Hero */}
         <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4">
@@ -430,6 +599,7 @@ export default function ComprarPage() {
           </div>
         </section>
 
+        {/* Carousel de precios */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
             <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Precios</h2>
@@ -437,75 +607,17 @@ export default function ComprarPage() {
           </div>
         </section>
 
+        {/* Selector de compra */}
         <section className="w-full py-12 md:py-16 bg-muted">
           <div className="container px-4 md:px-6">
-            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Wallets de Pago</h2>
-
-            <div className="mb-12">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="h-8 w-8 rounded-full bg-[#26A17B] flex items-center justify-center"><span className="text-white font-bold text-sm">$</span></div>
-                <h3 className="text-xl font-bold">USDT (Tether)</h3>
-                <span className="px-2 py-1 bg-green-500/20 text-green-600 dark:text-green-400 text-xs font-medium rounded">Recomendado</span>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                {wallets.usdt.map((w) => <WalletCard key={w.network} crypto="USDT" network={w.network} address={w.address} />)}
-              </div>
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl">¿Qué querés comprar?</h2>
+              <p className="text-muted-foreground mt-2">Elegí tu bot o pack y te mostramos cómo pagar</p>
             </div>
-
-            <div className="mb-12">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="h-8 w-8 rounded-full bg-[#2775CA] flex items-center justify-center"><span className="text-white font-bold text-sm">$</span></div>
-                <h3 className="text-xl font-bold">USDC</h3>
-              </div>
-              <div className="grid md:grid-cols-1 gap-4 max-w-md mx-auto">
-                {wallets.usdc.map((w) => <WalletCard key={w.network} crypto="USDC" network={w.network} address={w.address} />)}
-              </div>
-            </div>
-
-            <div className="mb-12">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="h-8 w-8 rounded-full bg-[#F7931A] flex items-center justify-center"><span className="text-white font-bold text-sm">B</span></div>
-                <h3 className="text-xl font-bold">Bitcoin (BTC)</h3>
-              </div>
-              <div className="grid md:grid-cols-1 gap-4 max-w-md mx-auto">
-                {wallets.btc.map((w) => <WalletCard key={w.network} crypto="BTC" network={w.network} address={w.address} />)}
-              </div>
-            </div>
-
-            <div className="mb-8">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="h-8 w-8 rounded-full bg-[#627EEA] flex items-center justify-center"><span className="text-white font-bold text-sm">E</span></div>
-                <h3 className="text-xl font-bold">Ethereum (ETH)</h3>
-              </div>
-              <div className="grid md:grid-cols-1 gap-4 max-w-md mx-auto">
-                {wallets.eth.map((w) => <WalletCard key={w.network} crypto="ETH" network={w.network} address={w.address} />)}
-              </div>
-            </div>
+            <ProductSelector />
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-16">
-          <div className="container px-4 md:px-6">
-            <Card className="max-w-2xl mx-auto border-primary/20 bg-primary/5">
-              <CardContent className="flex flex-col items-center text-center p-8 gap-6">
-                <div className="h-16 w-16 rounded-full bg-[#0088cc] flex items-center justify-center">
-                  <MessageCircle className="h-8 w-8 text-white" />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-2xl font-bold">Confirma tu pago</h3>
-                  <p className="text-muted-foreground max-w-md">Una vez realizado el pago, envia el comprobante a nuestro Telegram y te asesoraremos cuanto antes</p>
-                </div>
-                <Button size="lg" asChild className="gap-2">
-                  <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="h-5 w-5" />
-                    Contactar por Telegram
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
       </main>
 
       <footer className="w-full border-t py-6 md:py-0">
