@@ -180,7 +180,7 @@ export function ProfitCalculator() {
             {bot === "akira" && (
               <p className="text-xs text-red-500 mt-2">
                 ** El Bot AKIRA tiene un perfil de riesgo más alto y puede generar mayores pérdidas. Recomendamos
-                utilizarlo solo con capital que pueda permitirse perder.
+                utilizarlo solo con el riesgo mas bajo posible y/o con capital que pueda permitirse perder.
               </p>
             )}
           </div>
