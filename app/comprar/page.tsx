@@ -88,9 +88,9 @@ function WelcomeSplash() {
           display:flex; align-items:center; justify-content:center; overflow:hidden;
           border-radius:0px; opacity:1;
           transition:
-            top 700ms cubic-bezier(.4,0,.2,1), left 700ms cubic-bezier(.4,0,.2,1),
-            right 700ms cubic-bezier(.4,0,.2,1), bottom 700ms cubic-bezier(.4,0,.2,1),
-            width 700ms cubic-bezier(.4,0,.2,1), height 700ms cubic-bezier(.4,0,.2,1),
+            top 700ms cubic-bezier(.4,0,.2,1), left 700ms cubic-bezier(.7,0,.2,1),
+            right 700ms cubic-bezier(.4,0,.2,1), bottom 700ms cubic-bezier(.7,0,.2,1),
+            width 700ms cubic-bezier(.4,0,.2,1), height 700ms cubic-bezier(.7,0,.2,1),
             border-radius 700ms cubic-bezier(.4,0,.2,1), opacity 500ms ease 200ms;
         }
         .ws-overlay.shrinking {
