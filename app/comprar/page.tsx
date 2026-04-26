@@ -11,6 +11,7 @@ import {
   ShoppingCart, RefreshCw, Sparkles, Zap
 } from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
+import { createPortal } from "react-dom"
 import { QRCodeSVG } from "qrcode.react"
 
 // ─── GLOBAL STYLES ────────────────────────────────────────────────────────
@@ -322,7 +323,7 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
     { key: "btc"  as const, label: "BTC",  color: "#F7931A", symbol: "B" },
     { key: "eth"  as const, label: "ETH",  color: "#627EEA", symbol: "E" },
   ]
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[9998] flex items-end md:items-center justify-center" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-[9998] w-full md:max-w-lg max-h-[92vh] overflow-y-auto bg-background rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col">
@@ -378,7 +379,8 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 
