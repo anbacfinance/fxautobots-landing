@@ -14,81 +14,48 @@ import {
 import { useState, useEffect, useRef, useCallback } from "react"
 import { QRCodeSVG } from "qrcode.react"
 
-// ─── EFECTOS VISUALES (solo CSS, no tocan estructura) ─────────────────────
-const effectStyles = `
-  /* Scroll reveal */
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+// ─── TICKER (solo CSS de animación, nada de transforms en otros elementos) ─
+const tickerStyle = `
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
   }
-  .reveal.revealed { opacity: 1; transform: translateY(0); }
-  .delay-100 { transition-delay: 0.1s; }
-  .delay-200 { transition-delay: 0.2s; }
-  .delay-300 { transition-delay: 0.3s; }
+  .ticker-track { animation: ticker 22s linear infinite; }
+  .ticker-track:hover { animation-play-state: paused; }
 
-  /* Btn glow */
-  .btn-glow {
-    position: relative; overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .btn-glow::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
-    opacity: 0; transition: opacity 0.3s;
-  }
-  .btn-glow:hover::after { opacity: 1; }
-  .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
-  .btn-glow:active { transform: translateY(0); }
-
-  /* Logo pulse */
   @keyframes badge-pulse {
     0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
     50%       { box-shadow: 0 0 0 10px rgba(59,130,246,0); }
   }
   .badge-pulse { animation: badge-pulse 2.5s ease-in-out infinite; }
 
-  /* Ticker */
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  .ticker-inner { animation: ticker 22s linear infinite; }
-  .ticker-inner:hover { animation-play-state: paused; }
-
-  /* Canvas partículas */
   #comprar-canvas {
     position: absolute; inset: 0;
-    pointer-events: none; opacity: 0.4;
+    pointer-events: none; opacity: 0.35;
   }
-
-  /* Underline hover en nav */
-  .nav-link-animated {
-    position: relative;
-  }
-  .nav-link-animated::after {
-    content: '';
-    position: absolute; bottom: -2px; left: 0;
-    width: 0; height: 2px;
-    background: hsl(var(--primary));
-    transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
-  }
-  .nav-link-animated:hover::after { width: 100%; }
 `
 
-// ─── SCROLL REVEAL HOOK ───────────────────────────────────────────────────
-function useScrollReveal() {
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("revealed") }),
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-    )
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+function TickerTape() {
+  const items = [
+    "🤖 Bots 100% Automatizados", "💳 Pagá con cripto fácil",
+    "⚡ Acceso inmediato", "🔒 Pago seguro",
+    "📦 Bots individuales y packs", "🛡️ Asesoramiento incluido",
+    "💰 USDT · USDC · BTC · ETH", "🌎 Traders en LATAM & Europa",
+  ]
+  const doubled = [...items, ...items]
+  return (
+    <div className="w-full overflow-hidden bg-primary/5 border-b border-primary/10 py-2.5">
+      <div className="ticker-track flex gap-10 whitespace-nowrap w-max">
+        {doubled.map((item, i) => (
+          <span key={i} className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+            {item}<span className="text-primary/40">·</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
 }
 
-// ─── PARTÍCULAS ───────────────────────────────────────────────────────────
 function HeroParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
@@ -101,8 +68,8 @@ function HeroParticles() {
     const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight }
     resize()
     window.addEventListener("resize", resize)
-    for (let i = 0; i < 55; i++) {
-      particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, r: Math.random() * 2 + 0.5, alpha: Math.random() * 0.5 + 0.1 })
+    for (let i = 0; i < 50; i++) {
+      particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, r: Math.random() * 2 + 0.5, alpha: Math.random() * 0.4 + 0.1 })
     }
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -118,7 +85,7 @@ function HeroParticles() {
           const dist = Math.hypot(a.x - b.x, a.y - b.y)
           if (dist < 100) {
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y)
-            ctx.strokeStyle = `rgba(99,102,241,${0.12 * (1 - dist / 100)})`
+            ctx.strokeStyle = `rgba(99,102,241,${0.1 * (1 - dist / 100)})`
             ctx.lineWidth = 0.5; ctx.stroke()
           }
         })
@@ -131,28 +98,6 @@ function HeroParticles() {
   return <canvas ref={canvasRef} id="comprar-canvas" />
 }
 
-// ─── TICKER ───────────────────────────────────────────────────────────────
-function TickerTape() {
-  const items = [
-    "🤖 Bots 100% Automatizados", "💳 Pagá con cripto fácil",
-    "⚡ Acceso inmediato", "🔒 Pago seguro",
-    "📦 Bots individuales y packs", "🛡️ Asesoramiento incluido",
-    "💰 USDT · USDC · BTC · ETH", "🌎 Traders en LATAM & Europa",
-  ]
-  const doubled = [...items, ...items]
-  return (
-    <div className="w-full overflow-hidden bg-primary/5 border-b border-primary/10 py-2.5">
-      <div className="ticker-inner flex gap-10 whitespace-nowrap w-max">
-        {doubled.map((item, i) => (
-          <span key={i} className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-            {item}<span className="text-primary/40">·</span>
-          </span>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 // ─── DATOS ────────────────────────────────────────────────────────────────
 
 const bots = [
@@ -163,9 +108,24 @@ const bots = [
 ]
 
 const packs = [
-  { name: "Pack Duo",      price: 200, originalPrice: 240,  savings: 40,  bots: ["Akira o Deus", "Scalper"],           badge: "AHORRA $40",   badgeColor: "bg-green-500" },
-  { name: "Pack Completo", price: 280, originalPrice: 360,  savings: 80,  bots: ["Akira", "Deus", "Scalper"],          badge: "MEJOR OFERTA", badgeColor: "bg-primary" },
-  { name: "Pack Ultimate", price: 850, originalPrice: 1060, savings: 210, bots: ["Akira", "Deus", "Scalper", "Atlas"], badge: "PACK ULTIMATE", badgeColor: "bg-amber-500" },
+  {
+    name: "Pack Duo",
+    price: 200, originalPrice: 240, savings: 40,
+    bots: ["Akira o Deus", "Scalper"],
+    badge: "AHORRA $40", badgeColor: "bg-green-500",
+  },
+  {
+    name: "Pack Completo",
+    price: 280, originalPrice: 360, savings: 80,
+    bots: ["Akira", "Deus", "Scalper"],
+    badge: "MEJOR OFERTA", badgeColor: "bg-primary",
+  },
+  {
+    name: "Pack Ultimate",
+    price: 850, originalPrice: 1060, savings: 210,
+    bots: ["Akira", "Deus", "Scalper", "Atlas"],
+    badge: "PACK ULTIMATE", badgeColor: "bg-amber-500",
+  },
 ]
 
 const allProducts = [
@@ -315,7 +275,7 @@ function WalletCard({ network, address, cryptoAmount, cryptoSymbol, loadingPrice
   )
 }
 
-// ─── MODAL DE WALLETS — SIN CAMBIOS RESPECTO A LA VERSIÓN QUE FUNCIONABA ──
+// ─── MODAL — IDÉNTICO AL ORIGINAL ─────────────────────────────────────────
 
 function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onClose: () => void }) {
   const [activeCrypto, setActiveCrypto] = useState<"usdt"|"usdc"|"btc"|"eth">("usdt")
@@ -340,7 +300,6 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 w-full md:max-w-lg max-h-[92vh] overflow-y-auto bg-background rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col">
-
         <div className="sticky top-0 bg-background z-10 px-6 pt-5 pb-4 border-b">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -350,7 +309,6 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
             </div>
             <button onClick={onClose} className="p-2 rounded-full hover:bg-muted transition-colors mt-1"><X className="h-5 w-5" /></button>
           </div>
-
           <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
             {cryptos.map((c) => (
               <button key={c.key} onClick={() => setActiveCrypto(c.key)}
@@ -362,7 +320,6 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
               </button>
             ))}
           </div>
-
           {(activeCrypto === "btc" || activeCrypto === "eth") && (
             <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
               <span>{activeCrypto === "btc" ? (prices.btc ? `1 BTC = $${prices.btc.toLocaleString()} USD` : "Cargando precio...") : (prices.eth ? `1 ETH = $${prices.eth.toLocaleString()} USD` : "Cargando precio...")}</span>
@@ -373,7 +330,6 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
             </div>
           )}
         </div>
-
         <div className="px-6 py-4 flex flex-col gap-3">
           {wallets[activeCrypto].map((w) => (
             <WalletCard key={w.network} network={w.network} address={w.address}
@@ -383,7 +339,6 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
             />
           ))}
         </div>
-
         <div className="px-6 pb-6 pt-2">
           <div className="rounded-2xl bg-primary/5 border border-primary/15 p-4 flex flex-col gap-3">
             <p className="text-sm text-muted-foreground text-center">Una vez realizado el pago, enviá el comprobante por Telegram y te damos acceso enseguida.</p>
@@ -403,7 +358,7 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
   )
 }
 
-// ─── SELECTOR DE PRODUCTO — SIN CAMBIOS ───────────────────────────────────
+// ─── SELECTOR — IDÉNTICO AL ORIGINAL ──────────────────────────────────────
 
 function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => void }) {
   const [selected, setSelected]         = useState<string | null>(null)
@@ -412,7 +367,7 @@ function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => 
   const dropdownRef = useRef<HTMLDivElement>(null)
   const selectedProduct = allProducts.find((p) => p.id === selected)
 
-  const openModal = (p: typeof allProducts[0]) => { setModalProduct(p); onModalChange(true) }
+  const openModal  = (p: typeof allProducts[0]) => { setModalProduct(p); onModalChange(true) }
   const closeModal = () => { setModalProduct(null); onModalChange(false) }
 
   useEffect(() => {
@@ -505,7 +460,7 @@ function ProductSelector({ onModalChange }: { onModalChange: (open: boolean) => 
   )
 }
 
-// ─── CAROUSEL DE PRECIOS — SIN CAMBIOS ────────────────────────────────────
+// ─── CAROUSEL — IDÉNTICO AL ORIGINAL ──────────────────────────────────────
 
 function PricingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -633,7 +588,7 @@ function PricingCarousel() {
   )
 }
 
-// ─── BURBUJA TELEGRAM — SIN CAMBIOS ───────────────────────────────────────
+// ─── BURBUJA — IDÉNTICA AL ORIGINAL ───────────────────────────────────────
 
 function TelegramBubble({ hidden }: { hidden: boolean }) {
   const [tooltipOpen, setTooltipOpen] = useState(false)
@@ -680,15 +635,13 @@ function TelegramBubble({ hidden }: { hidden: boolean }) {
 
 export default function ComprarPage() {
   const [modalOpen, setModalOpen] = useState(false)
-  useScrollReveal()
 
   return (
     <div className="flex min-h-screen flex-col">
-      <style>{effectStyles}</style>
+      <style>{tickerStyle}</style>
 
       <WelcomeSplash />
 
-      {/* Header — solo se agrega nav-link-animated y hover:scale en iconos */}
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
@@ -700,14 +653,14 @@ export default function ComprarPage() {
             </Link>
           </div>
           <nav className="hidden md:flex gap-6">
-            <Link href="/" className="text-sm font-medium hover:text-primary nav-link-animated">Inicio</Link>
-            <Link href="/backtest" className="text-sm font-medium hover:text-primary nav-link-animated">Backtest</Link>
-            <Link href="/tutoriales" className="text-sm font-medium hover:text-primary nav-link-animated">Tutoriales</Link>
+            <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Inicio</Link>
+            <Link href="/backtest" className="text-sm font-medium hover:text-primary transition-colors">Backtest</Link>
+            <Link href="/tutoriales" className="text-sm font-medium hover:text-primary transition-colors">Tutoriales</Link>
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
-              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
+              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
+              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
             </div>
             <ThemeToggle />
             <MobileNav links={[{ href:"/", label:"Inicio" }, { href:"/backtest", label:"Backtest" }, { href:"/tutoriales", label:"Tutoriales" }]} />
@@ -715,16 +668,16 @@ export default function ComprarPage() {
         </div>
       </header>
 
-      {/* Ticker justo debajo del header */}
+      {/* Ticker tape */}
       <TickerTape />
 
       <main className="flex-1">
 
-        {/* Hero — partículas + badge pulse + tag */}
+        {/* Hero con partículas — overflow-hidden solo en la section, no afecta modal */}
         <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted relative overflow-hidden">
           <HeroParticles />
           <div className="container px-4 md:px-6 relative z-10">
-            <div className="flex flex-col items-center text-center space-y-4 reveal">
+            <div className="flex flex-col items-center text-center space-y-4">
               <div className="badge-pulse rounded-full mb-2">
                 <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={64} height={64} />
               </div>
@@ -738,26 +691,22 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Selector */}
+        {/* Selector — igual al original */}
         <section className="w-full py-12 md:py-16">
           <div className="container px-4 md:px-6">
-            <div className="text-center mb-8 reveal">
+            <div className="text-center mb-8">
               <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl">¿Qué querés comprar?</h2>
               <p className="text-muted-foreground mt-2">Elegí tu bot o pack y te mostramos cómo pagar</p>
             </div>
-            <div className="reveal delay-200">
-              <ProductSelector onModalChange={setModalOpen} />
-            </div>
+            <ProductSelector onModalChange={setModalOpen} />
           </div>
         </section>
 
-        {/* Precios — se oculta cuando el modal está abierto para evitar stacking context */}
-        <section className="w-full py-12 md:py-16 bg-muted" style={{ visibility: modalOpen ? "hidden" : "visible" }}>
+        {/* Precios — igual al original, sin ningún z-index ni relative extra */}
+        <section className="w-full py-12 md:py-16 bg-muted">
           <div className="container px-4 md:px-6">
-            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8 reveal">Precios</h2>
-            <div className="reveal delay-200">
-              <PricingCarousel />
-            </div>
+            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8">Precios</h2>
+            <PricingCarousel />
           </div>
         </section>
 
@@ -770,8 +719,8 @@ export default function ComprarPage() {
             <p className="text-center text-sm leading-loose md:text-left">&copy; {new Date().getFullYear()} FXAutoBots. Todos los derechos reservados.</p>
           </div>
           <div className="flex items-center gap-4">
-            <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
-            <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
+            <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
+            <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
           </div>
         </div>
       </footer>
