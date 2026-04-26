@@ -751,8 +751,8 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Precios — sin relative/z-index para no crear stacking context */}
-        <section className="w-full py-12 md:py-16 bg-muted">
+        {/* Precios — se oculta cuando el modal está abierto para evitar stacking context */}
+        <section className="w-full py-12 md:py-16 bg-muted" style={{ visibility: modalOpen ? "hidden" : "visible" }}>
           <div className="container px-4 md:px-6">
             <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8 reveal">Precios</h2>
             <div className="reveal delay-200">
