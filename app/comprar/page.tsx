@@ -323,10 +323,10 @@ function WalletModal({ product, onClose }: { product: typeof allProducts[0]; onC
     { key: "eth"  as const, label: "ETH",  color: "#627EEA", symbol: "E" },
   ]
   return (
-    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
+    <div className="fixed inset-0 z-[9998] flex items-end md:items-center justify-center" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-10 w-full md:max-w-lg max-h-[92vh] overflow-y-auto bg-background rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col">
-        <div className="sticky top-0 bg-background z-10 px-6 pt-5 pb-4 border-b">
+      <div className="relative z-[9998] w-full md:max-w-lg max-h-[92vh] overflow-y-auto bg-background rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col">
+        <div className="sticky top-0 bg-background z-[9998] px-6 pt-5 pb-4 border-b">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Pagar</p>
@@ -686,11 +686,11 @@ export default function ComprarPage() {
       <main className="flex-1">
 
         {/* Hero con partículas */}
-        <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted relative overflow-hidden">
+        <section className="w-full py-12 md:py-16 bg-gradient-to-b from-muted/50 to-muted relative">
           <HeroParticles />
           <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-1/4 left-1/3 w-48 h-48 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
-          <div className="container px-4 md:px-6 relative z-10">
+          <div className="container px-4 md:px-6 relative">
             <div className="flex flex-col items-center text-center space-y-4 reveal">
               <div className="badge-pulse rounded-full mb-2">
                 <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={64} height={64} />
@@ -717,10 +717,10 @@ export default function ComprarPage() {
           </div>
         </section>
 
-        {/* Carousel — sin overflow-hidden en el wrapper exterior */}
-        <section className="w-full py-12 md:py-16 bg-muted relative">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-primary/4 rounded-full blur-3xl pointer-events-none" />
-          <div className="container px-4 md:px-6 relative z-10">
+        {/* Carousel */}
+        <section className="w-full py-12 md:py-16 bg-muted">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-primary/4 rounded-full blur-3xl pointer-events-none opacity-0" />
+          <div className="container px-4 md:px-6 relative">
             <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl text-center mb-8 reveal">Precios</h2>
             <div className="reveal delay-200">
               <PricingCarousel />
