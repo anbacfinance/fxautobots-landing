@@ -111,15 +111,24 @@ const animStyles = `
 `
 
 // ─── SCROLL REVEAL ────────────────────────────────────────────────────────
-function useScrollReveal() {
+function useScrollReveal(activeTab: string) {
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("revealed") }),
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-    )
-    document.querySelectorAll(".reveal, .reveal-scale").forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+    const timer = setTimeout(() => {
+      const observer = new IntersectionObserver(
+        (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("revealed") }),
+        { threshold: 0.05, rootMargin: "0px 0px -20px 0px" }
+      )
+      document.querySelectorAll(".reveal, .reveal-scale").forEach((el) => {
+        const rect = el.getBoundingClientRect()
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add("revealed")
+        } else {
+          observer.observe(el)
+        }
+      })
+    }, 60)
+    return () => clearTimeout(timer)
+  }, [activeTab])
 }
 
 // ─── ANIMATED COUNTER ─────────────────────────────────────────────────────
@@ -292,7 +301,7 @@ function VideoCard({ tutorial, botKey }: { tutorial: (typeof tutoriales.general)
 // ─── PAGE ─────────────────────────────────────────────────────────────────
 export default function TutorialesPage() {
   const [activeTab, setActiveTab] = useState("general")
-  useScrollReveal()
+  useScrollReveal(activeTab)
 
   const totalVideos = Object.values(tutoriales).flat().length
 
