@@ -167,6 +167,9 @@ export default function LandingPage() {
             <Link href="/tutoriales" className="text-sm font-medium hover:text-primary">
               Tutoriales
             </Link>
+            <Link href="/copytrading" className="text-sm font-medium hover:text-primary">
+              CopyTrading
+            </Link>
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
@@ -202,6 +205,7 @@ export default function LandingPage() {
                 { href: "#brokers", label: "Brokers" },
                 { href: "#vps", label: "VPS" },
                 { href: "/tutoriales", label: "Tutoriales" },
+                { href: "/copytrading", label: "CopyTrading" },
                 { href: "/comprar", label: "Comprar" },
               ]}
             />
