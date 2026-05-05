@@ -408,8 +408,8 @@ function HeroCarousel() {
                     </Button>
                   </div>
                   <div className="flex items-center gap-4 pt-2">
-                    <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
-                      <Instagram className="h-4 w-4" /><span>@fxautobots</span>
+                    <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
+                      <Instagram className="h-4 w-4" /><span>@botsdetrading.latam</span>
                     </a>
                     <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
                       <MessageCircle className="h-4 w-4" /><span>@fxautobots</span>
@@ -924,8 +924,8 @@ export default function LandingPage() {
               </Link>
             </Button>
             <div className="flex items-center gap-6 mt-4">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
-                <Instagram className="h-5 w-5" /><span>@fxautobots</span>
+              <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
+                <Instagram className="h-5 w-5" /><span>@botsdetrading.latam</span>
               </a>
               <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
                 <MessageCircle className="h-5 w-5" /><span>@fxautobots</span>
