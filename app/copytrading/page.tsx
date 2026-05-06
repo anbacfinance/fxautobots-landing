@@ -276,7 +276,7 @@ const strategies = [
   {
     name: "Akira Copy", description: "Estrategia mas agresiva con mayor rentabilidad potencial",
     profit: "+76%", profitNum: 76, drawdown: "6.47%", minDeposit: 50,
-    link: "https://my.hfm.com/es/copy-trading/provider-details.html?provider=78098426",
+    link: "https://my.hfm.com/es/copy-trading/provider-details.html?provider=78098671",
     features: ["Mayor rentabilidad", "Estrategia dinámica", "Para traders con más experiencia", "Excelente ratio riesgo/beneficio"],
     badge: "Rentable", badgeColor: "bg-orange-500", accentColor: "orange",
     statColor: "text-orange-500", borderHover: "hover:border-orange-500/50",
