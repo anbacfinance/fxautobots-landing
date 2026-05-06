@@ -244,10 +244,13 @@ function HeroParticles() {
 // ─── TICKER ───────────────────────────────────────────────────────────────
 function TickerTape() {
   const items = [
-    "🟠 HFM Copy Trading", "📈 Deus Copy +26% profit",
+    "🟠 HFM Copy Trading",
+    "📈 Deus Copy +26% profit",
     "💰 Desde $30 USD",
-    "🔒 Drawdown controlado", "⚡ Operaciones 24/7",
-    "✅ Sin experiencia requerida", "🌎 Cuentas CENT disponibles",
+    "🔒 Max DD 2.88%",
+    "🤝 Asistencia paso a paso",
+    "✅ No necesitás experiencia",
+    "🌎 Capital siempre en tu cuenta",
   ]
   const doubled = [...items, ...items]
   return (
@@ -276,25 +279,93 @@ const strategies = [
 ]
 
 const steps = [
-  { number: 1, title: "Registrate en HFM", description: "Crea tu cuenta en HFM usando nuestro enlace de referido. El proceso toma menos de 5 minutos.", action: "Registrarse", link: "https://register.hfm.com/sv/en/new-live-account/?refid=364904", icon: "1️⃣" },
-  { number: 2, title: "Deposita fondos", description: "Deposita un mínimo de $30 USD para Deus Copy. Acepta criptomonedas.", action: null, link: null, icon: "2️⃣" },
-  { number: 3, title: "Accede a HFM Copy", description: "Una vez logeado, accede a la sección de HFM Copy desde tu panel de cliente.", action: null, link: null, icon: "3️⃣" },
-  { number: 4, title: "Copia la estrategia", description: "Busca la estrategia que prefieras y comienza a copiar nuestras operaciones automáticamente.", action: "Ver Estrategias", link: "#strategies", icon: "4️⃣" },
+  {
+    number: 1,
+    title: "Nos escribís",
+    description: "Te explicamos cómo funciona Deus Copy y vemos si se adapta a tu perfil de riesgo.",
+    action: "Hablar por Telegram",
+    link: "https://t.me/fxautobots",
+    icon: "1️⃣",
+  },
+  {
+    number: 2,
+    title: "Creamos tu cuenta",
+    description: "Te guiamos paso a paso para registrarte en HFM y dejar tu cuenta lista correctamente.",
+    action: "Crear cuenta",
+    link: "https://register.hfm.com/sv/en/new-live-account/?refid=364904",
+    icon: "2️⃣",
+  },
+  {
+    number: 3,
+    title: "Fondeás tu cuenta",
+    description: "El capital queda siempre en tu propia cuenta de HFM. Nosotros no recibimos depósitos de clientes.",
+    action: null,
+    link: null,
+    icon: "3️⃣",
+  },
+  {
+    number: 4,
+    title: "Conectás Deus Copy",
+    description: "Te enviamos el enlace exacto de la estrategia y te ayudamos a copiarla correctamente.",
+    action: "Ver Deus Copy",
+    link: "#strategies",
+    icon: "4️⃣",
+  },
 ]
 
 const features = [
-  { icon: DollarSign, label: "Desde $30 USD", desc: "Comienza con poco capital gracias a las cuentas CENT", bounce: "cp-icon-bounce" },
-  { icon: Shield,     label: "Bajo Riesgo",    desc: "Drawdown controlado y gestión de riesgo profesional",    bounce: "cp-icon-bounce-d1" },
-  { icon: Zap,        label: "Automático",      desc: "Las operaciones se copian automáticamente 24/7",         bounce: "cp-icon-bounce-d2" },
-  { icon: Users,      label: "Soporte",         desc: "Asesoramiento personalizado vía Telegram",               bounce: "cp-icon-bounce-d3" },
+  {
+    icon: DollarSign,
+    label: "Desde $30 USD",
+    desc: "Podés comenzar con poco capital gracias a las cuentas CENT",
+    bounce: "cp-icon-bounce",
+  },
+  {
+    icon: Shield,
+    label: "Riesgo controlado",
+    desc: "Deus Copy mantiene un drawdown histórico bajo y visible",
+    bounce: "cp-icon-bounce-d1",
+  },
+  {
+    icon: Zap,
+    label: "Automático",
+    desc: "Las operaciones se copian automáticamente en tu cuenta",
+    bounce: "cp-icon-bounce-d2",
+  },
+  {
+    icon: Users,
+    label: "Te guiamos",
+    desc: "Te acompañamos desde el registro hasta conectar la estrategia",
+    bounce: "cp-icon-bounce-d3",
+  },
 ]
 
 const faqs = [
-  { question: "¿Qué es el CopyTrading?", answer: "El CopyTrading te permite copiar automáticamente las operaciones de traders profesionales. Cuando nosotros abrimos una operación, se replica automáticamente en tu cuenta con el mismo ratio de riesgo." },
-  { question: "¿Cuál es el depósito mínimo?", answer: "Para Deus Copy necesitas mínimo $30 USD. Ambas estrategias operan en cuentas CENT, lo que te permite empezar con poco capital." },
-  { question: "¿Qué son las cuentas CENT?", answer: "Las cuentas CENT dividen tu capital en centavos, permitiendo operar con microlotes. Esto reduce significativamente el riesgo y es ideal para cuentas pequeñas." },
-  { question: "¿Cuánto puedo ganar?", answer: "Los rendimientos varían. Deus Copy lleva actualmente +26% de profit con un drawdown máximo de 2.88%. Rendimientos pasados no garantizan resultados futuros." },
-  { question: "¿Hay comisiones?", answer: "HFM cobra una pequeña comisión sobre las ganancias obtenidas. No hay comisiones fijas mensuales ni costos ocultos." },
+  {
+    question: "¿Qué es el CopyTrading?",
+    answer:
+      "El CopyTrading te permite copiar automáticamente una estrategia en tu propia cuenta. Cuando Deus Copy abre una operación, se replica en tu cuenta según la configuración elegida.",
+  },
+  {
+    question: "¿Cuál es el depósito mínimo?",
+    answer:
+      "Para Deus Copy necesitás mínimo $30 USD. La estrategia opera en cuenta CENT, lo que permite empezar con poco capital y una exposición más controlada.",
+  },
+  {
+    question: "¿Mi dinero queda en manos de FXAutoBots?",
+    answer:
+      "No. Tu capital queda siempre en tu propia cuenta de HFM. FXAutoBots no recibe depósitos ni administra fondos de clientes.",
+  },
+  {
+    question: "¿Cuánto puedo ganar?",
+    answer:
+      "Los rendimientos varían según el mercado. Deus Copy lleva actualmente +26% de profit con un drawdown máximo de 2.88%. Rendimientos pasados no garantizan resultados futuros.",
+  },
+  {
+    question: "¿Me ayudan a configurar todo?",
+    answer:
+      "Sí. Te guiamos paso a paso para crear tu cuenta, fondearla y conectar Deus Copy correctamente desde HFM Copy.",
+  },
 ]
 
 // ─── PAGE ─────────────────────────────────────────────────────────────────
@@ -379,22 +450,22 @@ export default function CopyTradingPage() {
               {/* Headline */}
               <div className="cp-reveal cp-d100">
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl max-w-4xl">
-                  Copia Nuestras{" "}
-                  <span className="cp-gradient-text">Estrategias Ganadoras</span>
+                  Copytrading Automatizado{" "}
+                  <span className="cp-gradient-text">Desde $30 USD</span>
                 </h1>
               </div>
 
               <p className="cp-reveal cp-d200 text-xl text-muted-foreground max-w-2xl">
-                Replica automáticamente nuestras operaciones en tu cuenta. Sin experiencia requerida.
+                Copiá Deus Copy desde tu propia cuenta de HFM. Te guiamos paso a paso para crearla, fondearla y conectar la estrategia correctamente.
                 Comienza desde solo <span className="text-orange-500 font-bold">$30 USD</span>.
               </p>
 
               {/* Stats con contadores animados */}
               <div className="cp-reveal cp-d300 flex flex-wrap justify-center gap-6 mt-4">
                 {[
-                  { label: "Mejor Rentabilidad", value: 26, prefix: "+", suffix: "%", cls: "cp-stat" },
-                  { label: "Mayor Drawdown",      value: 2.88, decimals: 2, suffix: "%", cls: "cp-stat-green" },
-                  { label: "Depósito Mínimo",     value: 30, prefix: "$", suffix: " USD", cls: "cp-stat" },
+                  { label: "Profit Actual", value: 26, prefix: "+", suffix: "%", cls: "cp-stat" },
+                  { label: "Max Drawdown",      value: 2.88, decimals: 2, suffix: "%", cls: "cp-stat-green" },
+                  { label: "Capital Mínimo",     value: 30, prefix: "$", suffix: " USD", cls: "cp-stat" },
                 ].map((s) => (
                   <div key={s.label} className="text-center px-6 py-4 rounded-2xl bg-background/70 border border-orange-500/20 backdrop-blur-sm">
                     <p className={`text-3xl md:text-4xl font-bold ${s.cls}`}>
@@ -408,13 +479,13 @@ export default function CopyTradingPage() {
               {/* CTAs */}
               <div className="cp-reveal cp-d400 flex flex-col sm:flex-row gap-4 mt-4">
                 <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white cp-btn" asChild>
-                  <a href="https://register.hfm.com/sv/en/new-live-account/?refid=364904" target="_blank" rel="noopener noreferrer">
-                    Comenzar Ahora <ArrowRight className="ml-2 h-5 w-5" />
+                  <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer">
+                    Quiero empezar con ayuda <MessageCircle className="ml-2 h-5 w-5" />
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" className="border-orange-500/40 hover:border-orange-500 transition-colors" asChild>
                   <a href="#strategies">
-                    Ver Estrategias <ChevronDown className="ml-2 h-5 w-5" />
+                    Ver Deus Copy <ChevronDown className="ml-2 h-5 w-5" />
                   </a>
                 </Button>
               </div>
@@ -427,7 +498,9 @@ export default function CopyTradingPage() {
           <div className="container px-4 md:px-6">
             <div className="text-center mb-12 cp-reveal">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-3">Cómo Empezar</h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Sigue estos simples pasos para comenzar a copiar nuestras estrategias</p>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Te acompañamos desde el registro hasta conectar Deus Copy correctamente
+              </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -466,11 +539,13 @@ export default function CopyTradingPage() {
         <section id="strategies" className="w-full py-16 md:py-24">
           <div className="container px-4 md:px-6">
             <div className="text-center mb-12 cp-reveal">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-3">Nuestras Estrategias</h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Elige la estrategia que mejor se adapte a tu perfil de riesgo</p>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-3">Estrategia Disponible</h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Deus Copy es nuestra estrategia activa para copytrading automatizado
+              </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-1 gap-8 max-w-2xl mx-auto">
               {strategies.map((strategy, i) => (
                 <div key={strategy.name} className={`cp-reveal ${i === 0 ? "cp-reveal-left" : "cp-reveal-right"}`}>
                   <Card className={`cp-card relative overflow-hidden border-2 border-border h-full`}>
@@ -522,10 +597,12 @@ export default function CopyTradingPage() {
                       {/* CTA */}
                       <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white cp-btn" asChild>
                         <a href={strategy.link} target="_blank" rel="noopener noreferrer">
-                          Copiar Estrategia <ExternalLink className="ml-2 h-4 w-4" />
+                          Quiero copiar Deus Copy <ExternalLink className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
-                      <p className="text-xs text-center text-muted-foreground">Necesitas estar logeado en HFM para ver la estrategia</p>
+                      <p className="text-xs text-center text-muted-foreground">
+                        Si no sabés cómo conectarla, te guiamos paso a paso por Telegram
+                      </p>
                     </CardContent>
                   </Card>
                 </div>
@@ -597,19 +674,21 @@ export default function CopyTradingPage() {
 
           <div className="container relative px-4 md:px-6 text-center text-white z-10">
             <div className="cp-reveal">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4">Comienza a Copiar Hoy</h2>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4">
+                Empezá con acompañamiento
+              </h2>
               <p className="text-xl opacity-90 max-w-2xl mx-auto mb-8">
-                Únete a los traders que ya están generando ganancias con nuestras estrategias. Sin experiencia requerida, sin complicaciones.
+                No necesitás resolver todo solo. Te guiamos para crear tu cuenta, fondearla y conectar Deus Copy correctamente.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" variant="secondary" className="bg-white text-orange-500 hover:bg-white/90 cp-btn font-semibold" asChild>
-                  <a href="https://register.hfm.com/sv/en/new-live-account/?refid=364904" target="_blank" rel="noopener noreferrer">
-                    Crear Cuenta en HFM <ExternalLink className="ml-2 h-5 w-5" />
+                  <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer">
+                    Hablar con un asesor <MessageCircle className="ml-2 h-5 w-5" />
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/15 transition-colors cp-btn" asChild>
-                  <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer">
-                    Contactar por Telegram <MessageCircle className="ml-2 h-5 w-5" />
+                  <a href="https://register.hfm.com/sv/en/new-live-account/?refid=364904" target="_blank" rel="noopener noreferrer">
+                    Crear cuenta en HFM <ExternalLink className="ml-2 h-5 w-5" />
                   </a>
                 </Button>
               </div>
@@ -634,8 +713,9 @@ export default function CopyTradingPage() {
           </div>
           <div className="mt-6 pt-6 border-t text-center">
             <p className="text-xs text-muted-foreground max-w-3xl mx-auto">
-              Advertencia de riesgo: El trading de divisas y CFDs conlleva un alto nivel de riesgo y puede no ser adecuado para todos los inversores.
-              Rendimientos pasados no garantizan resultados futuros. Opera solo con capital que puedas permitirte perder.
+              Advertencia de riesgo: El trading de divisas y CFDs conlleva riesgo y puede no ser adecuado para todos los inversores.
+              FXAutoBots no promete rendimientos fijos ni garantizados. Los resultados pasados no garantizan resultados futuros.
+              El capital permanece siempre en la cuenta personal del usuario dentro del broker.
             </p>
           </div>
         </div>
