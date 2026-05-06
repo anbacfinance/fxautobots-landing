@@ -287,7 +287,7 @@ function TestimonialCarousel() {
     },
     {
       name: "María S.",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      image: "https://randomuser.me/api/portraits/women/63.jpg",
       review: "El soporte fue rápido y me ayudaron a dejar todo configurado sin complicaciones.",
       location: "España",
     },
@@ -299,7 +299,7 @@ function TestimonialCarousel() {
     },
     {
       name: "Ana P.",
-      image: "https://randomuser.me/api/portraits/women/63.jpg",
+      image: "https://randomuser.me/api/portraits/women/44.jpg",
       review: "Lo que más me gustó fue poder automatizar mi operativa y evitar estar pendiente todo el día.",
       location: "Argentina",
     },
