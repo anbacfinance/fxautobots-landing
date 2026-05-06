@@ -339,7 +339,7 @@ export default function CopyTradingPage() {
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
+              <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
               <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
             </div>
             <ThemeToggle />
@@ -635,7 +635,7 @@ export default function CopyTradingPage() {
               <span className="font-bold">FXAutoBots</span>
             </div>
             <div className="flex items-center gap-4">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
+              <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
               <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
             </div>
             <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} FXAutoBots. Todos los derechos reservados.</p>
