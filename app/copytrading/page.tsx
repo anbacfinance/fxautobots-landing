@@ -392,8 +392,8 @@ export default function CopyTradingPage() {
               {/* Stats con contadores animados */}
               <div className="cp-reveal cp-d300 flex flex-wrap justify-center gap-6 mt-4">
                 {[
-                  { label: "Mejor Rentabilidad", value: 76, prefix: "+", suffix: "%", cls: "cp-stat" },
-                  { label: "Menor Drawdown",      value: 2.88, decimals: 2, suffix: "%", cls: "cp-stat-green" },
+                  { label: "Mejor Rentabilidad", value: 26, prefix: "+", suffix: "%", cls: "cp-stat" },
+                  { label: "Mayor Drawdown",      value: 2.88, decimals: 2, suffix: "%", cls: "cp-stat-green" },
                   { label: "Depósito Mínimo",     value: 30, prefix: "$", suffix: " USD", cls: "cp-stat" },
                 ].map((s) => (
                   <div key={s.label} className="text-center px-6 py-4 rounded-2xl bg-background/70 border border-orange-500/20 backdrop-blur-sm">
