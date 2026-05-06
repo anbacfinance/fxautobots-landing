@@ -277,7 +277,7 @@ const strategies = [
 
 const steps = [
   { number: 1, title: "Registrate en HFM", description: "Crea tu cuenta en HFM usando nuestro enlace de referido. El proceso toma menos de 5 minutos.", action: "Registrarse", link: "https://register.hfm.com/sv/en/new-live-account/?refid=364904", icon: "1️⃣" },
-  { number: 2, title: "Deposita fondos", description: "Deposita un mínimo de $30 USD para Deus Copy o $50 USD para Akira Copy. Acepta criptomonedas.", action: null, link: null, icon: "2️⃣" },
+  { number: 2, title: "Deposita fondos", description: "Deposita un mínimo de $30 USD para Deus Copy. Acepta criptomonedas.", action: null, link: null, icon: "2️⃣" },
   { number: 3, title: "Accede a HFM Copy", description: "Una vez logeado, accede a la sección de HFM Copy desde tu panel de cliente.", action: null, link: null, icon: "3️⃣" },
   { number: 4, title: "Copia la estrategia", description: "Busca la estrategia que prefieras y comienza a copiar nuestras operaciones automáticamente.", action: "Ver Estrategias", link: "#strategies", icon: "4️⃣" },
 ]
@@ -291,9 +291,9 @@ const features = [
 
 const faqs = [
   { question: "¿Qué es el CopyTrading?", answer: "El CopyTrading te permite copiar automáticamente las operaciones de traders profesionales. Cuando nosotros abrimos una operación, se replica automáticamente en tu cuenta con el mismo ratio de riesgo." },
-  { question: "¿Cuál es el depósito mínimo?", answer: "Para Deus Copy necesitas mínimo $30 USD y para Akira Copy mínimo $50 USD. Ambas estrategias operan en cuentas CENT, lo que te permite empezar con poco capital." },
+  { question: "¿Cuál es el depósito mínimo?", answer: "Para Deus Copy necesitas mínimo $30 USD. Ambas estrategias operan en cuentas CENT, lo que te permite empezar con poco capital." },
   { question: "¿Qué son las cuentas CENT?", answer: "Las cuentas CENT dividen tu capital en centavos, permitiendo operar con microlotes. Esto reduce significativamente el riesgo y es ideal para cuentas pequeñas." },
-  { question: "¿Cuánto puedo ganar?", answer: "Los rendimientos varían. Deus Copy lleva actualmente +26% de profit con un drawdown máximo de 2.88%, mientras que Akira Copy lleva +76% con un drawdown de 6.47%. Rendimientos pasados no garantizan resultados futuros." },
+  { question: "¿Cuánto puedo ganar?", answer: "Los rendimientos varían. Deus Copy lleva actualmente +26% de profit con un drawdown máximo de 2.88%. Rendimientos pasados no garantizan resultados futuros." },
   { question: "¿Hay comisiones?", answer: "HFM cobra una pequeña comisión sobre las ganancias obtenidas. No hay comisiones fijas mensuales ni costos ocultos." },
 ]
 
