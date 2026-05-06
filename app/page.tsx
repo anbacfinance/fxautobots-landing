@@ -424,7 +424,7 @@ function HeroCarousel() {
 
   // Auto-avance cada 10s
   useEffect(() => {
-    timerRef.current = setTimeout(() => goTo((slide + 1) % 2), 10000)
+    timerRef.current = setTimeout(() => goTo((slide + 1) % 2), 5000)
     return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [slide])
 
