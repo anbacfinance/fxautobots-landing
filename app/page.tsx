@@ -605,7 +605,7 @@ export default function LandingPage() {
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer"
+              <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
               </a>
@@ -946,7 +946,7 @@ export default function LandingPage() {
             <Link href="/terminos" className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">Términos y Condiciones</Link>
             <Link href="/privacidad" className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">Política de privacidad</Link>
             <div className="flex items-center gap-4 ml-2">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
+              <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
               <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
             </div>
           </div>
