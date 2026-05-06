@@ -245,7 +245,7 @@ function HeroParticles() {
 function TickerTape() {
   const items = [
     "🟠 HFM Copy Trading", "📈 Deus Copy +26% profit",
-    "🚀 Akira Copy +76% profit", "💰 Desde $30 USD",
+    "💰 Desde $30 USD",
     "🔒 Drawdown controlado", "⚡ Operaciones 24/7",
     "✅ Sin experiencia requerida", "🌎 Cuentas CENT disponibles",
   ]
@@ -272,14 +272,6 @@ const strategies = [
     features: ["Bajo riesgo", "Operativa conservadora", "Ideal para cuentas pequeñas", "Drawdown controlado"],
     badge: "Conservador", badgeColor: "bg-emerald-500", accentColor: "emerald",
     statColor: "text-emerald-500", borderHover: "hover:border-emerald-500/50",
-  },
-  {
-    name: "Akira Copy", description: "Estrategia mas agresiva con mayor rentabilidad potencial",
-    profit: "+76%", profitNum: 76, drawdown: "6.47%", minDeposit: 50,
-    link: "https://my.hfm.com/es/copy-trading/provider-details.html?provider=78098671",
-    features: ["Mayor rentabilidad", "Estrategia dinámica", "Para traders con más experiencia", "Excelente ratio riesgo/beneficio"],
-    badge: "Rentable", badgeColor: "bg-orange-500", accentColor: "orange",
-    statColor: "text-orange-500", borderHover: "hover:border-orange-500/50",
   },
 ]
 
