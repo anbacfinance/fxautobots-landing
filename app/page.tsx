@@ -135,7 +135,7 @@ const globalStyles = `
     to   { width: 100%; }
   }
   .hero-progress-bar {
-    animation: hero-progress 10s linear forwards;
+    animation: hero-progress 6s linear forwards;
   }
 `
 
@@ -424,7 +424,7 @@ function HeroCarousel() {
 
   // Auto-avance cada 10s
   useEffect(() => {
-    timerRef.current = setTimeout(() => goTo((slide + 1) % 2), 5000)
+    timerRef.current = setTimeout(() => goTo((slide + 1) % 2), 6000)
     return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [slide])
 
