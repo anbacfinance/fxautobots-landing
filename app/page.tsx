@@ -228,7 +228,7 @@ function TickerTape() {
     "🌎 Traders en LATAM & Europa", "⚡ Plug & Play para MT4",
     "🔒 Gestión de Riesgo Integrada", "💰 Resultados Consistentes",
     "🛡️ Soporte VIP incluido", "📊 Opera 24/5 sin descanso",
-    "🟠 Copy Trading disponible", "💹 Deus Copy +26% · Akira Copy +76%",
+    "🟠 Copy Trading disponible", "💹 Deus Copy +26%",
   ]
   const doubled = [...items, ...items]
   return (
@@ -454,7 +454,7 @@ function HeroCarousel() {
                     Copia Nuestras Estrategias Ganadoras sin experiencia
                   </h2>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Replica automáticamente nuestras operaciones en tu cuenta. Deus Copy <span className="text-green-500 font-semibold">+26%</span> · Akira Copy <span className="text-orange-500 font-semibold">+76%</span>. Desde solo <span className="text-orange-500 font-bold">$30 USD</span>.
+                    Replica automáticamente nuestras operaciones en tu cuenta. Deus Copy <span className="text-green-500 font-semibold">+26%</span>
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 pt-2">
                     <Button size="lg" className="font-medium btn-glow bg-orange-500 hover:bg-orange-600 text-white" asChild>
@@ -472,7 +472,6 @@ function HeroCarousel() {
                   <div className="flex gap-4 pt-2">
                     {[
                       { label: "Deus Copy", value: "+26%", color: "text-green-500" },
-                      { label: "Akira Copy", value: "+76%", color: "text-orange-500" },
                       { label: "Desde", value: "$30 USD", color: "text-primary" },
                     ].map((s) => (
                       <div key={s.label} className="text-center px-3 py-2 rounded-xl bg-background/60 border border-orange-500/15 backdrop-blur-sm">
@@ -489,7 +488,6 @@ function HeroCarousel() {
                   <div className="w-full px-6 space-y-4">
                     {[
                       { name: "Deus Copy", profit: "+26%", dd: "2.88%", min: "$30", color: "emerald", badge: "Conservador" },
-                      { name: "Akira Copy", profit: "+76%", dd: "6.47%", min: "$50", color: "orange", badge: "Rentable" },
                     ].map((s) => (
                       <div key={s.name} className="bg-background/80 backdrop-blur-sm rounded-2xl p-4 border border-orange-500/15 shadow-lg">
                         <div className="flex items-center justify-between mb-3">
