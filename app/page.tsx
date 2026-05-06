@@ -283,25 +283,25 @@ function TestimonialCarousel() {
       name: "Carlos G.",
       image: "https://randomuser.me/api/portraits/men/32.jpg",
       review: "Me gustó que el bot opera con reglas claras y que la instalación fue bastante simple en MT4.",
-      location: "México",
+      location: "Argentina",
     },
     {
       name: "María S.",
       image: "https://randomuser.me/api/portraits/women/63.jpg",
       review: "El soporte fue rápido y me ayudaron a dejar todo configurado sin complicaciones.",
-      location: "España",
+      location: "Argentina",
     },
     {
       name: "Roberto L.",
       image: "https://randomuser.me/api/portraits/men/51.jpg",
       review: "Antes de comprar revisé los backtests y eso me dio más confianza. Se nota que hay trabajo detrás.",
-      location: "Colombia",
+      location: "México",
     },
     {
       name: "Ana P.",
       image: "https://randomuser.me/api/portraits/women/44.jpg",
       review: "Lo que más me gustó fue poder automatizar mi operativa y evitar estar pendiente todo el día.",
-      location: "Argentina",
+      location: "España",
     },
     {
       name: "Diego M.",
@@ -331,13 +331,13 @@ function TestimonialCarousel() {
       name: "Camila V.",
       image: "https://randomuser.me/api/portraits/women/36.jpg",
       review: "El soporte responde bien y eso suma mucho cuando estás arrancando con bots.",
-      location: "Argentina",
+      location: "Bolivia",
     },
     {
       name: "Sergio A.",
       image: "https://randomuser.me/api/portraits/men/67.jpg",
       review: "Lo compré después de mirar varios backtests. Me pareció una herramienta seria para MT4.",
-      location: "Ecuador",
+      location: "Uruguay",
     },
     {
       name: "Valentina C.",
@@ -349,7 +349,7 @@ function TestimonialCarousel() {
       name: "Andrés P.",
       image: "https://randomuser.me/api/portraits/men/14.jpg",
       review: "La idea de tener bots para distintos perfiles me pareció muy buena. Hay opciones para elegir.",
-      location: "Bolivia",
+      location: "Argentina",
     },
   ]
   const [current, setCurrent] = useState(0)
