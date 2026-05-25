@@ -245,7 +245,7 @@ function HeroParticles() {
 function TickerTape() {
   const items = [
     "🟠 HFM Copy Trading",
-    "📈 Deus Copy +26% profit",
+    "📈 Deus Copy +36% profit",
     "💰 Desde $30 USD",
     "🔒 Max DD 2.88%",
     "🤝 Asistencia paso a paso",
@@ -270,7 +270,7 @@ function TickerTape() {
 const strategies = [
   {
     name: "Deus Copy", description: "Estrategia conservadora con bajo drawdown, ideal para principiantes",
-    profit: "+26%", profitNum: 26, drawdown: "2.88%", minDeposit: 30,
+    profit: "+36%", profitNum: 36, drawdown: "2.88%", minDeposit: 30,
     link: "https://my.hfm.com/es/copy-trading/provider-details.html?provider=78098671",
     features: ["Bajo riesgo", "Operativa conservadora", "Ideal para cuentas pequeñas", "Drawdown controlado"],
     badge: "Conservador", badgeColor: "bg-emerald-500", accentColor: "emerald",
@@ -359,7 +359,7 @@ const faqs = [
   {
     question: "¿Cuánto puedo ganar?",
     answer:
-      "Los rendimientos varían según el mercado. Deus Copy lleva actualmente +26% de profit con un drawdown máximo de 2.88%. Rendimientos pasados no garantizan resultados futuros.",
+      "Los rendimientos varían según el mercado. Deus Copy lleva actualmente +36% de profit con un drawdown máximo de 2.88%. Rendimientos pasados no garantizan resultados futuros.",
   },
   {
     question: "¿Me ayudan a configurar todo?",
@@ -463,7 +463,7 @@ export default function CopyTradingPage() {
               {/* Stats con contadores animados */}
               <div className="cp-reveal cp-d300 flex flex-wrap justify-center gap-6 mt-4">
                 {[
-                  { label: "Profit Actual", value: 26, prefix: "+", suffix: "%", cls: "cp-stat" },
+                  { label: "Profit Actual", value: 36, prefix: "+", suffix: "%", cls: "cp-stat" },
                   { label: "Max Drawdown",      value: 2.88, decimals: 2, suffix: "%", cls: "cp-stat-green" },
                   { label: "Capital Mínimo",     value: 30, prefix: "$", suffix: " USD", cls: "cp-stat" },
                 ].map((s) => (
