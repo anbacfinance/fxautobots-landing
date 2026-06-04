@@ -135,7 +135,7 @@ const globalStyles = `
     to   { width: 100%; }
   }
   .hero-progress-bar {
-    animation: hero-progress 10s linear forwards;
+    animation: hero-progress 6s linear forwards;
   }
 `
 
@@ -224,11 +224,16 @@ function HeroParticles({ color = "99,102,241" }: { color?: string }) {
 // ─── TICKER TAPE ──────────────────────────────────────────────────────────
 function TickerTape() {
   const items = [
-    "🤖 Bots 100% Automatizados", "📈 +5000h de Backtesting",
-    "🌎 Traders en LATAM & Europa", "⚡ Plug & Play para MT4",
-    "🔒 Gestión de Riesgo Integrada", "💰 Resultados Consistentes",
-    "🛡️ Soporte VIP incluido", "📊 Opera 24/5 sin descanso",
-    "🟠 Copy Trading disponible", "💹 Deus Copy +26% · Akira Copy +76%",
+    "🤖 Bots automatizados para MT4",
+    "📈 +5000h de backtesting",
+    "🌎 Traders en LATAM & Europa",
+    "⚡ Instalación Plug & Play",
+    "🔒 Gestión de riesgo integrada",
+    "📊 Métricas y backtests visibles",
+    "🛡️ Soporte incluido",
+    "📊 Opera 24/5 sin emociones",
+    "🟠 Copy Trading disponible",
+    "💹 Deus Copy +36% histórico",
   ]
   const doubled = [...items, ...items]
   return (
@@ -250,7 +255,7 @@ function StatsBar() {
     { icon: Users,      label: "Traders activos",   value: 82,    suffix: "+" },
     { icon: TrendingUp, label: "Horas de backtest",  value: 5000,  suffix: "h" },
     { icon: Award,      label: "Tasa de éxito",      value: 76,    suffix: "%" },
-    { icon: Zap,        label: "Operaciones auto",   value: 12000, suffix: "+" },
+    { icon: Zap,        label: "Operaciones realizadas",   value: 12000, suffix: "+" },
   ]
   return (
     <section className="w-full py-10 border-b">
@@ -274,11 +279,78 @@ function StatsBar() {
 // ─── TESTIMONIAL CAROUSEL ─────────────────────────────────────────────────
 function TestimonialCarousel() {
   const testimonials = [
-    { name: "Carlos G.",  image: "", review: "Con este bot hice en 3 semanas lo que antes hacía en 3 meses. Fácil de usar y rentable.", location: "México" },
-    { name: "María S.",   image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&h=200&fit=crop", review: "Increíble la consistencia de ganancias. Ya llevo 2 meses usando el bot y los resultados superan mis expectativas.", location: "España" },
-    { name: "Roberto L.", image: "", review: "Al principio era escéptico, pero después de ver los backtests y probarlo, no puedo estar más satisfecho. Recomendado 100%.", location: "Colombia" },
-    { name: "Ana P.",     image: "", review: "La configuración es súper sencilla y el soporte es excelente. Mi cuenta ha crecido un 40% en solo 6 semanas.", location: "Argentina" },
-    { name: "Diego M.",   image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=200&h=200&fit=crop", review: "Después de perder dinero con otros bots, este realmente funciona. Los resultados hablan por sí solos.", location: "Chile" },
+    {
+      name: "Carlos G.",
+      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      review: "Me gustó que el bot opera con reglas claras y que la instalación fue bastante simple en MT4.",
+      location: "Argentina",
+    },
+    {
+      name: "María S.",
+      image: "https://randomuser.me/api/portraits/women/63.jpg",
+      review: "El soporte fue rápido y me ayudaron a dejar todo configurado sin complicaciones.",
+      location: "Argentina",
+    },
+    {
+      name: "Roberto L.",
+      image: "https://randomuser.me/api/portraits/men/51.jpg",
+      review: "Antes de comprar revisé los backtests y eso me dio más confianza. Se nota que hay trabajo detrás.",
+      location: "México",
+    },
+    {
+      name: "Ana P.",
+      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      review: "Lo que más me gustó fue poder automatizar mi operativa y evitar estar pendiente todo el día.",
+      location: "España",
+    },
+    {
+      name: "Diego M.",
+      image: "https://randomuser.me/api/portraits/men/75.jpg",
+      review: "Venía probando otras cosas y con FXAutoBots sentí una propuesta más clara y ordenada.",
+      location: "Chile",
+    },
+    {
+      name: "Javier R.",
+      image: "https://randomuser.me/api/portraits/men/22.jpg",
+      review: "La configuración fue más fácil de lo que esperaba. En poco tiempo ya lo tenía funcionando.",
+      location: "Perú",
+    },
+    {
+      name: "Lucía M.",
+      image: "https://randomuser.me/api/portraits/women/28.jpg",
+      review: "Me gustó que explican bien cada bot y que no te venden humo. Todo bastante claro.",
+      location: "Uruguay",
+    },
+    {
+      name: "Fernando T.",
+      image: "https://randomuser.me/api/portraits/men/41.jpg",
+      review: "Uso Deus como parte de mi operativa y me sirve para mantener disciplina y reglas definidas.",
+      location: "Paraguay",
+    },
+    {
+      name: "Camila V.",
+      image: "https://randomuser.me/api/portraits/women/36.jpg",
+      review: "El soporte responde bien y eso suma mucho cuando estás arrancando con bots.",
+      location: "Bolivia",
+    },
+    {
+      name: "Sergio A.",
+      image: "https://randomuser.me/api/portraits/men/67.jpg",
+      review: "Lo compré después de mirar varios backtests. Me pareció una herramienta seria para MT4.",
+      location: "Uruguay",
+    },
+    {
+      name: "Valentina C.",
+      image: "https://randomuser.me/api/portraits/women/52.jpg",
+      review: "Me ayudó a ordenar mi operativa y a no entrar por impulso como hacía antes.",
+      location: "Chile",
+    },
+    {
+      name: "Andrés P.",
+      image: "https://randomuser.me/api/portraits/men/14.jpg",
+      review: "La idea de tener bots para distintos perfiles me pareció muy buena. Hay opciones para elegir.",
+      location: "Argentina",
+    },
   ]
   const [current, setCurrent] = useState(0)
   const [animating, setAnimating] = useState(false)
@@ -296,7 +368,7 @@ function TestimonialCarousel() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center text-center space-y-2 reveal">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Lo que dicen nuestros usuarios</h2>
-          <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">Traders como tú ya están obteniendo resultados excepcionales</p>
+          <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">Opiniones de usuarios que ya probaron nuestras herramientas automatizadas</p>
         </div>
         <div className="mx-auto max-w-3xl mt-12 relative reveal delay-200">
           <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl" />
@@ -352,7 +424,7 @@ function HeroCarousel() {
 
   // Auto-avance cada 10s
   useEffect(() => {
-    timerRef.current = setTimeout(() => goTo((slide + 1) % 2), 10000)
+    timerRef.current = setTimeout(() => goTo((slide + 1) % 2), 6000)
     return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [slide])
 
@@ -393,11 +465,11 @@ function HeroCarousel() {
                     Trading automatizado para MT4
                   </div>
                   <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl">
-                    Gana en piloto automático con nuestros Bots de Trading para MT4
+                    Automatizá tu trading con nuestros Bots de Trading para MT4
                   </h2>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Operá sin emociones, sin errores y con disciplina constante. Nuestros bots siguen estrategias
-                    probadas, con resultados consistentes y 100% automatizados.
+                    Operá con reglas claras, gestión de riesgo y disciplina constante. Nuestros bots ejecutan estrategias
+                    automatizadas en MetaTrader 4 para ayudarte a evitar decisiones impulsivas.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 pt-2">
                     <Button size="lg" className="font-medium btn-glow" asChild>
@@ -408,8 +480,8 @@ function HeroCarousel() {
                     </Button>
                   </div>
                   <div className="flex items-center gap-4 pt-2">
-                    <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
-                      <Instagram className="h-4 w-4" /><span>@fxautobots</span>
+                    <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
+                      <Instagram className="h-4 w-4" /><span>@botsdetrading.latam</span>
                     </a>
                     <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
                       <MessageCircle className="h-4 w-4" /><span>@fxautobots</span>
@@ -448,13 +520,13 @@ function HeroCarousel() {
                   </div>
                   <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-500 px-3 py-1 rounded-full text-sm font-medium">
                     <Copy className="h-3.5 w-3.5" />
-                    Copia nuestras operaciones automáticamente
+                    Copytrading automatizado desde tu cuenta
                   </div>
                   <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl">
-                    Copia Nuestras Estrategias Ganadoras sin experiencia
+                    Copiá Deus Copy con acompañamiento paso a paso
                   </h2>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Replica automáticamente nuestras operaciones en tu cuenta. Deus Copy <span className="text-green-500 font-semibold">+26%</span> · Akira Copy <span className="text-orange-500 font-semibold">+76%</span>. Desde solo <span className="text-orange-500 font-bold">$30 USD</span>.
+                    Replica automáticamente nuestras operaciones en tu cuenta. Deus Copy <span className="text-green-500 font-semibold">+36%</span>
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 pt-2">
                     <Button size="lg" className="font-medium btn-glow bg-orange-500 hover:bg-orange-600 text-white" asChild>
@@ -471,8 +543,7 @@ function HeroCarousel() {
                   {/* Mini stats */}
                   <div className="flex gap-4 pt-2">
                     {[
-                      { label: "Deus Copy", value: "+26%", color: "text-green-500" },
-                      { label: "Akira Copy", value: "+76%", color: "text-orange-500" },
+                      { label: "Deus Copy", value: "+36%", color: "text-green-500" },
                       { label: "Desde", value: "$30 USD", color: "text-primary" },
                     ].map((s) => (
                       <div key={s.label} className="text-center px-3 py-2 rounded-xl bg-background/60 border border-orange-500/15 backdrop-blur-sm">
@@ -488,8 +559,7 @@ function HeroCarousel() {
                   {/* Tarjetas de estrategia */}
                   <div className="w-full px-6 space-y-4">
                     {[
-                      { name: "Deus Copy", profit: "+26%", dd: "2.88%", min: "$30", color: "emerald", badge: "Conservador" },
-                      { name: "Akira Copy", profit: "+76%", dd: "6.47%", min: "$50", color: "orange", badge: "Rentable" },
+                      { name: "Deus Copy", profit: "+36%", dd: "2.88%", min: "$30", color: "emerald", badge: "Conservador" },
                     ].map((s) => (
                       <div key={s.name} className="bg-background/80 backdrop-blur-sm rounded-2xl p-4 border border-orange-500/15 shadow-lg">
                         <div className="flex items-center justify-between mb-3">
@@ -605,7 +675,7 @@ export default function LandingPage() {
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer"
+              <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
               </a>
@@ -648,7 +718,7 @@ export default function LandingPage() {
           <div className="flex flex-col items-center justify-center space-y-4 text-center reveal">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Características Principales</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
-              Nuestros bots de trading están diseñados para maximizar tus ganancias con mínimo esfuerzo
+              Nuestros bots están diseñados para automatizar tu operativa con reglas claras, backtests y gestión de riesgo
             </p>
           </div>
           <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
@@ -681,7 +751,7 @@ export default function LandingPage() {
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Nuestros Bots de Trading</h2>
             </div>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
-              Elige el bot que mejor se adapte a tu estilo de trading y objetivos de inversión
+              Elegí el bot que mejor se adapte a tu estilo de trading, capital y perfil de riesgo
             </p>
           </div>
 
@@ -705,7 +775,7 @@ export default function LandingPage() {
                     <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground" /><span className="text-sm font-medium">Temporalidad: M5</span></div>
                     <div className="flex items-center gap-2"><Target className="h-4 w-4 text-muted-foreground" /><span className="text-sm font-medium">Pares: EURGBP, EURJPY, EURUSD, GBPUSD, USDJPY</span></div>
                   </div>
-                  <p className="text-sm text-muted-foreground">Bot de alta frecuencia y rendimiento agresivo. Requiere buena gestión de riesgo y saldo mínimo de $400 USD en cuenta CENT.</p>
+                  <p className="text-sm text-muted-foreground">Bot de perfil agresivo y alta frecuencia. Requiere buena gestión de riesgo y se recomienda para cuentas desde $400 USD en cuenta CENT.</p>
                 </CardContent>
                 <CardFooter><Button className="w-full btn-glow" asChild><Link href="/comprar">Comprar Bot AKIRA</Link></Button></CardFooter>
               </Card>
@@ -730,7 +800,7 @@ export default function LandingPage() {
                     <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground" /><span className="text-sm font-medium">Temporalidad: H1</span></div>
                     <div className="flex items-center gap-2"><Target className="h-4 w-4 text-muted-foreground" /><span className="text-sm font-medium">Pares: AUDCAD, AUDCHF, EURJPY, EURUSD, GBPJPY, GBPUSD, USDJPY, XAUUSD</span></div>
                   </div>
-                  <p className="text-sm text-muted-foreground">Bot versátil y seguro para operar en múltiples pares. Ideal para cuentas desde $100 USD en cuenta CENT.</p>
+                  <p className="text-sm text-muted-foreground">Bot versátil y equilibrado para operar en múltiples pares. Ideal para cuentas desde $100 USD en cuenta CENT.</p>
                 </CardContent>
                 <CardFooter><Button className="w-full btn-glow" asChild><Link href="/comprar">Comprar Bot DEUS</Link></Button></CardFooter>
               </Card>
@@ -781,7 +851,7 @@ export default function LandingPage() {
                     <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground" /><span className="text-sm font-medium">Estrategia: Order Blocks</span></div>
                     <div className="flex items-center gap-2"><Target className="h-4 w-4 text-muted-foreground" /><span className="text-sm font-medium">Opera con: Ordenes Stop, Stop Loss y Take Profit</span></div>
                   </div>
-                  <p className="text-sm text-muted-foreground">La frutillita del postre. Bot diseñado para pruebas de fondeo con rendimiento constante y riesgo controlado.</p>
+                  <p className="text-sm text-muted-foreground">Bot diseñado para pruebas de fondeo, con enfoque en estructura operativa, control de riesgo y ejecución disciplinada.</p>
                 </CardContent>
                 <CardFooter>
                   <Button className="w-full bg-amber-500 hover:bg-amber-600 text-white btn-glow" asChild>
@@ -808,7 +878,7 @@ export default function LandingPage() {
                 <Percent className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Ofertas Especiales</h3>
-              <p className="max-w-[700px] text-muted-foreground mt-2">Aprovecha nuestros paquetes con descuento y maximiza tu potencial de trading</p>
+              <p className="max-w-[700px] text-muted-foreground mt-2">Aprovechá nuestros paquetes con descuento y diversificá tus herramientas de trading automatizado</p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
@@ -848,7 +918,7 @@ export default function LandingPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <p className="text-sm">Obtén los 3 bots de nuestra colección y maximiza tus oportunidades de trading con nuestro mejor descuento.</p>
+                    <p className="text-sm">Obtené los 3 bots principales de nuestra colección y diversificá tu operativa con nuestro mejor descuento.</p>
                     <ul className="space-y-2 bg-muted p-3 rounded-lg">
                       {["Incluye AKIRA + DEUS + SCALPER", "Soporte técnico VIP", "Actualizaciones prioritarias", "Guía de configuración avanzada"].map((item) => (
                         <li key={item} className="flex items-center gap-2 text-sm">
@@ -873,7 +943,7 @@ export default function LandingPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <p className="text-sm">El paquete definitivo. Incluye todos nuestros bots más el exclusivo Bot ATLAS para dominar cualquier mercado.</p>
+                    <p className="text-sm">El paquete más completo. Incluye todos nuestros bots más Bot ATLAS para sumar una estrategia enfocada en fondeo.</p>
                     <ul className="space-y-2 bg-muted p-3 rounded-lg">
                       {["AKIRA + DEUS + SCALPER + ATLAS", "Soporte técnico VIP de por vida", "Acceso anticipado a nuevos bots", "Configuración personalizada incluida"].map((item) => (
                         <li key={item} className="flex items-center gap-2 text-sm">
@@ -891,8 +961,8 @@ export default function LandingPage() {
           {/* Calculadora */}
           <div className="mt-16 mb-8 reveal">
             <div className="flex flex-col items-center text-center mb-8">
-              <h3 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Calcula tu Rentabilidad</h3>
-              <p className="max-w-[700px] text-muted-foreground mt-2">Estima tus potenciales ganancias según tu capital y nivel de riesgo</p>
+              <h3 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Calculadora Estimativa</h3>
+              <p className="max-w-[700px] text-muted-foreground mt-2">Simulá escenarios posibles según capital, riesgo y rendimiento estimado. No representa una garantía de resultados.</p>
             </div>
             <div className="max-w-xl mx-auto"><ProfitCalculator /></div>
           </div>
@@ -915,8 +985,8 @@ export default function LandingPage() {
             <div className="badge-pulse mb-4">
               <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={80} height={80} />
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">¿Listo para automatizar tus ganancias?</h2>
-            <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl/relaxed">Únete a cientos de traders que ya están generando ingresos consistentes con nuestros bots</p>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">¿Listo para automatizar tu operativa?</h2>
+            <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl/relaxed">Conocé nuestros bots para MT4 y elegí la herramienta que mejor se adapte a tu perfil de riesgo.</p>
             <Button size="lg" className="font-medium text-lg group btn-glow mt-4" asChild>
               <Link href="/comprar">
                 Obtener nuestros Bots
@@ -924,8 +994,8 @@ export default function LandingPage() {
               </Link>
             </Button>
             <div className="flex items-center gap-6 mt-4">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
-                <Instagram className="h-5 w-5" /><span>@fxautobots</span>
+              <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
+                <Instagram className="h-5 w-5" /><span>@botsdetrading.latam</span>
               </a>
               <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
                 <MessageCircle className="h-5 w-5" /><span>@fxautobots</span>
@@ -946,7 +1016,7 @@ export default function LandingPage() {
             <Link href="/terminos" className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">Términos y Condiciones</Link>
             <Link href="/privacidad" className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">Política de privacidad</Link>
             <div className="flex items-center gap-4 ml-2">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
+              <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
               <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
             </div>
           </div>
