@@ -158,11 +158,11 @@ export function ProfitCalculator() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Capital final estimado:</span>
-                <span className="font-bold">${results.finalCapital.toLocaleString()}</span>
+                <span className="font-bold">${results.finalCapital.toLocaleString("en-US")}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Ganancia total:</span>
-                <span className="font-bold text-green-500">+${results.totalProfit.toLocaleString()}</span>
+                <span className="font-bold text-green-500">+${results.totalProfit.toLocaleString("en-US")}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Rendimiento porcentual:</span>
