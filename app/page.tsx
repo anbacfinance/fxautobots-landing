@@ -484,7 +484,7 @@ function HeroCarousel() {
                       <Instagram className="h-4 w-4" /><span>@botsdetrading.latam</span>
                     </a>
                     <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
-                      <MessageCircle className="h-4 w-4" /><span>@fxautobots</span>
+                      <MessageCircle className="h-4 w-4" /><span>@fxautobots_bot</span>
                     </a>
                   </div>
                 </div>
@@ -1000,7 +1000,7 @@ export default function LandingPage() {
                 <Instagram className="h-5 w-5" /><span>@botsdetrading.latam</span>
               </a>
               <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
-                <MessageCircle className="h-5 w-5" /><span>@fxautobots</span>
+                <MessageCircle className="h-5 w-5" /><span>@fxautobots_bot</span>
               </a>
             </div>
           </div>
