@@ -106,7 +106,7 @@ b) Los fondos depositados en la cuenta HFM son de exclusiva propiedad y responsa
 
 c) La Empresa actúa únicamente como proveedor de señales / administrador de estrategia dentro del sistema de CopyTrading de HFM. No opera directamente en la cuenta del usuario ni tiene facultad para retirar fondos.
 
-d) Los rendimientos mostrados (ej. +26% Deus Copy, +76% Akira Copy) son históricos y no garantizan resultados futuros. El desempeño pasado no es indicativo de resultados futuros.
+d) Los rendimientos mostrados son históricos y no garantizan resultados futuros. El desempeño pasado no es indicativo de resultados futuros.
 
 e) HFM puede modificar, suspender o discontinuar el servicio de CopyTrading en cualquier momento. La Empresa no asume responsabilidad por dichas decisiones.
 
