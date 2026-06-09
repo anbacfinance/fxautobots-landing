@@ -483,7 +483,7 @@ function HeroCarousel() {
                     <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
                       <Instagram className="h-4 w-4" /><span>@botsdetrading.latam</span>
                     </a>
-                    <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
+                    <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors">
                       <MessageCircle className="h-4 w-4" /><span>@fxautobots</span>
                     </a>
                   </div>
@@ -679,7 +679,7 @@ export default function LandingPage() {
                 className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer"
+              <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Telegram">
                 <MessageCircle className="h-5 w-5" />
               </a>
@@ -997,7 +997,7 @@ export default function LandingPage() {
               <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
                 <Instagram className="h-5 w-5" /><span>@botsdetrading.latam</span>
               </a>
-              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
+              <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors hover:scale-105">
                 <MessageCircle className="h-5 w-5" /><span>@fxautobots</span>
               </a>
             </div>
@@ -1017,7 +1017,7 @@ export default function LandingPage() {
             <Link href="/privacidad" className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">Política de privacidad</Link>
             <div className="flex items-center gap-4 ml-2">
               <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
-              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
+              <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
             </div>
           </div>
         </div>
