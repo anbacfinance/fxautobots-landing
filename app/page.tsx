@@ -690,6 +690,7 @@ export default function LandingPage() {
               <Link href="#cta">Comenzar</Link>
             </Button>
             <MobileNav links={[
+              { href: "/empezar",      label: "Empezar" },
               { href: "/backtest",     label: "Backtest" },
               { href: "#features",     label: "Caracteristicas" },
               { href: "#testimonials", label: "Testimonios" },
