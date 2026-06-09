@@ -27,7 +27,7 @@ Si usted no acepta alguno de estos términos, debe abstenerse de adquirir o util
 Marca comercial: FXAutoBots
 Sitio web: https://fxautobots.pro
 País de operación: República Argentina
-Canal de soporte oficial: @fxautobots_bot (Telegram)
+Canal de soporte oficial: @fxautobots (Telegram)
 Correo alternativo: disponible en el canal de soporte
 
 La Empresa no es una entidad financiera regulada, no ofrece asesoramiento de inversión personalizado, ni opera como administrador de carteras o gestor de fondos de terceros bajo ninguna normativa vigente.`,
@@ -236,9 +236,8 @@ Estos Términos y Condiciones, junto con la Política de Privacidad y cualquier 
     title: "Contacto y Canal Oficial",
     content: `Para consultas, soporte técnico, ejercicio de derechos sobre datos personales o cualquier reclamo formal, el usuario puede comunicarse a través de los canales oficiales:
 
-Telegram (soporte técnico): @fxautobots_bot
-Instagram: @botsdetrading.latam
-Sitio web: https://fxautobots.pro
+Telegram (soporte técnico): @fxautobots
+Sitio web: https://www.fxautobots.pro
 
 La Empresa se compromete a dar respuesta en un plazo razonable a través de sus canales habilitados. Las comunicaciones realizadas fuera de estos canales oficiales no generan obligación de respuesta ni crean compromisos vinculantes para la Empresa.
 
