@@ -398,7 +398,7 @@ export default function TerminosCondiciones() {
           <div className="mb-12 space-y-4">
             <span className="updated-chip">
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#E8192C", display: "inline-block" }} />
-              Última actualización: 12 de junio de 2025
+              Última actualización: 6 de junio de 2026
             </span>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
               Términos y Condiciones
