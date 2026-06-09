@@ -27,7 +27,7 @@ import {
   TrendingUp,
 } from "lucide-react"
 
-const TELEGRAM = "https://t.me/fxautobots"
+const TELEGRAM = "https://t.me/fxautobots_bot"
 
 // ─── STYLES ────────────────────────────────────────────────────────────────
 const styles = `
@@ -317,9 +317,9 @@ export function EmpezarContent() {
         <div className="container flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="transition-transform duration-300 group-hover:rotate-12">
-              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots" width={36} height={36} />
+              <Image src="/images/fxautobots_bot-logo.png" alt="fxautobots_bot" width={36} height={36} />
             </div>
-            <span className="font-bold text-lg hidden md:inline">FXAutoBots</span>
+            <span className="font-bold text-lg hidden md:inline">fxautobots_bot</span>
           </Link>
           <nav className="hidden md:flex gap-6">
             {NAV.map(l => (
@@ -328,7 +328,7 @@ export function EmpezarContent() {
           </nav>
           <div className="flex items-center gap-3">
             <div className="hidden md:flex items-center gap-2">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><Instagram className="h-4 w-4" /></a>
+              <a href="https://instagram.com/fxautobots_bot" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><Instagram className="h-4 w-4" /></a>
               <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><MessageCircle className="h-4 w-4" /></a>
             </div>
             <ThemeToggle />
@@ -377,7 +377,7 @@ export function EmpezarContent() {
                 <Button asChild size="lg" className="ep-btn text-base h-12 px-8">
                   <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-5 w-5" />
-                    Hablar con FXAutoBots
+                    Hablar con fxautobots_bot
                   </a>
                 </Button>
                 <Button
@@ -496,7 +496,7 @@ export function EmpezarContent() {
         <section className="w-full py-16 md:py-24">
           <div className="container">
             <div className="ep-reveal text-center mb-10 max-w-xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Todo lo que incluye FXAutoBots</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Todo lo que incluye fxautobots_bot</h2>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
               {BENEFITS.map((b, i) => (
@@ -564,7 +564,7 @@ export function EmpezarContent() {
                 <Button asChild size="lg" variant="secondary" className="mt-8 ep-btn text-base h-12 px-8">
                   <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-5 w-5" />
-                    Hablar con FXAutoBots
+                    Hablar con fxautobots_bot
                   </a>
                 </Button>
               </div>
@@ -578,7 +578,7 @@ export function EmpezarContent() {
       <footer className="w-full border-t py-6">
         <div className="container text-center">
           <p className="text-xs text-muted-foreground">
-            FXAutoBots — Bots de trading para MT4. El trading implica riesgo. No se garantizan ganancias.
+            fxautobots_bot — Bots de trading para MT4. El trading implica riesgo. No se garantizan ganancias.
           </p>
         </div>
       </footer>
