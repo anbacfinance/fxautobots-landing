@@ -653,12 +653,11 @@ export default function LandingPage() {
             {[
               { href: "/empezar",      label: "Empezar" },
               { href: "/backtest",     label: "Backtest" },
-              { href: "#features",     label: "Características" },
+              { href: "/tutoriales",   label: "Tutoriales" },
               { href: "#testimonials", label: "Testimonios" },
               { href: "#pricing",      label: "Precios" },
               { href: "#brokers",      label: "Brokers" },
               { href: "#vps",          label: "VPS" },
-              { href: "/tutoriales",   label: "Tutoriales" },
             ].map((link) => (
               <Link key={link.href} href={link.href}
                 className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative group">
@@ -692,7 +691,6 @@ export default function LandingPage() {
             <MobileNav links={[
               { href: "/empezar",      label: "Empezar" },
               { href: "/backtest",     label: "Backtest" },
-              { href: "#features",     label: "Caracteristicas" },
               { href: "#testimonials", label: "Testimonios" },
               { href: "#pricing",      label: "Precios" },
               { href: "#brokers",      label: "Brokers" },
