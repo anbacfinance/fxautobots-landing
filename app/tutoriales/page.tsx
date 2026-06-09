@@ -337,7 +337,7 @@ export default function TutorialesPage() {
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
               <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
-              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
+              <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
             </div>
             <ThemeToggle />
             <Button asChild className="transition-all hover:-translate-y-0.5 hover:shadow-md">
