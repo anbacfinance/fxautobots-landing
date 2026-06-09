@@ -651,6 +651,7 @@ export default function LandingPage() {
           </div>
           <nav className="hidden md:flex gap-6">
             {[
+              { href: "/empezar",      label: "Empezar" },
               { href: "/backtest",     label: "Backtest" },
               { href: "#features",     label: "Características" },
               { href: "#testimonials", label: "Testimonios" },
