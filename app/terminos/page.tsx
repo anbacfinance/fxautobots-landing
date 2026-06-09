@@ -26,7 +26,7 @@ export default function TerminosCondiciones() {
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
               <a
-                href="https://instagram.com/fxautobots"
+                href="https://instagram.com/botsdetrading.latam"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
@@ -204,7 +204,7 @@ export default function TerminosCondiciones() {
             </Link>
             <div className="flex items-center gap-4 ml-2">
               <a
-                href="https://instagram.com/fxautobots"
+                href="https://instagram.com/botsdetrading.latam"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"

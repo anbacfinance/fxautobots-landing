@@ -123,22 +123,22 @@ export function BotsComparison() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
         <Button className="w-full" asChild>
-          <a href="https://shoppy.gg/product/2FEcJKa" target="_blank" rel="noopener noreferrer">
+          <a href="https://fxautobots.pro/comprar" target="_blank" rel="noopener noreferrer">
             Comprar AKIRA
           </a>
         </Button>
         <Button className="w-full" asChild>
-          <a href="https://shoppy.gg/product/aSkVuev" target="_blank" rel="noopener noreferrer">
+          <a href="https://fxautobots.pro/comprar" target="_blank" rel="noopener noreferrer">
             Comprar DEUS
           </a>
         </Button>
         <Button className="w-full" asChild>
-          <a href="https://shoppy.gg/product/DcWNzdU" target="_blank" rel="noopener noreferrer">
+          <a href="https://fxautobots.pro/comprar" target="_blank" rel="noopener noreferrer">
             Comprar SCALPER
           </a>
         </Button>
         <Button className="w-full bg-amber-500 hover:bg-amber-600 text-background" asChild>
-          <a href="https://shoppy.gg/product/r3tlmoZ" target="_blank" rel="noopener noreferrer">
+          <a href="https://fxautobots.pro/comprar" target="_blank" rel="noopener noreferrer">
             Comprar ATLAS
           </a>
         </Button>
