@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { MobileNav } from "@/components/mobile-nav"
 import {
@@ -14,7 +13,6 @@ import {
   Copy as CopyIcon,
   Tag,
   HelpCircle,
-  CheckCircle2,
   ChevronDown,
   ArrowRight,
   ShieldCheck,
@@ -23,134 +21,196 @@ import {
   Headphones,
   Compass,
   MessageSquare,
+  CheckCircle2,
+  Zap,
+  Users,
+  TrendingUp,
 } from "lucide-react"
 
 const TELEGRAM = "https://t.me/fxautobots"
 
-// ─── ANIMATION STYLES ───────────────────────────────────────────────────────
-const animStyles = `
+// ─── STYLES ────────────────────────────────────────────────────────────────
+const styles = `
+  /* Scroll reveal */
   .ep-reveal {
-    opacity: 0; transform: translateY(32px);
-    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s cubic-bezier(0.4,0,0.2,1), transform 0.65s cubic-bezier(0.4,0,0.2,1);
   }
-  .ep-reveal.revealed { opacity: 1; transform: translateY(0); }
-  .ep-d100 { transition-delay: 0.10s; }
-  .ep-d200 { transition-delay: 0.20s; }
-  .ep-d300 { transition-delay: 0.30s; }
-  .ep-d400 { transition-delay: 0.40s; }
+  .ep-reveal.visible { opacity: 1; transform: translateY(0); }
+  .ep-d1 { transition-delay: 0.08s; }
+  .ep-d2 { transition-delay: 0.16s; }
+  .ep-d3 { transition-delay: 0.24s; }
+  .ep-d4 { transition-delay: 0.32s; }
 
-  @keyframes ep-ticker {
+  /* Ticker */
+  @keyframes ep-scroll {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
   }
-  .ep-ticker { animation: ep-ticker 24s linear infinite; }
-  .ep-ticker:hover { animation-play-state: paused; }
+  .ep-ticker-track { animation: ep-scroll 22s linear infinite; }
+  .ep-ticker-track:hover { animation-play-state: paused; }
 
-  #ep-canvas { position:absolute; inset:0; pointer-events:none; opacity:0.45; }
+  /* Orbs */
+  @keyframes ep-float {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%      { transform: translate(10px,-14px) scale(1.06); }
+  }
+  .ep-orb   { animation: ep-float 10s ease-in-out infinite; }
+  .ep-orb-b { animation: ep-float 13s ease-in-out 2s infinite; }
 
-  .ep-btn { position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
-  .ep-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px hsl(var(--primary) / 0.30); }
+  /* Canvas */
+  #ep-canvas { position:absolute; inset:0; pointer-events:none; }
+
+  /* Option cards */
+  .ep-option {
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    border: 2px solid transparent;
+  }
+  .ep-option:hover {
+    transform: translateY(-4px);
+    border-color: hsl(var(--primary) / 0.5);
+    box-shadow: 0 16px 40px hsl(var(--primary) / 0.15);
+  }
+  .ep-option.selected {
+    border-color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.07);
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.3), 0 12px 32px hsl(var(--primary) / 0.18);
+  }
+
+  /* CTA button */
+  .ep-btn {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .ep-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .ep-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px hsl(var(--primary) / 0.35); }
   .ep-btn:active { transform: translateY(0); }
 
-  .ep-card { transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease; }
-  .ep-card:hover { box-shadow: 0 16px 40px hsl(var(--primary) / 0.12); border-color: hsl(var(--primary) / 0.45) !important; transform: translateY(-3px); }
+  /* Steps connector */
+  .ep-step-line {
+    position: absolute;
+    top: 28px; left: calc(50% + 36px);
+    width: calc(100% - 72px);
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary) / 0.4), hsl(var(--primary) / 0.1));
+  }
 
+  /* FAQ */
+  .ep-faq-body {
+    overflow: hidden;
+    transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.28s ease;
+  }
+  .ep-faq-body.open   { max-height: 200px; opacity: 1; }
+  .ep-faq-body.closed { max-height: 0; opacity: 0; }
+
+  /* Nav underline */
   .ep-nav { position: relative; }
   .ep-nav::after {
     content: ''; position: absolute; bottom: -2px; left: 0;
     width: 0; height: 2px; background: hsl(var(--primary));
-    transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+    transition: width 0.3s ease;
   }
   .ep-nav:hover::after { width: 100%; }
 
-  .ep-faq-body { overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease; }
-  .ep-faq-body.open { max-height: 220px; opacity: 1; }
-  .ep-faq-body.closed { max-height: 0; opacity: 0; }
-
-  @keyframes ep-orb {
-    0%, 100% { transform: scale(1) translate(0,0); opacity: 0.10; }
-    50%       { transform: scale(1.12) translate(12px,-12px); opacity: 0.16; }
+  /* Gradient text */
+  .ep-gradient-text {
+    background: linear-gradient(135deg, hsl(var(--primary)), #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  .ep-orb { animation: ep-orb 9s ease-in-out infinite; }
-  .ep-orb-2 { animation: ep-orb 11s ease-in-out 2s infinite; }
+
+  /* Glow ring */
+  .ep-glow {
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.25), 0 0 24px hsl(var(--primary) / 0.15);
+  }
+
+  /* Pill badge */
+  .ep-pill {
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(var(--primary) / 0.05));
+    border: 1px solid hsl(var(--primary) / 0.3);
+  }
+
+  /* Benefit row */
+  .ep-benefit { transition: background 0.2s, border-color 0.2s; }
+  .ep-benefit:hover { background: hsl(var(--primary) / 0.05); border-color: hsl(var(--primary) / 0.3); }
 `
 
-// ─── SCROLL REVEAL ────────────────────────────────────────────────────────
+// ─── SCROLL REVEAL ─────────────────────────────────────────────────────────
 function useScrollReveal() {
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("revealed") }),
-      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible") }),
+      { threshold: 0.07, rootMargin: "0px 0px -24px 0px" }
     )
-    document.querySelectorAll(".ep-reveal").forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
+    document.querySelectorAll(".ep-reveal").forEach((el) => io.observe(el))
+    return () => io.disconnect()
   }, [])
 }
 
-// ─── HERO PARTICLES ─────────────────────────────────────────────────────────
+// ─── PARTICLES ──────────────────────────────────────────────────────────────
 function HeroParticles() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-    let animId: number
-    const particles: { x: number; y: number; vx: number; vy: number; r: number; alpha: number }[] = []
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight }
-    resize()
-    window.addEventListener("resize", resize)
-    for (let i = 0; i < 50; i++) {
-      particles.push({
-        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 2 + 0.5, alpha: Math.random() * 0.4 + 0.1,
-      })
-    }
+    const c = ref.current; if (!c) return
+    const ctx = c.getContext("2d"); if (!ctx) return
+    let id: number
+    const pts: {x:number;y:number;vx:number;vy:number;r:number;a:number}[] = []
+    const resize = () => { c.width = c.offsetWidth; c.height = c.offsetHeight }
+    resize(); window.addEventListener("resize", resize)
+    for (let i = 0; i < 48; i++)
+      pts.push({ x: Math.random()*c.width, y: Math.random()*c.height,
+        vx: (Math.random()-.5)*.35, vy: (Math.random()-.5)*.35,
+        r: Math.random()*1.8+.4, a: Math.random()*.35+.08 })
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      particles.forEach((p) => {
-        p.x += p.vx; p.y += p.vy
-        if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0
-        if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(99,102,241,${p.alpha})`; ctx.fill()
+      ctx.clearRect(0,0,c.width,c.height)
+      pts.forEach(p => {
+        p.x+=p.vx; p.y+=p.vy
+        if(p.x<0)p.x=c.width; if(p.x>c.width)p.x=0
+        if(p.y<0)p.y=c.height; if(p.y>c.height)p.y=0
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+        ctx.fillStyle=`rgba(99,102,241,${p.a})`; ctx.fill()
       })
-      particles.forEach((a, i) => {
-        particles.slice(i + 1).forEach((b) => {
-          const dist = Math.hypot(a.x - b.x, a.y - b.y)
-          if (dist < 100) {
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y)
-            ctx.strokeStyle = `rgba(99,102,241,${0.1 * (1 - dist / 100)})`
-            ctx.lineWidth = 0.5; ctx.stroke()
-          }
-        })
-      })
-      animId = requestAnimationFrame(draw)
+      pts.forEach((a,i) => pts.slice(i+1).forEach(b => {
+        const d = Math.hypot(a.x-b.x,a.y-b.y)
+        if(d<90){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y)
+          ctx.strokeStyle=`rgba(99,102,241,${.08*(1-d/90)})`;ctx.lineWidth=.5;ctx.stroke()}
+      }))
+      id=requestAnimationFrame(draw)
     }
     draw()
-    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize) }
+    return () => { cancelAnimationFrame(id); window.removeEventListener("resize",resize) }
   }, [])
-  return <canvas ref={canvasRef} id="ep-canvas" />
+  return <canvas ref={ref} id="ep-canvas" style={{opacity:.4}} />
 }
 
 // ─── TICKER ─────────────────────────────────────────────────────────────────
-function TickerTape() {
+function Ticker() {
   const items = [
     "🤖 Bots para MetaTrader 4",
-    "🛠️ Instalación guiada",
-    "🛡️ Gestión de riesgo",
-    "📊 Backtests y métricas",
+    "📊 Backtests disponibles",
+    "🛡️ Gestión de riesgo incluida",
+    "⚡ Instalación guiada",
     "🤝 Soporte paso a paso",
     "🔁 Copytrading disponible",
+    "🌎 Traders en LATAM y Europa",
+    "✅ Ideal para empezar",
   ]
-  const doubled = [...items, ...items]
   return (
-    <div className="w-full overflow-hidden bg-primary/5 border-b border-primary/10 py-2.5">
-      <div className="ep-ticker flex gap-10 whitespace-nowrap w-max">
-        {doubled.map((item, i) => (
-          <span key={i} className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-            {item}<span className="text-primary/40">·</span>
+    <div className="w-full overflow-hidden bg-primary/5 border-b border-primary/10 py-2">
+      <div className="ep-ticker-track flex gap-8 whitespace-nowrap w-max">
+        {[...items,...items].map((t,i) => (
+          <span key={i} className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+            {t} <span className="text-primary/30 mx-1">·</span>
           </span>
         ))}
       </div>
@@ -158,342 +218,382 @@ function TickerTape() {
   )
 }
 
-// ─── DATA ─────────────────────────────────────────────────────────────────
-const options = [
-  {
-    icon: ShoppingCart,
-    title: "Comprar un bot para MT4",
-    text: "Sistemas automatizados para ejecutar estrategias en MetaTrader 4 con configuración guiada.",
-  },
-  {
-    icon: CopyIcon,
-    title: "Copytrading",
-    text: "Una alternativa para quienes prefieren seguir una estrategia sin instalar un bot propio.",
-  },
-  {
-    icon: Tag,
-    title: "Ver precios y opciones",
-    text: "Conocé las alternativas disponibles según tu capital, experiencia y perfil de riesgo.",
-  },
-  {
-    icon: HelpCircle,
-    title: "No sé cuál me conviene",
-    text: "Te orientamos paso a paso para elegir una opción acorde a tu situación.",
-  },
-]
-
-const steps = [
-  {
-    number: "1",
-    icon: MessageSquare,
-    title: "Nos escribís",
-    text: "Contanos si buscás un bot, copytrading o asesoría para empezar.",
-  },
-  {
-    number: "2",
-    icon: Compass,
-    title: "Evaluamos tu perfil",
-    text: "Revisamos capital estimado, experiencia y nivel de riesgo.",
-  },
-  {
-    number: "3",
-    icon: ArrowRight,
-    title: "Te guiamos",
-    text: "Te indicamos la opción más adecuada y los pasos para comenzar.",
-  },
-]
-
-const included = [
-  { icon: ShoppingCart, label: "Bots para MetaTrader 4" },
-  { icon: Settings, label: "Instalación guiada" },
-  { icon: ShieldCheck, label: "Configuración según perfil de riesgo" },
-  { icon: BarChart3, label: "Backtests y métricas disponibles" },
-  { icon: Headphones, label: "Soporte paso a paso" },
-  { icon: Compass, label: "Orientación para elegir una opción compatible" },
-]
-
-const faqs = [
-  {
-    q: "¿Los bots funcionan en MT4?",
-    a: "Sí. Nuestras soluciones están pensadas para MetaTrader 4.",
-  },
-  {
-    q: "¿Necesito experiencia previa?",
-    a: "No necesariamente, pero es importante entender el riesgo. Por eso te orientamos antes de recomendar una opción.",
-  },
-  {
-    q: "¿Puedo empezar con copytrading?",
-    a: "Sí. El copytrading puede ser una alternativa si preferís no instalar un bot propio.",
-  },
-  {
-    q: "¿Garantizan ganancias?",
-    a: "No. El trading implica riesgo y ningún sistema puede garantizar ganancias.",
-  },
-]
-
-const navLinks = [
-  { href: "/", label: "Inicio" },
-  { href: "/comprar", label: "Comprar Bots" },
-  { href: "/copytrading", label: "Copytrading" },
-  { href: "/tutoriales", label: "Tutoriales" },
-]
-
-// ─── FAQ ITEM ───────────────────────────────────────────────────────────────
-function FaqItem({ q, a }: { q: string; a: string }) {
+// ─── FAQ ────────────────────────────────────────────────────────────────────
+function Faq({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border rounded-lg bg-card ep-card">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between gap-4 p-5 text-left"
-        aria-expanded={open}
-      >
-        <span className="font-medium">{q}</span>
-        <ChevronDown className={`h-5 w-5 text-muted-foreground flex-shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
+    <div className="rounded-xl border border-border/60 bg-card overflow-hidden transition-colors hover:border-primary/30">
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left">
+        <span className="font-medium text-sm">{q}</span>
+        <ChevronDown className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${open?"rotate-180":""}`} />
       </button>
-      <div className={`ep-faq-body ${open ? "open" : "closed"}`}>
-        <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{a}</p>
+      <div className={`ep-faq-body ${open?"open":"closed"}`}>
+        <p className="px-5 pb-4 text-sm text-muted-foreground leading-relaxed">{a}</p>
       </div>
     </div>
   )
 }
 
-// ─── PAGE ───────────────────────────────────────────────────────────────────
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const OPTIONS = [
+  {
+    id: "bot",
+    icon: ShoppingCart,
+    emoji: "🤖",
+    title: "Quiero un bot para MT4",
+    sub: "Automatizá tu operativa con reglas claras.",
+  },
+  {
+    id: "copy",
+    icon: CopyIcon,
+    emoji: "🔁",
+    title: "Me interesa el copytrading",
+    sub: "Seguí una estrategia sin instalar nada.",
+  },
+  {
+    id: "price",
+    icon: Tag,
+    emoji: "💰",
+    title: "Quiero ver precios",
+    sub: "Conocé las opciones según tu capital.",
+  },
+  {
+    id: "help",
+    icon: HelpCircle,
+    emoji: "🙋",
+    title: "No sé por dónde empezar",
+    sub: "Te orientamos paso a paso, sin presión.",
+  },
+]
+
+const STEPS = [
+  { n:"1", icon: MessageSquare, title:"Nos escribís", body:"Contanos qué buscás o preguntá lo que quieras sin compromiso." },
+  { n:"2", icon: Compass,       title:"Analizamos tu perfil", body:"Capital, experiencia y nivel de riesgo: elegimos juntos." },
+  { n:"3", icon: CheckCircle2,  title:"Empezás informado", body:"Te explicamos todo antes de que tomes cualquier decisión." },
+]
+
+const BENEFITS = [
+  { icon: ShoppingCart, label: "Bots para MetaTrader 4" },
+  { icon: Settings,     label: "Instalación guiada incluida" },
+  { icon: ShieldCheck,  label: "Configuración según tu riesgo" },
+  { icon: BarChart3,    label: "Backtests y métricas visibles" },
+  { icon: Headphones,   label: "Soporte paso a paso" },
+  { icon: Compass,      label: "Orientación personalizada" },
+]
+
+const FAQS = [
+  { q: "¿Los bots funcionan en MT4?", a: "Sí, nuestras soluciones están diseñadas específicamente para MetaTrader 4." },
+  { q: "¿Necesito saber de trading para empezar?", a: "No es obligatorio, pero sí es importante entender que el trading tiene riesgo. Por eso te orientamos antes de cualquier recomendación." },
+  { q: "¿Puedo empezar con poco capital?", a: "Sí. Tenemos opciones pensadas para cuentas cent desde montos accesibles. Te decimos cuál se adapta mejor a tu situación." },
+  { q: "¿Garantizan ganancias?", a: "No. Ningún sistema puede garantizar ganancias. Los resultados dependen del mercado, la configuración y el riesgo asignado." },
+  { q: "¿Qué es el copytrading?", a: "Es una alternativa donde seguís operaciones de otra cuenta automáticamente, sin necesidad de instalar un bot propio." },
+]
+
+const NAV = [
+  { href:"/",           label:"Inicio" },
+  { href:"/comprar",    label:"Comprar Bots" },
+  { href:"/copytrading",label:"Copytrading" },
+  { href:"/tutoriales", label:"Tutoriales" },
+]
+
+// ─── PAGE ────────────────────────────────────────────────────────────────────
 export function EmpezarContent() {
   useScrollReveal()
+  const [selected, setSelected] = useState<string | null>(null)
 
-  const scrollToOptions = () => {
-    document.getElementById("opciones")?.scrollIntoView({ behavior: "smooth" })
+  const handleOption = (id: string) => {
+    setSelected(id)
+    setTimeout(() => {
+      window.open(TELEGRAM, "_blank", "noopener,noreferrer")
+    }, 180)
   }
 
   return (
     <div className="flex min-h-screen flex-col">
-      <style dangerouslySetInnerHTML={{ __html: animStyles }} />
+      <style dangerouslySetInnerHTML={{ __html: styles }} />
 
-      {/* ── HEADER ── */}
+      {/* HEADER */}
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
         <div className="container flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center group">
+          <Link href="/" className="flex items-center gap-2 group">
             <div className="transition-transform duration-300 group-hover:rotate-12">
-              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots Logo" width={40} height={40} className="md:mr-2" />
+              <Image src="/images/fxautobots-logo.png" alt="FXAutoBots" width={36} height={36} />
             </div>
-            <span className="font-bold text-xl hidden md:inline">FXAutoBots</span>
+            <span className="font-bold text-lg hidden md:inline">FXAutoBots</span>
           </Link>
           <nav className="hidden md:flex gap-6">
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="text-sm font-medium hover:text-primary ep-nav transition-colors">
-                {link.label}
-              </Link>
+            {NAV.map(l => (
+              <Link key={l.href} href={l.href} className="text-sm font-medium hover:text-primary ep-nav transition-colors">{l.label}</Link>
             ))}
           </nav>
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-3">
-              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
-              <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110" aria-label="Telegram"><MessageCircle className="h-5 w-5" /></a>
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2">
+              <a href="https://instagram.com/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><Instagram className="h-4 w-4" /></a>
+              <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-all hover:scale-110"><MessageCircle className="h-4 w-4" /></a>
             </div>
             <ThemeToggle />
-            <Button asChild className="hidden md:inline-flex ep-btn">
-              <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">Recibir información</a>
+            <Button asChild size="sm" className="hidden md:inline-flex ep-btn">
+              <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">Consultar gratis</a>
             </Button>
-            <MobileNav links={navLinks} />
+            <MobileNav links={NAV} />
           </div>
         </div>
       </header>
 
-      <TickerTape />
+      <Ticker />
 
       <main className="flex-1">
-        {/* ── HERO ── */}
-        <section className="relative w-full overflow-hidden py-20 md:py-28">
+
+        {/* ══ HERO ══════════════════════════════════════════════════════════ */}
+        <section className="relative w-full overflow-hidden py-20 md:py-32">
           <HeroParticles />
-          <div className="pointer-events-none absolute -top-20 -left-20 h-72 w-72 rounded-full bg-primary/20 blur-3xl ep-orb" />
-          <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-primary/15 blur-3xl ep-orb-2" />
+          {/* Orbs */}
+          <div className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-primary/20 blur-3xl ep-orb" />
+          <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-violet-500/10 blur-3xl ep-orb-b" />
+
           <div className="container relative">
-            <div className="max-w-3xl mx-auto text-center">
-              <div className="ep-reveal inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 mb-6">
+            <div className="max-w-3xl mx-auto text-center space-y-6">
+
+              {/* Badge */}
+              <div className="ep-reveal inline-flex items-center gap-2 ep-pill rounded-full px-4 py-1.5">
                 <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-sm font-medium text-muted-foreground">MetaTrader 4 · Automatización</span>
+                <span className="text-xs font-semibold text-primary tracking-wide uppercase">Ideal para principiantes y avanzados</span>
               </div>
-              <h1 className="ep-reveal ep-d100 text-4xl md:text-6xl font-bold tracking-tight text-balance">
-                Bots de Trading para <span className="text-primary">MT4</span>
+
+              {/* Headline */}
+              <h1 className="ep-reveal ep-d1 text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08]">
+                Automatizá tu trading<br />
+                <span className="ep-gradient-text">sin complicaciones</span>
               </h1>
-              <p className="ep-reveal ep-d200 mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed text-pretty">
-                Automatización para traders que buscan operar con reglas claras, gestión de riesgo e instalación guiada.
+
+              {/* Sub */}
+              <p className="ep-reveal ep-d2 text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
+                Bots para MT4, copytrading y soporte real.<br className="hidden md:block" />
+                Te guiamos desde cero.
               </p>
-              <div className="ep-reveal ep-d300 mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-                <Button asChild size="lg" className="ep-btn text-base">
+
+              {/* CTAs */}
+              <div className="ep-reveal ep-d3 flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                <Button asChild size="lg" className="ep-btn text-base h-12 px-8">
                   <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">
-                    Quiero recibir información
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <MessageCircle className="mr-2 h-5 w-5" />
+                    Hablar con FXAutoBots
                   </a>
                 </Button>
-                <Button onClick={scrollToOptions} variant="outline" size="lg" className="text-base">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="text-base h-12 px-8 border-primary/30 hover:border-primary hover:bg-primary/5"
+                  onClick={() => document.getElementById("que-busco")?.scrollIntoView({ behavior:"smooth" })}
+                >
                   Ver opciones
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
-              <p className="ep-reveal ep-d400 mt-5 text-xs text-muted-foreground">
-                El trading implica riesgo. No prometemos ganancias fijas ni resultados garantizados.
-              </p>
-            </div>
-          </div>
-        </section>
 
-        {/* ── ¿QUÉ ESTÁS BUSCANDO? ── */}
-        <section id="opciones" className="w-full py-16 md:py-24 bg-muted/30">
-          <div className="container">
-            <div className="ep-reveal text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-balance">¿Qué estás buscando?</h2>
-              <p className="mt-3 text-muted-foreground text-pretty">
-                Elegí la opción que mejor describe tu situación y consultanos sin compromiso.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto">
-              {options.map((opt, i) => (
-                <Card key={opt.title} className={`ep-reveal ep-d${(i + 1) * 100} ep-card flex flex-col border-border/60`}>
-                  <CardContent className="flex flex-col flex-1 p-6">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                      <opt.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="font-semibold text-lg mb-2">{opt.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">{opt.text}</p>
-                    <Button asChild variant="outline" className="mt-5 w-full">
-                      <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">Consultar</a>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── CÓMO FUNCIONA ── */}
-        <section className="w-full py-16 md:py-24">
-          <div className="container">
-            <div className="ep-reveal text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-balance">Cómo funciona</h2>
-              <p className="mt-3 text-muted-foreground text-pretty">Tres pasos simples para empezar con orientación.</p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {steps.map((step, i) => (
-                <div key={step.number} className={`ep-reveal ep-d${(i + 1) * 100} relative`}>
-                  <Card className="ep-card h-full border-border/60">
-                    <CardContent className="p-6 text-center">
-                      <div className="relative inline-flex mb-4">
-                        <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-                          <step.icon className="h-7 w-7 text-primary" />
-                        </div>
-                        <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center">
-                          {step.number}
-                        </span>
-                      </div>
-                      <h3 className="font-semibold text-lg mb-2">{step.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{step.text}</p>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── QUÉ INCLUYE ── */}
-        <section className="w-full py-16 md:py-24 bg-muted/30">
-          <div className="container">
-            <div className="ep-reveal text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-balance">Qué incluye FX AutoBots</h2>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
-              {included.map((item, i) => (
-                <div key={item.label} className={`ep-reveal ep-d${((i % 3) + 1) * 100} ep-card flex items-center gap-3 rounded-lg border border-border/60 bg-card p-4`}>
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <CheckCircle2 className="h-5 w-5 text-primary" />
+              {/* Trust strip */}
+              <div className="ep-reveal ep-d4 flex flex-wrap justify-center gap-4 pt-4">
+                {[
+                  { icon: Users, text: "Traders activos en LATAM" },
+                  { icon: Zap,   text: "Instalación guiada" },
+                  { icon: TrendingUp, text: "+5000h de backtesting" },
+                ].map(({ icon: Icon, text }) => (
+                  <div key={text} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Icon className="h-3.5 w-3.5 text-primary" />
+                    {text}
                   </div>
-                  <span className="text-sm font-medium">{item.label}</span>
-                </div>
+                ))}
+              </div>
+
+              {/* Disclaimer */}
+              <p className="ep-reveal text-xs text-muted-foreground/60 pt-1">
+                El trading implica riesgo. No prometemos ganancias ni resultados garantizados.
+              </p>
+
+            </div>
+          </div>
+        </section>
+
+        {/* ══ PRINCIPIANTES BANNER ══════════════════════════════════════════ */}
+        <section className="w-full py-8 bg-primary/5 border-y border-primary/10">
+          <div className="container">
+            <div className="ep-reveal flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
+              <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center flex-shrink-0">
+                <span className="text-2xl">🙋</span>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">¿Recién empezás y no sabés qué elegir?</p>
+                <p className="text-sm text-muted-foreground">Está bien. Te orientamos según tu situación sin que tengas que saber todo de antemano.</p>
+              </div>
+              <Button asChild variant="outline" size="sm" className="flex-shrink-0 border-primary/30 hover:border-primary ep-btn">
+                <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">Necesito ayuda para elegir</a>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* ══ ¿QUÉ ESTÁS BUSCANDO? ══════════════════════════════════════════ */}
+        <section id="que-busco" className="w-full py-16 md:py-24">
+          <div className="container">
+            <div className="ep-reveal text-center mb-10 max-w-xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">¿Qué estás buscando?</h2>
+              <p className="mt-2 text-muted-foreground text-sm">Tocá la opción que más se acerque a tu caso y te contactamos.</p>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+              {OPTIONS.map((opt, i) => (
+                <button
+                  key={opt.id}
+                  onClick={() => handleOption(opt.id)}
+                  className={`ep-reveal ep-d${i+1} ep-option rounded-2xl bg-card border border-border/60 p-5 text-left flex flex-col gap-3`}
+                >
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-xl">
+                    {opt.emoji}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm leading-tight">{opt.title}</p>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{opt.sub}</p>
+                  </div>
+                  <div className="flex items-center gap-1 text-xs text-primary font-medium mt-auto">
+                    Consultar <ArrowRight className="h-3 w-3" />
+                  </div>
+                </button>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── AUTOMATIZACIÓN CON RESPONSABILIDAD ── */}
-        <section className="w-full py-16 md:py-24">
-          <div className="container">
-            <div className="ep-reveal max-w-3xl mx-auto text-center">
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                <ShieldCheck className="h-7 w-7 text-primary" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-balance">Automatización con responsabilidad</h2>
-              <p className="mt-5 text-muted-foreground leading-relaxed text-pretty">
-                Un bot de trading no elimina el riesgo ni garantiza resultados. Su función es ejecutar una estrategia
-                con reglas previamente configuradas, evitando decisiones impulsivas y manteniendo una gestión definida.
-              </p>
-              <div className="mt-6 inline-flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-5 py-3">
-                <span className="text-sm font-medium text-foreground">Los resultados pasados no garantizan resultados futuros.</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── FAQ ── */}
+        {/* ══ CÓMO FUNCIONA ══════════════════════════════════════════════════ */}
         <section className="w-full py-16 md:py-24 bg-muted/30">
           <div className="container">
-            <div className="ep-reveal text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-balance">Preguntas frecuentes</h2>
+            <div className="ep-reveal text-center mb-12 max-w-xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Así de simple es empezar</h2>
+              <p className="mt-2 text-muted-foreground text-sm">Tres pasos. Sin presión. Sin obligación.</p>
             </div>
-            <div className="max-w-2xl mx-auto flex flex-col gap-3">
-              {faqs.map((faq, i) => (
-                <div key={faq.q} className={`ep-reveal ep-d${((i % 4) + 1) * 100}`}>
-                  <FaqItem q={faq.q} a={faq.a} />
+            <div className="relative grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              {/* Connectors (desktop only) */}
+              <div className="hidden md:block absolute top-7 left-[calc(33%+8px)] w-[calc(34%-16px)] h-px bg-gradient-to-r from-primary/40 to-primary/10" />
+              <div className="hidden md:block absolute top-7 left-[calc(66%+8px)] w-[calc(34%-16px)] h-px bg-gradient-to-r from-primary/20 to-transparent" />
+
+              {STEPS.map((s, i) => (
+                <div key={s.n} className={`ep-reveal ep-d${i+1} flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border/60 ep-glow relative`}>
+                  <div className="relative mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                      <s.icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
+                      {s.n}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold mb-1.5">{s.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{s.body}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── CTA FINAL ── */}
+        {/* ══ BENEFICIOS ════════════════════════════════════════════════════ */}
+        <section className="w-full py-16 md:py-24">
+          <div className="container">
+            <div className="ep-reveal text-center mb-10 max-w-xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Todo lo que incluye FXAutoBots</h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
+              {BENEFITS.map((b, i) => (
+                <div key={b.label} className={`ep-reveal ep-d${(i%3)+1} ep-benefit flex items-center gap-3 rounded-xl border border-border/60 bg-card px-4 py-3.5`}>
+                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">{b.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══ RIESGO / CONFIANZA ════════════════════════════════════════════ */}
+        <section className="w-full py-12 md:py-16 bg-muted/30">
+          <div className="container">
+            <div className="ep-reveal max-w-2xl mx-auto rounded-2xl border border-primary/20 bg-card p-7 md:p-10 text-center ep-glow">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <ShieldCheck className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Automatización con responsabilidad</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed max-w-lg mx-auto">
+                Un bot ejecuta una estrategia con reglas definidas. No elimina el riesgo ni garantiza resultados. 
+                Te lo decimos claramente porque creemos en la transparencia.
+              </p>
+              <p className="mt-4 text-xs text-muted-foreground/60 ep-pill inline-block rounded-lg px-3 py-1.5">
+                Los resultados pasados no garantizan resultados futuros.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ══ FAQ ═══════════════════════════════════════════════════════════ */}
+        <section className="w-full py-16 md:py-24">
+          <div className="container">
+            <div className="ep-reveal text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Preguntas frecuentes</h2>
+              <p className="mt-2 text-muted-foreground text-sm">Si tu duda no está acá, escribinos por Telegram.</p>
+            </div>
+            <div className="max-w-2xl mx-auto flex flex-col gap-2">
+              {FAQS.map((f, i) => (
+                <div key={f.q} className={`ep-reveal ep-d${(i%3)+1}`}>
+                  <Faq q={f.q} a={f.a} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══ CTA FINAL ═════════════════════════════════════════════════════ */}
         <section className="w-full py-16 md:py-24">
           <div className="container">
             <div className="ep-reveal relative overflow-hidden rounded-3xl bg-primary px-6 py-14 md:py-20 text-center">
-              <div className="pointer-events-none absolute -top-16 -left-16 h-56 w-56 rounded-full bg-primary-foreground/10 blur-3xl ep-orb" />
-              <div className="pointer-events-none absolute -bottom-16 -right-16 h-64 w-64 rounded-full bg-primary-foreground/10 blur-3xl ep-orb-2" />
-              <div className="relative max-w-2xl mx-auto">
-                <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground text-balance">
-                  ¿Querés saber cuál opción va mejor con tu caso?
+              <div className="pointer-events-none absolute -top-20 -left-20 h-64 w-64 rounded-full bg-white/10 blur-3xl ep-orb" />
+              <div className="pointer-events-none absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-white/10 blur-3xl ep-orb-b" />
+              <div className="relative max-w-xl mx-auto">
+                <p className="text-primary-foreground/70 text-sm font-medium uppercase tracking-widest mb-3">Sin compromiso · Gratis</p>
+                <h2 className="text-3xl md:text-5xl font-extrabold text-primary-foreground leading-tight text-balance">
+                  ¿Querés saber<br />cuál es tu mejor opción?
                 </h2>
-                <p className="mt-4 text-primary-foreground/80 text-pretty">
-                  Escribinos y te orientamos según tu capital, experiencia y perfil de riesgo.
+                <p className="mt-4 text-primary-foreground/75 text-base max-w-md mx-auto">
+                  Escribinos y te orientamos según tu capital, experiencia y perfil de riesgo. Gratis y sin presión.
                 </p>
-                <Button asChild size="lg" variant="secondary" className="mt-8 ep-btn text-base">
+                <Button asChild size="lg" variant="secondary" className="mt-8 ep-btn text-base h-12 px-8">
                   <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-5 w-5" />
-                    Hablar con FX AutoBots
+                    Hablar con FXAutoBots
                   </a>
                 </Button>
               </div>
             </div>
           </div>
         </section>
+
       </main>
 
-      {/* ── FOOTER ── */}
-      <footer className="w-full border-t py-8">
+      {/* FOOTER */}
+      <footer className="w-full border-t py-6">
         <div className="container text-center">
-          <p className="text-sm text-muted-foreground">
-            FX AutoBots — Bots de trading para MT4. El trading implica riesgo.
+          <p className="text-xs text-muted-foreground">
+            FXAutoBots — Bots de trading para MT4. El trading implica riesgo. No se garantizan ganancias.
           </p>
         </div>
       </footer>
 
-      {/* ── BURBUJA FLOTANTE TELEGRAM ── */}
-      <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 group">
+      {/* BURBUJA FLOTANTE */}
+      <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="fixed bottom-5 right-5 z-50">
         <div className="relative">
-          <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006fa3] text-white px-4 py-3 rounded-full shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_28px_rgba(0,136,204,0.45)]">
             <MessageCircle className="h-5 w-5" />
-            <span className="text-sm font-medium">Contactar</span>
+            <span className="text-sm font-semibold">Consultar gratis</span>
           </div>
-          <div className="absolute inset-0 rounded-full bg-[#0088cc] animate-ping opacity-20" />
+          <div className="absolute inset-0 rounded-full bg-[#0088cc]/40 animate-ping" />
         </div>
       </a>
+
     </div>
   )
 }
