@@ -15,9 +15,9 @@ const sections = [
 
 Razón social: Anbac Finance
 Marca comercial: FXAutoBots
-Sitio web: https://fxautobots.pro
+Sitio web: https://www.fxautobots.pro
 País de operación: República Argentina
-Canal oficial de contacto: @fxautobots_bot (Telegram)
+Canal oficial de contacto: @fxautobots (Telegram)
 
 Esta Política de Privacidad se rige por la Ley N° 25.326 de Protección de los Datos Personales de la República Argentina y sus disposiciones reglamentarias.`,
   },
@@ -178,7 +178,7 @@ f) Portabilidad: recibir sus datos en formato estructurado y de uso común.
 
 g) Revocación del consentimiento: retirar el consentimiento otorgado en cualquier momento, sin efecto retroactivo.
 
-Para ejercer cualquiera de estos derechos, el usuario debe enviar una solicitud por escrito a través del canal oficial de Telegram (@fxautobots_bot), indicando su identidad, el derecho que desea ejercer y los datos afectados. La Empresa responderá en un plazo máximo de 5 días hábiles para acusar recibo y 15 días hábiles para resolver la solicitud, conforme al Art. 14 de la Ley 25.326.
+Para ejercer cualquiera de estos derechos, el usuario debe enviar una solicitud por escrito a través del canal oficial de Telegram (@fxautobots), indicando su identidad, el derecho que desea ejercer y los datos afectados. La Empresa responderá en un plazo máximo de 5 días hábiles para acusar recibo y 15 días hábiles para resolver la solicitud, conforme al Art. 14 de la Ley 25.326.
 
 El usuario también puede presentar una reclamación ante la Dirección Nacional de Protección de Datos Personales (DNPDP): https://www.argentina.gob.ar/aaip/datospersonales`,
   },
@@ -220,9 +220,8 @@ La versión vigente siempre será la publicada en el sitio web. El uso continuad
     title: "Contacto y Canal Oficial",
     content: `Para ejercer sus derechos, realizar consultas sobre el tratamiento de sus datos o reportar cualquier incidencia de seguridad, puede contactarnos a través de:
 
-Telegram (canal oficial): @fxautobots_bot
-Instagram: @botsdetrading.latam
-Sitio web: https://fxautobots.pro
+Telegram (canal oficial): @fxautobots
+Sitio web: https://www.fxautobots.pro
 
 La Empresa se compromete a atender todas las solicitudes relacionadas con datos personales dentro de los plazos legalmente establecidos.
 
