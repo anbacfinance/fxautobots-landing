@@ -284,7 +284,7 @@ const steps = [
     title: "Nos escribís",
     description: "Te explicamos cómo funciona Deus Copy y vemos si se adapta a tu perfil de riesgo.",
     action: "Hablar por Telegram",
-    link: "https://t.me/fxautobots",
+    link: "https://t.me/fxautobots_bot",
     icon: "1️⃣",
   },
   {
@@ -403,7 +403,7 @@ export default function CopyTradingPage() {
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-3">
               <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
-              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
+              <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
             </div>
             <ThemeToggle />
             <Button asChild className="hidden md:inline-flex bg-orange-500 hover:bg-orange-600 cp-btn">
@@ -479,7 +479,7 @@ export default function CopyTradingPage() {
               {/* CTAs */}
               <div className="cp-reveal cp-d400 flex flex-col sm:flex-row gap-4 mt-4">
                 <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white cp-btn" asChild>
-                  <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer">
+                  <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer">
                     Quiero empezar con ayuda <MessageCircle className="ml-2 h-5 w-5" />
                   </a>
                 </Button>
@@ -682,7 +682,7 @@ export default function CopyTradingPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" variant="secondary" className="bg-white text-orange-500 hover:bg-white/90 cp-btn font-semibold" asChild>
-                  <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer">
+                  <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer">
                     Hablar con un asesor <MessageCircle className="ml-2 h-5 w-5" />
                   </a>
                 </Button>
@@ -707,7 +707,7 @@ export default function CopyTradingPage() {
             </div>
             <div className="flex items-center gap-4">
               <a href="https://instagram.com/botsdetrading.latam" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><Instagram className="h-5 w-5" /></a>
-              <a href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
+              <a href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-orange-500 transition-all hover:scale-110"><MessageCircle className="h-5 w-5" /></a>
             </div>
             <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} FXAutoBots. Todos los derechos reservados.</p>
           </div>
@@ -723,7 +723,7 @@ export default function CopyTradingPage() {
 
       {/* ── BURBUJA FLOTANTE ── */}
       <a
-        href="https://t.me/fxautobots" target="_blank" rel="noopener noreferrer"
+        href="https://t.me/fxautobots_bot" target="_blank" rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 group"
       >
         <div className="relative">
