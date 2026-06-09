@@ -181,7 +181,7 @@ export default function TerminosCondiciones() {
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"
                 >
-                  @fxautobots
+                  @fxautobots_bot
                 </a>
               </div>
             </div>
