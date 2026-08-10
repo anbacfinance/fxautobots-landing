@@ -25,9 +25,14 @@ import {
   Zap,
   Users,
   TrendingUp,
+  Bell,
+  Send,
+  LineChart,
 } from "lucide-react"
 
-const TELEGRAM = "https://t.me/fxautobots_bot"
+const TELEGRAM = "https://t.me/bestforexrobots"       // Canal principal (rendimientos y noticias)
+const TELEGRAM_BOT = "https://t.me/fxautobots_bot"    // Bot automatizado: dudas rápidas
+const TELEGRAM_CONTACTO = "https://t.me/fxautobots"   // Contacto directo: cerrar ventas / consultas puntuales
 
 // ─── STYLES ────────────────────────────────────────────────────────────────
 const styles = `
@@ -235,6 +240,12 @@ function Faq({ q, a }: { q: string; a: string }) {
 }
 
 // ─── DATA ───────────────────────────────────────────────────────────────────
+const CONTACTO = "https://t.me/fxautobots"
+
+// tipo de acción por opción:
+//  - "message": abre t.me/fxautobots con un mensaje personalizado prellenado
+//  - "bot": abre el bot automatizado
+//  - "scroll": hace scroll a una sección de la página
 const OPTIONS = [
   {
     id: "bot",
@@ -242,6 +253,8 @@ const OPTIONS = [
     emoji: "🤖",
     title: "Quiero un bot para MT4",
     sub: "Automatizá tu operativa con reglas claras.",
+    action: "message" as const,
+    message: "Hola! Estuve viendo la página y estoy interesado en automatizar mis operaciones con un bot para MT4. ¿Me podés dar más info?",
   },
   {
     id: "copy",
@@ -249,6 +262,8 @@ const OPTIONS = [
     emoji: "🔁",
     title: "Me interesa el copytrading",
     sub: "Seguí una estrategia sin instalar nada.",
+    action: "message" as const,
+    message: "Hola! Estuve viendo la página y me interesa el copytrading. Me gustaría seguir una estrategia sin tener que instalar nada. ¿Cómo funciona?",
   },
   {
     id: "price",
@@ -256,6 +271,8 @@ const OPTIONS = [
     emoji: "💰",
     title: "Quiero ver precios",
     sub: "Conocé las opciones según tu capital.",
+    action: "scroll" as const,
+    target: "https://fxautobots.pro/#pricing",
   },
   {
     id: "help",
@@ -263,6 +280,7 @@ const OPTIONS = [
     emoji: "🙋",
     title: "No sé por dónde empezar",
     sub: "Te orientamos paso a paso, sin presión.",
+    action: "bot" as const,
   },
 ]
 
@@ -303,8 +321,16 @@ export function EmpezarContent() {
 
   const handleOption = (id: string) => {
     setSelected(id)
+    const opt = OPTIONS.find(o => o.id === id)
+    if (!opt) return
     setTimeout(() => {
-      window.open(TELEGRAM, "_blank", "noopener,noreferrer")
+      if (opt.action === "message") {
+        window.open(`${CONTACTO}?text=${encodeURIComponent(opt.message)}`, "_blank", "noopener,noreferrer")
+      } else if (opt.action === "bot") {
+        window.open(TELEGRAM_BOT, "_blank", "noopener,noreferrer")
+      } else if (opt.action === "scroll") {
+        window.location.href = opt.target
+      }
     }, 180)
   }
 
@@ -357,52 +383,88 @@ export function EmpezarContent() {
               {/* Badge */}
               <div className="ep-reveal inline-flex items-center gap-2 ep-pill rounded-full px-4 py-1.5">
                 <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-xs font-semibold text-primary tracking-wide uppercase">Ideal para principiantes y avanzados</span>
+                <span className="text-xs font-semibold text-primary tracking-wide uppercase">Canal oficial de Telegram · Gratis</span>
               </div>
 
               {/* Headline */}
               <h1 className="ep-reveal ep-d1 text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08]">
-                Automatizá tu trading<br />
-                <span className="ep-gradient-text">sin complicaciones</span>
+                Unite a nuestro<br />
+                <span className="ep-gradient-text">canal de Telegram</span>
               </h1>
 
-              {/* Sub */}
-              <p className="ep-reveal ep-d2 text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
-                Bots para MT4, copytrading y soporte real.<br className="hidden md:block" />
-                Te guiamos desde cero.
+              {/* Sub — persuasive */}
+              <p className="ep-reveal ep-d2 text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed text-pretty">
+                Publicamos <span className="text-foreground font-semibold">rendimientos reales en tiempo real</span> y las noticias
+                más importantes de los bots. Unite gratis y no te pierdas ninguna señal ni actualización.
               </p>
 
-              {/* CTAs */}
-              <div className="ep-reveal ep-d3 flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                <Button asChild size="lg" className="ep-btn text-base h-12 px-8">
+              {/* MAIN CTA — Telegram channel */}
+              <div className="ep-reveal ep-d3 flex flex-col items-center gap-3 pt-2">
+                <Button asChild size="lg" className="ep-btn text-base h-14 px-10 rounded-full shadow-lg">
                   <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="mr-2 h-5 w-5" />
-                    Hablar con FXAutoBots
+                    <Send className="mr-2 h-5 w-5" />
+                    Unirme al canal de Telegram
                   </a>
                 </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="text-base h-12 px-8 border-primary/30 hover:border-primary hover:bg-primary/5"
-                  onClick={() => document.getElementById("que-busco")?.scrollIntoView({ behavior:"smooth" })}
-                >
-                  Ver opciones
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-primary hover:underline">
+                  t.me/bestforexrobots
+                </a>
               </div>
 
               {/* Trust strip */}
               <div className="ep-reveal ep-d4 flex flex-wrap justify-center gap-4 pt-4">
                 {[
-                  { icon: Users, text: "Traders activos en LATAM" },
-                  { icon: Zap,   text: "Instalación guiada" },
-                  { icon: TrendingUp, text: "+5000h de backtesting" },
+                  { icon: LineChart, text: "Rendimientos actualizados" },
+                  { icon: Bell,   text: "Noticias y señales al instante" },
+                  { icon: Users, text: "Comunidad activa de traders" },
                 ].map(({ icon: Icon, text }) => (
                   <div key={text} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Icon className="h-3.5 w-3.5 text-primary" />
                     {text}
                   </div>
                 ))}
+              </div>
+
+              {/* Secondary options — bot y contacto directo */}
+              <div className="ep-reveal pt-3 space-y-3">
+                <p className="text-xs text-muted-foreground/70 uppercase tracking-wide">¿Preferís escribirnos directo?</p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
+                  <a
+                    href={TELEGRAM_BOT}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex-1 flex items-start gap-3 rounded-xl border border-border/60 bg-card/50 px-4 py-3 text-left transition-all hover:border-primary/50 hover:bg-primary/5"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <MessageCircle className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold leading-tight">Sacarme dudas rápido</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-snug">Bot automático que responde al instante</p>
+                    </div>
+                  </a>
+                  <a
+                    href={TELEGRAM_CONTACTO}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex-1 flex items-start gap-3 rounded-xl border border-border/60 bg-card/50 px-4 py-3 text-left transition-all hover:border-primary/50 hover:bg-primary/5"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Headphones className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold leading-tight">Hablar con una persona</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-snug">Contacto directo para consultas puntuales</p>
+                    </div>
+                  </a>
+                </div>
+                <button
+                  onClick={() => document.getElementById("que-busco")?.scrollIntoView({ behavior:"smooth" })}
+                  className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Ver otras opciones
+                  <ChevronDown className="h-4 w-4" />
+                </button>
               </div>
 
               {/* Disclaimer */}
@@ -584,11 +646,11 @@ export function EmpezarContent() {
       </footer>
 
       {/* BURBUJA FLOTANTE */}
-      <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="fixed bottom-5 right-5 z-50">
+      <a href={TELEGRAM_BOT} target="_blank" rel="noopener noreferrer" className="fixed bottom-5 right-5 z-50">
         <div className="relative">
           <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006fa3] text-white px-4 py-3 rounded-full shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_28px_rgba(0,136,204,0.45)]">
             <MessageCircle className="h-5 w-5" />
-            <span className="text-sm font-semibold">Consultar gratis</span>
+            <span className="text-sm font-semibold">Consultar</span>
           </div>
           <div className="absolute inset-0 rounded-full bg-[#0088cc]/40 animate-ping" />
         </div>
