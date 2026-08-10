@@ -25,9 +25,12 @@ import {
   Zap,
   Users,
   TrendingUp,
+  Bell,
+  Send,
+  LineChart,
 } from "lucide-react"
 
-const TELEGRAM = "https://t.me/fxautobots_bot"
+const TELEGRAM = "https://t.me/bestforexrobots"
 
 // ─── STYLES ────────────────────────────────────────────────────────────────
 const styles = `
@@ -357,52 +360,57 @@ export function EmpezarContent() {
               {/* Badge */}
               <div className="ep-reveal inline-flex items-center gap-2 ep-pill rounded-full px-4 py-1.5">
                 <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-xs font-semibold text-primary tracking-wide uppercase">Ideal para principiantes y avanzados</span>
+                <span className="text-xs font-semibold text-primary tracking-wide uppercase">Canal oficial de Telegram · Gratis</span>
               </div>
 
               {/* Headline */}
               <h1 className="ep-reveal ep-d1 text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08]">
-                Automatizá tu trading<br />
-                <span className="ep-gradient-text">sin complicaciones</span>
+                Unite a nuestro<br />
+                <span className="ep-gradient-text">canal de Telegram</span>
               </h1>
 
-              {/* Sub */}
-              <p className="ep-reveal ep-d2 text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
-                Bots para MT4, copytrading y soporte real.<br className="hidden md:block" />
-                Te guiamos desde cero.
+              {/* Sub — persuasive */}
+              <p className="ep-reveal ep-d2 text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed text-pretty">
+                Publicamos <span className="text-foreground font-semibold">rendimientos reales en tiempo real</span> y las noticias
+                más importantes de los bots. Unite gratis y no te pierdas ninguna señal ni actualización.
               </p>
 
-              {/* CTAs */}
-              <div className="ep-reveal ep-d3 flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                <Button asChild size="lg" className="ep-btn text-base h-12 px-8">
+              {/* MAIN CTA — Telegram channel */}
+              <div className="ep-reveal ep-d3 flex flex-col items-center gap-3 pt-2">
+                <Button asChild size="lg" className="ep-btn text-base h-14 px-10 rounded-full shadow-lg">
                   <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="mr-2 h-5 w-5" />
-                    Hablar con FXAutoBots
+                    <Send className="mr-2 h-5 w-5" />
+                    Unirme al canal de Telegram
                   </a>
                 </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="text-base h-12 px-8 border-primary/30 hover:border-primary hover:bg-primary/5"
-                  onClick={() => document.getElementById("que-busco")?.scrollIntoView({ behavior:"smooth" })}
-                >
-                  Ver opciones
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-primary hover:underline">
+                  t.me/bestforexrobots
+                </a>
               </div>
 
               {/* Trust strip */}
               <div className="ep-reveal ep-d4 flex flex-wrap justify-center gap-4 pt-4">
                 {[
-                  { icon: Users, text: "Traders activos en LATAM" },
-                  { icon: Zap,   text: "Instalación guiada" },
-                  { icon: TrendingUp, text: "+5000h de backtesting" },
+                  { icon: LineChart, text: "Rendimientos actualizados" },
+                  { icon: Bell,   text: "Noticias y señales al instante" },
+                  { icon: Users, text: "Comunidad activa de traders" },
                 ].map(({ icon: Icon, text }) => (
                   <div key={text} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Icon className="h-3.5 w-3.5 text-primary" />
                     {text}
                   </div>
                 ))}
+              </div>
+
+              {/* Secondary link to more options */}
+              <div className="ep-reveal pt-1">
+                <button
+                  onClick={() => document.getElementById("que-busco")?.scrollIntoView({ behavior:"smooth" })}
+                  className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Ver otras opciones
+                  <ChevronDown className="h-4 w-4" />
+                </button>
               </div>
 
               {/* Disclaimer */}
