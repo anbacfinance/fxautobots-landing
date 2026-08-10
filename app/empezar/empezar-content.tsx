@@ -646,11 +646,11 @@ export function EmpezarContent() {
       </footer>
 
       {/* BURBUJA FLOTANTE */}
-      <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="fixed bottom-5 right-5 z-50">
+      <a href={TELEGRAM_BOT} target="_blank" rel="noopener noreferrer" className="fixed bottom-5 right-5 z-50">
         <div className="relative">
           <div className="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006fa3] text-white px-4 py-3 rounded-full shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_28px_rgba(0,136,204,0.45)]">
             <MessageCircle className="h-5 w-5" />
-            <span className="text-sm font-semibold">Consultar gratis</span>
+            <span className="text-sm font-semibold">Consultar</span>
           </div>
           <div className="absolute inset-0 rounded-full bg-[#0088cc]/40 animate-ping" />
         </div>
