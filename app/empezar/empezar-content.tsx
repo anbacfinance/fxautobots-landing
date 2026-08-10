@@ -240,6 +240,12 @@ function Faq({ q, a }: { q: string; a: string }) {
 }
 
 // ─── DATA ───────────────────────────────────────────────────────────────────
+const CONTACTO = "https://t.me/fxautobots"
+
+// tipo de acción por opción:
+//  - "message": abre t.me/fxautobots con un mensaje personalizado prellenado
+//  - "bot": abre el bot automatizado
+//  - "scroll": hace scroll a una sección de la página
 const OPTIONS = [
   {
     id: "bot",
@@ -247,6 +253,8 @@ const OPTIONS = [
     emoji: "🤖",
     title: "Quiero un bot para MT4",
     sub: "Automatizá tu operativa con reglas claras.",
+    action: "message" as const,
+    message: "Hola! Estuve viendo la página y estoy interesado en automatizar mis operaciones con un bot para MT4. ¿Me podés dar más info?",
   },
   {
     id: "copy",
@@ -254,6 +262,8 @@ const OPTIONS = [
     emoji: "🔁",
     title: "Me interesa el copytrading",
     sub: "Seguí una estrategia sin instalar nada.",
+    action: "message" as const,
+    message: "Hola! Estuve viendo la página y me interesa el copytrading. Me gustaría seguir una estrategia sin tener que instalar nada. ¿Cómo funciona?",
   },
   {
     id: "price",
@@ -261,6 +271,8 @@ const OPTIONS = [
     emoji: "💰",
     title: "Quiero ver precios",
     sub: "Conocé las opciones según tu capital.",
+    action: "scroll" as const,
+    target: "https://fxautobots.pro/#pricing",
   },
   {
     id: "help",
@@ -268,6 +280,7 @@ const OPTIONS = [
     emoji: "🙋",
     title: "No sé por dónde empezar",
     sub: "Te orientamos paso a paso, sin presión.",
+    action: "bot" as const,
   },
 ]
 
@@ -308,8 +321,16 @@ export function EmpezarContent() {
 
   const handleOption = (id: string) => {
     setSelected(id)
+    const opt = OPTIONS.find(o => o.id === id)
+    if (!opt) return
     setTimeout(() => {
-      window.open(TELEGRAM, "_blank", "noopener,noreferrer")
+      if (opt.action === "message") {
+        window.open(`${CONTACTO}?text=${encodeURIComponent(opt.message)}`, "_blank", "noopener,noreferrer")
+      } else if (opt.action === "bot") {
+        window.open(TELEGRAM_BOT, "_blank", "noopener,noreferrer")
+      } else if (opt.action === "scroll") {
+        window.location.href = opt.target
+      }
     }, 180)
   }
 
