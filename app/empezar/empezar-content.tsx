@@ -30,7 +30,9 @@ import {
   LineChart,
 } from "lucide-react"
 
-const TELEGRAM = "https://t.me/bestforexrobots"
+const TELEGRAM = "https://t.me/bestforexrobots"       // Canal principal (rendimientos y noticias)
+const TELEGRAM_BOT = "https://t.me/fxautobots_bot"    // Bot automatizado: dudas rápidas
+const TELEGRAM_CONTACTO = "https://t.me/fxautobots"   // Contacto directo: cerrar ventas / consultas puntuales
 
 // ─── STYLES ────────────────────────────────────────────────────────────────
 const styles = `
@@ -402,8 +404,39 @@ export function EmpezarContent() {
                 ))}
               </div>
 
-              {/* Secondary link to more options */}
-              <div className="ep-reveal pt-1">
+              {/* Secondary options — bot y contacto directo */}
+              <div className="ep-reveal pt-3 space-y-3">
+                <p className="text-xs text-muted-foreground/70 uppercase tracking-wide">¿Preferís escribirnos directo?</p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
+                  <a
+                    href={TELEGRAM_BOT}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex-1 flex items-start gap-3 rounded-xl border border-border/60 bg-card/50 px-4 py-3 text-left transition-all hover:border-primary/50 hover:bg-primary/5"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <MessageCircle className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold leading-tight">Sacarme dudas rápido</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-snug">Bot automático que responde al instante</p>
+                    </div>
+                  </a>
+                  <a
+                    href={TELEGRAM_CONTACTO}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex-1 flex items-start gap-3 rounded-xl border border-border/60 bg-card/50 px-4 py-3 text-left transition-all hover:border-primary/50 hover:bg-primary/5"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Headphones className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold leading-tight">Hablar con una persona</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-snug">Contacto directo para consultas puntuales</p>
+                    </div>
+                  </a>
+                </div>
                 <button
                   onClick={() => document.getElementById("que-busco")?.scrollIntoView({ behavior:"smooth" })}
                   className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
