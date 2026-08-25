@@ -54,7 +54,7 @@ const animStyles = `
     100% { background-position: 200% center; }
   }
   .cp-stat {
-    background: linear-gradient(90deg, #f97316 0%, #fbbf24 40%, #f97316 60%);
+    background: linear-gradient(90deg, #f97316 0%, #fbbf24 32,30%, #f97316 60%);
     background-size: 200% auto;
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -247,7 +247,7 @@ function TickerTape() {
     "🟠 HFM Copy Trading",
     "📈 Deus Copy +40% profit",
     "💰 Desde $30 USD",
-    "🔒 Max DD 2.88%",
+    "🔒 Max DD 1.87%",
     "🤝 Asistencia paso a paso",
     "✅ No necesitás experiencia",
     "🌎 Capital siempre en tu cuenta",
@@ -270,7 +270,7 @@ function TickerTape() {
 const strategies = [
   {
     name: "Deus Copy", description: "Estrategia conservadora con bajo drawdown, ideal para principiantes",
-    profit: "+40%", profitNum: 40, drawdown: "2.88%", minDeposit: 30,
+    profit: "+40%", profitNum: 40, drawdown: "1.87%", minDeposit: 30,
     link: "https://my.hfm.com/es/copy-trading/provider-details.html?provider=78106918",
     features: ["Bajo riesgo", "Operativa conservadora", "Ideal para cuentas pequeñas", "Drawdown controlado"],
     badge: "Conservador", badgeColor: "bg-emerald-500", accentColor: "emerald",
@@ -359,7 +359,7 @@ const faqs = [
   {
     question: "¿Cuánto puedo ganar?",
     answer:
-      "Los rendimientos varían según el mercado. Deus Copy lleva actualmente +40% de profit con un drawdown máximo de 2.88%. Rendimientos pasados no garantizan resultados futuros.",
+      "Los rendimientos varían según el mercado. Deus Copy lleva actualmente +40% de profit con un drawdown máximo de 1.87%. Rendimientos pasados no garantizan resultados futuros.",
   },
   {
     question: "¿Me ayudan a configurar todo?",
@@ -463,8 +463,8 @@ export default function CopyTradingPage() {
               {/* Stats con contadores animados */}
               <div className="cp-reveal cp-d300 flex flex-wrap justify-center gap-6 mt-4">
                 {[
-                  { label: "Profit Actual", value: 40, prefix: "+", suffix: "%", cls: "cp-stat" },
-                  { label: "Max Drawdown",      value: 2.88, decimals: 2, suffix: "%", cls: "cp-stat-green" },
+                  { label: "Profit Actual", value: 32.30, prefix: "+", suffix: "%", cls: "cp-stat" },
+                  { label: "Max Drawdown",      value: 1.87, decimals: 2, suffix: "%", cls: "cp-stat-green" },
                   { label: "Capital Mínimo",     value: 30, prefix: "$", suffix: " USD", cls: "cp-stat" },
                 ].map((s) => (
                   <div key={s.label} className="text-center px-6 py-4 rounded-2xl bg-background/70 border border-orange-500/20 backdrop-blur-sm">
