@@ -463,7 +463,7 @@ export default function CopyTradingPage() {
               {/* Stats con contadores animados */}
               <div className="cp-reveal cp-d300 flex flex-wrap justify-center gap-6 mt-4">
                 {[
-                  { label: "Profit Actual", value: 32.30, prefix: "+", suffix: "%", cls: "cp-stat" },
+                  { label: "Profit Actual", value: 32, prefix: "+", suffix: "%", cls: "cp-stat" },
                   { label: "Max Drawdown",      value: 1.87, decimals: 2, suffix: "%", cls: "cp-stat-green" },
                   { label: "Capital Mínimo",     value: 30, prefix: "$", suffix: " USD", cls: "cp-stat" },
                 ].map((s) => (
