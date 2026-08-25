@@ -271,7 +271,7 @@ const strategies = [
   {
     name: "Deus Copy", description: "Estrategia conservadora con bajo drawdown, ideal para principiantes",
     profit: "+40%", profitNum: 40, drawdown: "2.88%", minDeposit: 30,
-    link: "https://my.hfm.com/es/copy-trading/provider-details.html?provider=78098671",
+    link: "https://my.hfm.com/es/copy-trading/provider-details.html?provider=78106918",
     features: ["Bajo riesgo", "Operativa conservadora", "Ideal para cuentas pequeñas", "Drawdown controlado"],
     badge: "Conservador", badgeColor: "bg-emerald-500", accentColor: "emerald",
     statColor: "text-emerald-500", borderHover: "hover:border-emerald-500/50",
