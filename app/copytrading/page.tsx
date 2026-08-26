@@ -270,7 +270,7 @@ function TickerTape() {
 const strategies = [
   {
     name: "Deus Copy", description: "Estrategia conservadora con bajo drawdown, ideal para principiantes",
-    profit: "+40%", profitNum: 40, drawdown: "1.87%", minDeposit: 30,
+    profit: "+32.30%", profitNum: 40, drawdown: "1.87%", minDeposit: 30,
     link: "https://my.hfm.com/es/copy-trading/provider-details.html?provider=78106918",
     features: ["Bajo riesgo", "Operativa conservadora", "Ideal para cuentas pequeñas", "Drawdown controlado"],
     badge: "Conservador", badgeColor: "bg-emerald-500", accentColor: "emerald",
