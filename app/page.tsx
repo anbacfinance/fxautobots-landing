@@ -8,7 +8,6 @@ import {
   Settings, TrendingUp, ChevronRight, Clock,
   BarChart3, Target, Package, Percent, Instagram, MessageCircle,
   Shield, Zap, Users, AlertTriangle, Mail, HelpCircle, FileText,
-  Building2, Info,
 } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { BotsComparison } from "../components/bots-comparison"
@@ -20,13 +19,8 @@ import { MobileNav } from "../components/mobile-nav"
 
 // ─── FLAGS DE COMPLIANCE (Meta Ads) ───────────────────────────────────────
 //  · MOSTRAR_BROKERS_AFILIADOS → sección de brokers compatibles con links de
-//    afiliado. ACTIVADA. Es la sección de mayor riesgo si esta página es el
-//    destino del anuncio: promocionar un broker de Forex/CFD entra en
-//    "Productos y servicios financieros restringidos" de Meta. Para reducir
-//    el riesgo la sección está reformulada como COMPATIBILIDAD TÉCNICA (no
-//    como recomendación de inversión), lleva divulgación de afiliación y
-//    advertencia de riesgo, y los links van con rel="nofollow sponsored".
-//    Si Meta te rechaza el anuncio, esto es lo primero que hay que apagar.
+//    afiliado. ACTIVADA. Si Meta rechaza el anuncio por "servicios
+//    financieros", poné esto en false y mové la sección a /empezar.
 //  · MOSTRAR_CALCULADORA → proyecciones de ganancia. Meta las lee como
 //    "income claim / promesa de resultados". Dejala en false mientras anuncies.
 const MOSTRAR_BROKERS_AFILIADOS = true
@@ -859,52 +853,12 @@ export default function LandingPage() {
       {/* ── VPS ── */}
       <div className="reveal"><RecommendedVPS /></div>
 
-      {/* ── BROKERS COMPATIBLES (con links de afiliado) ── */}
+      {/* ── BROKERS ── */}
+      {/* El título "Brokers compatibles" y las tarjetas viven dentro de
+          components/recommended-brokers.tsx — cambiá el <h2> ahí. */}
       {MOSTRAR_BROKERS_AFILIADOS && (
         <section id="brokers" className="w-full py-12 md:py-24 lg:py-32 bg-muted/30">
-          <div className="container px-4 md:px-6">
-            {/* Encabezado reformulado: compatibilidad técnica, no recomendación de inversión */}
-            <div className="flex flex-col items-center justify-center space-y-3 text-center reveal mb-10">
-              <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-full mb-1">
-                <Building2 className="h-6 w-6 text-primary" />
-              </div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Brokers compatibles</h2>
-              <p className="max-w-[800px] text-muted-foreground md:text-lg">
-                Nuestros bots funcionan en cualquier broker con MetaTrader 4 y cuentas CENT. Estos son los que
-                probamos y en los que sabemos que los presets funcionan tal como están documentados.
-              </p>
-            </div>
-
-            {/* Divulgación de afiliación — exigida por ley en varios países y bien vista por el revisor */}
-            <div className="max-w-3xl mx-auto mb-8 reveal delay-100">
-              <div className="flex gap-3 items-start rounded-xl border border-muted-foreground/20 bg-background/60 p-4">
-                <Info className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  <strong className="text-foreground">Divulgación de afiliación.</strong> Algunos de los enlaces de
-                  esta sección son de afiliado: si abrís una cuenta a través de ellos, FXAutoBots puede recibir una
-                  comisión del broker, sin ningún costo adicional para vos. Esto no condiciona el funcionamiento del
-                  software ni implica que recomendemos operar. No somos un broker, no somos agentes ni
-                  representantes de ninguna de estas entidades y no intervenimos en tu relación con ellas: la
-                  apertura de cuenta, los depósitos y los retiros son exclusivamente entre vos y el broker.
-                </p>
-              </div>
-            </div>
-
-            <div className="reveal delay-200"><RecommendedBrokers /></div>
-
-            {/* Advertencia de riesgo específica de la sección */}
-            <div className="max-w-3xl mx-auto mt-8 reveal">
-              <div className="flex gap-3 items-start rounded-xl border border-amber-500/25 bg-amber-500/10 p-4">
-                <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Abrir una cuenta en un broker de Forex/CFDs es una decisión financiera propia y conlleva riesgo de
-                  pérdida del capital. Antes de registrarte, verificá por tu cuenta la licencia del broker ante el
-                  regulador correspondiente a tu país de residencia y leé sus condiciones, comisiones y política de
-                  retiros. FXAutoBots no garantiza la solvencia, la ejecución ni el servicio de ningún broker.
-                </p>
-              </div>
-            </div>
-          </div>
+          <div className="reveal"><RecommendedBrokers /></div>
         </section>
       )}
 
