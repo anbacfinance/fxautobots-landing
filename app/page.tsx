@@ -8,6 +8,7 @@ import {
   Settings, TrendingUp, ChevronRight, Clock,
   BarChart3, Target, Package, Percent, Instagram, MessageCircle,
   Shield, Zap, Users, AlertTriangle, Mail, HelpCircle, FileText,
+  Building2, Info,
 } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { BotsComparison } from "../components/bots-comparison"
@@ -18,16 +19,17 @@ import { RecommendedVPS } from "../components/recommended-vps"
 import { MobileNav } from "../components/mobile-nav"
 
 // ─── FLAGS DE COMPLIANCE (Meta Ads) ───────────────────────────────────────
-// Estas dos secciones son las que más rechazos generan si esta página es el
-// destino de un anuncio de Facebook/Instagram. Dejalas en `false` mientras
-// hagas publicidad. Ponelas en `true` solo para tráfico orgánico.
-//
-//  · MOSTRAR_BROKERS_AFILIADOS → links de registro a brokers de Forex.
-//    Promocionar un broker de Forex/CFD entra en "Productos y servicios
-//    financieros restringidos" y exige permiso escrito + licencia de Meta.
+//  · MOSTRAR_BROKERS_AFILIADOS → sección de brokers compatibles con links de
+//    afiliado. ACTIVADA. Es la sección de mayor riesgo si esta página es el
+//    destino del anuncio: promocionar un broker de Forex/CFD entra en
+//    "Productos y servicios financieros restringidos" de Meta. Para reducir
+//    el riesgo la sección está reformulada como COMPATIBILIDAD TÉCNICA (no
+//    como recomendación de inversión), lleva divulgación de afiliación y
+//    advertencia de riesgo, y los links van con rel="nofollow sponsored".
+//    Si Meta te rechaza el anuncio, esto es lo primero que hay que apagar.
 //  · MOSTRAR_CALCULADORA → proyecciones de ganancia. Meta las lee como
-//    "income claim / promesa de resultados".
-const MOSTRAR_BROKERS_AFILIADOS = false
+//    "income claim / promesa de resultados". Dejala en false mientras anuncies.
+const MOSTRAR_BROKERS_AFILIADOS = true
 const MOSTRAR_CALCULADORA = false
 
 // Cuando tengas testimonios REALES (con consentimiento por escrito del cliente,
@@ -522,6 +524,7 @@ export default function LandingPage() {
     { href: "#pricing",    label: "Precios" },
     { href: "#faq",        label: "FAQ" },
     { href: "#vps",        label: "VPS" },
+    ...(MOSTRAR_BROKERS_AFILIADOS ? [{ href: "#brokers", label: "Brokers" }] : []),
   ]
 
   return (
@@ -856,10 +859,52 @@ export default function LandingPage() {
       {/* ── VPS ── */}
       <div className="reveal"><RecommendedVPS /></div>
 
-      {/* ── BROKERS — desactivado para tráfico de Meta Ads ── */}
+      {/* ── BROKERS COMPATIBLES (con links de afiliado) ── */}
       {MOSTRAR_BROKERS_AFILIADOS && (
         <section id="brokers" className="w-full py-12 md:py-24 lg:py-32 bg-muted/30">
-          <div className="reveal"><RecommendedBrokers /></div>
+          <div className="container px-4 md:px-6">
+            {/* Encabezado reformulado: compatibilidad técnica, no recomendación de inversión */}
+            <div className="flex flex-col items-center justify-center space-y-3 text-center reveal mb-10">
+              <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-full mb-1">
+                <Building2 className="h-6 w-6 text-primary" />
+              </div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Brokers compatibles</h2>
+              <p className="max-w-[800px] text-muted-foreground md:text-lg">
+                Nuestros bots funcionan en cualquier broker con MetaTrader 4 y cuentas CENT. Estos son los que
+                probamos y en los que sabemos que los presets funcionan tal como están documentados.
+              </p>
+            </div>
+
+            {/* Divulgación de afiliación — exigida por ley en varios países y bien vista por el revisor */}
+            <div className="max-w-3xl mx-auto mb-8 reveal delay-100">
+              <div className="flex gap-3 items-start rounded-xl border border-muted-foreground/20 bg-background/60 p-4">
+                <Info className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  <strong className="text-foreground">Divulgación de afiliación.</strong> Algunos de los enlaces de
+                  esta sección son de afiliado: si abrís una cuenta a través de ellos, FXAutoBots puede recibir una
+                  comisión del broker, sin ningún costo adicional para vos. Esto no condiciona el funcionamiento del
+                  software ni implica que recomendemos operar. No somos un broker, no somos agentes ni
+                  representantes de ninguna de estas entidades y no intervenimos en tu relación con ellas: la
+                  apertura de cuenta, los depósitos y los retiros son exclusivamente entre vos y el broker.
+                </p>
+              </div>
+            </div>
+
+            <div className="reveal delay-200"><RecommendedBrokers /></div>
+
+            {/* Advertencia de riesgo específica de la sección */}
+            <div className="max-w-3xl mx-auto mt-8 reveal">
+              <div className="flex gap-3 items-start rounded-xl border border-amber-500/25 bg-amber-500/10 p-4">
+                <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Abrir una cuenta en un broker de Forex/CFDs es una decisión financiera propia y conlleva riesgo de
+                  pérdida del capital. Antes de registrarte, verificá por tu cuenta la licencia del broker ante el
+                  regulador correspondiente a tu país de residencia y leé sus condiciones, comisiones y política de
+                  retiros. FXAutoBots no garantiza la solvencia, la ejecución ni el servicio de ningún broker.
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
       )}
 
@@ -928,6 +973,14 @@ export default function LandingPage() {
               El uso de los bots es responsabilidad exclusiva del usuario. FXAutoBots no se hace responsable de
               pérdidas derivadas del uso, la configuración o el mal funcionamiento del software, de la plataforma, del
               broker o del servicio de VPS elegido por el usuario.
+            </p>
+            <p>
+              <strong className="text-foreground">Enlaces de afiliado.</strong> Este sitio contiene enlaces de
+              afiliado a brokers y proveedores de VPS. Si abrís una cuenta o contratás un servicio a través de ellos,
+              FXAutoBots puede percibir una comisión del proveedor, sin costo adicional para vos. Mencionamos esos
+              proveedores por su compatibilidad técnica con nuestros bots; no constituye una recomendación de
+              inversión ni una garantía sobre su servicio, su solvencia o su regulación. La verificación de la
+              licencia del broker y la lectura de sus condiciones son responsabilidad del usuario.
             </p>
           </div>
         </div>
