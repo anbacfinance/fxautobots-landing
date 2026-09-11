@@ -12,50 +12,55 @@ export function RecommendedBrokers() {
       logoWidth: 200,
       logoHeight: 40,
       features: [
-        "Ejecución rápida y confiable",
-        "Cuenta Cent desde $10",
-        "Apalancamiento hasta 1:3000",
+        "Cuenta Cent desde $10 USD",
+        "Ejecución de órdenes sin mesa de dinero",
+        "Apalancamiento alto disponible (aumenta el riesgo)",
       ],
       link: "https://one.exnessonelink.com/boarding/sign-up/a/551pw645r9?lng=es",
-      badge: "Popular",
+      badge: "Cuenta Cent",
     },
-     {
+    {
       name: "HFM (HotForex)",
       logo: "/images/brokers/hfm-logo.jpeg",
       logoWidth: 60,
-      logoHeight: 30,
+      logoHeight: 60,
       features: [
-        "VPS GRATIS a partir de $400 de deposito y 2 lotes/mes",
-        "Cuentas cent ideales para bots",
-        "Apalancamiento alto y spreads competitivos",
+        "VPS sin cargo desde $400 USD de depósito y 2 lotes/mes",
+        "Cuentas Cent compatibles con Expert Advisors",
+        "Apalancamiento alto disponible (aumenta el riesgo)",
       ],
       warning:
-        "HFM ofrece VPS gratuito a partir de $400 USD de depósito. Para mantenerlo activo es necesario cumplir los requisitos de volumen de trading del broker.",
+        "El VPS sin cargo de HFM requiere un depósito mínimo de $400 USD. Para mantenerlo activo hay que cumplir mes a mes los requisitos de volumen de trading que fija el broker.",
       link: "https://register.hfm.com/sv/en/new-live-account/?refid=364904",
-      badge: "Recomendado",
+      badge: "Incluye VPS",
     },
-     {
+    {
       name: "RoboForex",
       logo: "/images/brokers/roboforex-logo.png",
       logoWidth: 100,
       logoHeight: 40,
       features: [
-        "VPS GRATIS con 3 lotes/mes y $300 de depósito",
-        "Cuenta Cent desde $10",
-        "Más variedad de plataformas (MT4, cTrader, etc.)",
+        "VPS sin cargo desde $300 USD de depósito y 3 lotes/mes",
+        "Cuenta Cent desde $10 USD",
+        "Varias plataformas disponibles (MT4, MT5, cTrader)",
       ],
+      warning:
+        "El VPS sin cargo de RoboForex requiere un depósito mínimo de $300 USD y un volumen de 3 lotes por mes.",
       link: "https://my.roboforex.com/es/?a=sejr",
+      badge: "Incluye VPS",
     },
   ]
 
   return (
-    <section className="w-full py-12 md:py-24">
+    // Antes era <section py-12 md:py-24>. La página ya envuelve este componente
+    // en su propia <section> con padding, así que quedaba el doble de espacio.
+    <div className="w-full">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-10">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Brokers Recomendados</h2>
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Brokers compatibles</h2>
           <p className="max-w-[800px] text-muted-foreground md:text-xl/relaxed">
-            Nuestros bots funcionan perfectamente con estos brokers que ofrecen cuentas cent ideales para trading
-            algorítmico
+            Nuestros bots funcionan en cualquier broker con MetaTrader 4. Estos tres los probamos nosotros y ofrecen
+            cuentas Cent, que son las que usamos en la documentación de cada bot.
           </p>
         </div>
 
@@ -70,7 +75,7 @@ export function RecommendedBrokers() {
                       alt={`${broker.name} Logo`}
                       width={broker.logoWidth}
                       height={broker.logoHeight}
-                      className="object-contain"
+                      className="object-contain max-h-[50px] w-auto"
                     />
                   </div>
                   {broker.badge && (
@@ -80,7 +85,7 @@ export function RecommendedBrokers() {
                   )}
                 </div>
                 <CardTitle className="text-2xl mt-4">{broker.name}</CardTitle>
-                <CardDescription>Broker compatible con nuestros bots</CardDescription>
+                <CardDescription>Compatible con nuestros bots para MT4</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow">
                 <ul className="space-y-2">
@@ -103,7 +108,7 @@ export function RecommendedBrokers() {
                   <a
                     href={broker.link}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="nofollow sponsored noopener noreferrer"
                     className="flex items-center justify-center gap-2"
                   >
                     Abrir Cuenta
@@ -117,12 +122,13 @@ export function RecommendedBrokers() {
 
         <div className="mt-10 text-center">
           <p className="text-sm text-muted-foreground max-w-[800px] mx-auto">
-            Recomendamos utilizar cuentas cent para operar con nuestros bots, ya que permiten un mejor control del
-            riesgo y son ideales para traders con capital limitado. Los VPS gratuitos requieren cumplir con los
-            requisitos de volumen y depósito especificados por cada broker.
+            Sugerimos cuentas Cent para operar con nuestros bots porque permiten un control más fino del lotaje y del
+            riesgo con capital reducido. Los VPS sin cargo dependen de los requisitos de depósito y volumen que fija
+            cada broker, y esas condiciones pueden cambiar sin previo aviso: verificalas en su sitio antes de abrir
+            la cuenta. FXAutoBots no es un broker ni actúa como agente de estas entidades.
           </p>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
